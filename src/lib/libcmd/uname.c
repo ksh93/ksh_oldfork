@@ -35,7 +35,7 @@ USAGE_LICENSE
 "	standard output. When options are specified, one or more"
 "	system characteristics are written to standard output, space"
 "	separated, on a single line. When more than one option is specified"
-"	the output is in the order specfied by the \b-A\b option below."
+"	the output is in the order specified by the \b-A\b option below."
 "	Unsupported option values are listed as \a[option]]\a. If any unknown"
 "	options are specified then the local \b/usr/bin/uname\b is called.]"
 "[+?If any \aname\a operands are specified then the \bsysinfo\b(2) values"

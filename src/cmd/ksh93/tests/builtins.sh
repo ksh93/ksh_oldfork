@@ -525,7 +525,7 @@ $SHELL -c "( sleep 1; kill -ALRM \$\$ ) & sleep $del" 2> /dev/null
 exitval=$?
 (( sec = SECONDS - sec ))
 exec 2>&3-
-(( exitval )) && err_exit "sleep doesn't exit 0 with ALRM interupt"
+(( exitval )) && err_exit "sleep doesn't exit 0 with ALRM interrupt"
 (( sec > (del - 1) )) || err_exit "ALRM signal causes sleep to terminate prematurely -- expected 3 sec, got $sec"
 typeset -r z=3
 y=5

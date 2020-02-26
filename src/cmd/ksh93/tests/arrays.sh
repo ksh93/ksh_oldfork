@@ -314,7 +314,7 @@ integer i
 for ((i=0; i < 40; i++))
 do	x[i]=$i
 done
-[[  ${#x[@]} == 40 ]] || err_exit 'index arrays loosing values'
+[[  ${#x[@]} == 40 ]] || err_exit 'index arrays losing values'
 [[ $( ($SHELL -c 'typeset -A var; (IFS=: ; set -A var a:b:c ;print ${var[@]});:' )2>/dev/null) == 'a b c' ]] || err_exit 'change associative to index failed'
 unset foo
 [[ $(foo=good

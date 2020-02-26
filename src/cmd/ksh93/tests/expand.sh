@@ -111,9 +111,9 @@ done
 set -- ~(N)/dev/null
 [[ $# == 1 && $1 == /dev/null ]] || err_exit "~(N)/dev/null not matching /dev/null"
 set -- ~(N)/dev/non_existant_file
-[[ $# == 0  ]] || err_exit "~(N)/dev/nonexistant not empty"
+[[ $# == 0  ]] || err_exit "~(N)/dev/nonexistent not empty"
 set -- ""~(N)/dev/non_existant_file
-[[ $# == 1  && ! $1 ]] || err_exit '""~(N)/dev/nonexistant not null argument'
+[[ $# == 1  && ! $1 ]] || err_exit '""~(N)/dev/nonexistent not null argument'
 set -- ~(N)/dev/non_existant_file""
 [[ $# == 1  && ! $1 ]] || err_exit '~(N)/dev/nonexistent"" not null argument'
 for i in ~(N)/dev/non_existent_file

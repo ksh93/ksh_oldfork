@@ -401,7 +401,7 @@ typeset -T olist=(
 )
 olist foo
 foo.l[1]=x
-[[  ${!foo.l[*]} == *0* ]] && '0-th elment of foo.l should not be set'
+[[  ${!foo.l[*]} == *0* ]] && '0-th element of foo.l should not be set'
 
 typeset -T oset2=( typeset -A foo )
 oset2 bar

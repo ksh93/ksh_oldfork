@@ -312,7 +312,7 @@ typeset -ui42 x=50
 if	[[ $x != 42#18 ]]
 then	err_exit 'display of unsigned integers in non-decimal bases wrong'
 fi
-$SHELL -c 'i=0;(( ofiles[i] != -1 && (ofiles[i] < mins || mins == -1) ));exit 0' 2> /dev/null || err_exit 'lexical error with arithemtic expression'
+$SHELL -c 'i=0;(( ofiles[i] != -1 && (ofiles[i] < mins || mins == -1) ));exit 0' 2> /dev/null || err_exit 'lexical error with arithmetic expression'
 $SHELL -c '(( +1 == 1))' 2> /dev/null || err_exit 'unary + not working'
 typeset -E20 val=123.01234567890
 [[ $val == 123.0123456789 ]] || err_exit "rounding error val=$val"
@@ -664,7 +664,7 @@ done
 [[ $($SHELL 2> /dev/null -c 'print -- $(( ldexp(1, 4) ))' ) == 16 ]] || err_exit 'function ldexp not implement or not working correctly'
 
 
-$SHELL 2> /dev/null -c 'str="0x1.df768ed398ee1e01329a130627ae0000p-1";typeset -l -E x;((x=str))' || err_exit '((x=var)) fails for hexfloat with var begining with 0x1.nnn'
+$SHELL 2> /dev/null -c 'str="0x1.df768ed398ee1e01329a130627ae0000p-1";typeset -l -E x;((x=str))' || err_exit '((x=var)) fails for hexfloat with var beginning with 0x1.nnn'
 
 x=(3 6 12)
 (( x[2] /= x[0]))

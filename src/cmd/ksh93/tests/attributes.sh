@@ -182,8 +182,8 @@ typeset -b x=$b1
 typeset -b -Z5 a=$b1
 [[  $(printf "%B" a) == $w1 ]] || err_exit 'typeset -b -Z5 not working'
 typeset -b q=$x$x
-[[ $q == $b2 ]] || err_exit 'typeset -b not working with concatination'
-[[  $(printf "%B" q) == $t1$t1 ]] || err_exit 'typeset -b concatination not working'
+[[ $q == $b2 ]] || err_exit 'typeset -b not working with concatenation'
+[[  $(printf "%B" q) == $t1$t1 ]] || err_exit 'typeset -b concatenation not working'
 x+=$b1
 [[ $x == $b2 ]] || err_exit 'typeset -b not working with append'
 [[  $(printf "%B" x) == $t1$t1 ]] || err_exit 'typeset -b append not working'

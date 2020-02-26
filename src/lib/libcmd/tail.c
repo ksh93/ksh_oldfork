@@ -64,7 +64,7 @@ USAGE_LICENSE
 "[h!:headers?Output filename headers.]"
 "[l:lines?Copy units of lines. This is the default.]"
 "[L:log?When a \b--forever\b file times out via \b--timeout\b, verify that "
-	"the curent file has not been renamed and replaced by another file "
+	"the current file has not been renamed and replaced by another file "
 	"of the same name (a common log file practice) before giving up on "
 	"the file.]"
 "[q:quiet?Don't output filename headers. For GNU compatibility.]"
@@ -86,7 +86,7 @@ USAGE_LICENSE
 		"[+y?years]"
 		"[+S?scores]"
 	"}"
-"[v:verbose?Always ouput filename headers.]"
+"[v:verbose?Always output filename headers.]"
 
 "\n"
 "\n[file ...]\n"

@@ -43,7 +43,7 @@ extern const char	bash_pre_rc[];
 static char *login_files[4];
 
 const char sh_bash1[] =
-	"[B?Enable brace group expansion. This option is only availabe in bash "
+	"[B?Enable brace group expansion. This option is only available in bash "
 	"compatibility mode. In ksh mode, brace group expansion is always on.]"
 	"[P?Do not follow symbolic links, use physical directory structure "
 	"instead. Only available in bash compatibility mode.]";

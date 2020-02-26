@@ -35,7 +35,7 @@ USAGE_LICENSE
         "[+*?Lower case to avoid clashes on case ignorant filesystems.]"
         "[+*?Pseudo-random part to deter denial of service attacks.]"
         "[+*?Default pseudo-random part (no specific \bX...\b template) "
-            "formatted to accomodate 8.3 filesystems.]"
+            "formatted to accommodate 8.3 filesystems.]"
     "}"
 "[+?A consecutive trailing sequence of \bX\b's in \aprefix\a is replaced "
     "by the pseudo-random part. If there are no \bX\b's then the "

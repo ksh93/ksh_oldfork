@@ -244,7 +244,7 @@ eval "$(
 EOF
 } > $script
 chmod +x $script
-[[ $($SHELL $script) == hello ]] 2> /dev/null || err_exit 'heredoc embeded in command substitution fails at buffer boundary'
+[[ $($SHELL $script) == hello ]] 2> /dev/null || err_exit 'heredoc embedded in command substitution fails at buffer boundary'
 
 got=$( cat << EOF
 \
@@ -491,7 +491,7 @@ EOF
      print EOF
 } > $f
 $SHELL $f > $g
-[[ $(grep meep $g | grep -v foobar) != '' ]] && err_exit 'here-doc loosing $var expansions on boundaries in rare cases'
+[[ $(grep meep $g | grep -v foobar) != '' ]] && err_exit 'here-doc losing $var expansions on boundaries in rare cases'
 
 print foo > $tmp/foofile
 x=$( $SHELL 2> /dev/null 'read <<< $(<'"$tmp"'/foofile) 2> /dev/null;print -r "$REPLY"')

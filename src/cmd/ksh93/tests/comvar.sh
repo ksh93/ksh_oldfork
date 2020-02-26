@@ -63,7 +63,7 @@ unset x
 typeset -A x
 x=( [foo]=bar )
 if	[[ ${x[@]} != bar ]]
-then	err_exit 'compound assignemnt of associative arrays not working'
+then	err_exit 'compound assignment of associative arrays not working'
 fi
 unset -n foo x
 unset foo x
@@ -424,7 +424,7 @@ data.samples+=(
 
 [[ $data == %(()) ]] || err_exit "unbalanced parenthesis with compound variable containing array of compound variables"
 typeset -C  -A hello=( [foo]=bar)
-[[ $(typeset -p hello) == 'typeset -C -A hello=([foo]=bar)' ]] || err_exit 'typeset -A -C with intial assignment not working'
+[[ $(typeset -p hello) == 'typeset -C -A hello=([foo]=bar)' ]] || err_exit 'typeset -A -C with initial assignment not working'
 # this caused a core dump before ksh93t+
 [[ $($SHELL -c 'foo=(x=3 y=4);function bar { typeset z=4;: $z;};bar;print ${!foo.@}') == 'foo.x foo.y' ]] 2> /dev/null || err_exit '${!foo.@} after function not working'
 
@@ -536,7 +536,7 @@ compound x=(
 	integer a=1
 	compound b=cpv1 
 ) 
-[[ $x == *f=2* ]] ||  err_exit "The field b containg 'f=2' is missing"
+[[ $x == *f=2* ]] ||  err_exit "The field b containing 'f=2' is missing"
 
 unset x
 compound x=(
@@ -602,12 +602,12 @@ expected=$'(\n\t[0]=(\n\t\ta=1\n\t)\n\t[1]=(\n\t\tb=2\n\t)\n)'
 
 compound -a x=( [0]=(a=1) [1]=(b=2) )
 typeset -m "z=x[1]"
-[[ $(typeset -p z 2>/dev/null) == 'typeset -C z=(b=2)' ]] || err_exit 'typeset -m not working with commpound -a variable'
+[[ $(typeset -p z 2>/dev/null) == 'typeset -C z=(b=2)' ]] || err_exit 'typeset -m not working with compound -a variable'
 
 unset x z
 compound -A x=( [0]=(a=1) [1]=(b=2) )
 typeset -m "z=x[1]"
-[[ $(typeset -p z 2>/dev/null) == 'typeset -C z=(b=2)' ]] || err_exit 'typeset -m not working with commpound -a variable'
+[[ $(typeset -p z 2>/dev/null) == 'typeset -C z=(b=2)' ]] || err_exit 'typeset -m not working with compound -a variable'
 typeset -m "x[1]=x[0]"
 typeset -m "x[0]=z"
 exp='([0]=(b=2) [1]=(a=1))'

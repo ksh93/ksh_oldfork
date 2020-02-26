@@ -126,7 +126,7 @@ set foo
 nameref bar=$1
 foo=hello
 if	[[ $bar !=  hello ]]
-then	err_exit 'nameref of positional paramters outside of function not working'
+then	err_exit 'nameref of positional parameters outside of function not working'
 fi
 unset foo bar
 bar=123

@@ -95,8 +95,8 @@ false
 }
 [[ $(fn) == 'global fn abc' ]] || err_exit 'fn outside namespace should run global function'
 [[ $(.x.fn) == 'local fn bar' ]] || err_exit 'namespace function called from global failed'
-[[  ${z[abc]} == qqq ]] || err_exit 'global associative array should not be affected by definiton in namespace'
-[[  ${bar.y} == 4 ]] || err_exit 'global compound variable should not be affected by definiton in namespace'
+[[  ${z[abc]} == qqq ]] || err_exit 'global associative array should not be affected by definition in namespace'
+[[  ${bar.y} == 4 ]] || err_exit 'global compound variable should not be affected by definition in namespace'
 [[  ${bar.z} == ''  ]] || err_exit 'global compound variable should not see elements in namespace'
 [[ $(xfun) ==  'xfun global abc' ]] || err_exit 'global function on FPATH failed'
 [[ $(run $foo) ==  'global prog abc' ]] || err_exit 'global binary on PATH failed'

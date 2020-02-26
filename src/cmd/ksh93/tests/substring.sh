@@ -177,10 +177,10 @@ do      [[ $(eval print -r -- \"\${xx//:/\\${str:i:1}}\") == "a${str:i:1}b" ]] |
         [[ $(eval print -rn -- \"\${xx//:/\'${str:i:1}\'}\") == "a${str:i:1}b" ]] || err_exit "substitution of '${str:i:1}' failed"
         [[ $(eval print -r -- \"\${xx//:/\"${str:i:1}\"}\") == "a${str:i:1}b" ]] || err_exit "substitution of \"${str:i:1}\" failed"
 done
-[[ ${xx//:/\\n} == 'a\nb' ]]  || err_exit "substituion of \\\\n failed"
-[[ ${xx//:/'\n'} == 'a\nb' ]] || err_exit "substituion of '\\n' failed"
-[[ ${xx//:/"\n"} ==  'a\nb' ]] || err_exit "substituion of \"\\n\" failed"
-[[ ${xx//:/$'\n'} ==  $'a\nb' ]] || err_exit "substituion of \$'\\n' failed"
+[[ ${xx//:/\\n} == 'a\nb' ]]  || err_exit "substitution of \\\\n failed"
+[[ ${xx//:/'\n'} == 'a\nb' ]] || err_exit "substitution of '\\n' failed"
+[[ ${xx//:/"\n"} ==  'a\nb' ]] || err_exit "substitution of \"\\n\" failed"
+[[ ${xx//:/$'\n'} ==  $'a\nb' ]] || err_exit "substitution of \$'\\n' failed"
 unset foo
 foo=one/two/three
 if	[[ ${foo//'/'/_} != one_two_three ]]
@@ -495,8 +495,8 @@ x=$'-(-\\"\')\\\'\\"\'-)-'
 
 pattern=00
 var=100
-[[ $( print $(( ${var%%00} )) ) == 1 ]] || err_exit "arithmetic with embeddded patterns fails"
-[[ $( print $(( ${var%%$pattern} )) ) == 1 ]] || err_exit "arithmetic with embeddded pattern variables fails"
+[[ $( print $(( ${var%%00} )) ) == 1 ]] || err_exit "arithmetic with embedded patterns fails"
+[[ $( print $(( ${var%%$pattern} )) ) == 1 ]] || err_exit "arithmetic with embedded pattern variables fails"
 if	[[ ax == @(a)* ]] && [[ ${.sh.match[1]:0:${#.sh.match[1]}}  != a ]]
 then	err_exit '${.sh.match[1]:1:${#.sh.match[1]}} not expanding correctly'
 fi

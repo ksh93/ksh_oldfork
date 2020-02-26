@@ -301,7 +301,7 @@ fi
 ###########################################################
 ###########################################################
 ###########################################################
-print foo) ]] || err_exit "command subsitution with long comments broken"
+print foo) ]] || err_exit "command substitution with long comments broken"
 subject='some/other/words'
 re='@(?*)/@(?*)/@(?*)'
 [[ ${subject/${re}/\3} != words ]] && err_exit 'string replacement with \3 not working'

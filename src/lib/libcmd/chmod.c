@@ -36,7 +36,7 @@ USAGE_LICENSE
 	"of changes to make, or an octal number representing the bit "
 	"pattern for the new permissions.]"
 "[+?Symbolic mode strings consist of one or more comma separated list "
-	"of operations that can be perfomed on the mode. Each operation is of "
+	"of operations that can be performed on the mode. Each operation is of "
 	"the form \auser\a \aop\a \aperm\a where \auser\a is zero or more of "
 	"the following letters:]{"
 	"[+u?User permission bits.]"

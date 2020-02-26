@@ -380,7 +380,7 @@ PATH=$tmp/bin:$tmp/new/bin:$PATH
 x=$(whence -p echo 2> /dev/null)
 [[ $x == "$tmp/new/bin/echo" ]] ||  err_exit 'nonexistant FPATH directory in .paths file causes path search to fail'
 
-$SHELL 2> /dev/null <<- \EOF || err_exit 'path search problem with non-existant directories in PATH'
+$SHELL 2> /dev/null <<- \EOF || err_exit 'path search problem with non-existent directories in PATH'
 	PATH=/usr/nogood1/bin:/usr/nogood2/bin:/bin:/usr/bin
 	tail /dev/null && tail /dev/null
 EOF

@@ -223,7 +223,7 @@ exec 9>& 1
 exec 1>&-
 x=$(print hello)
 if	[[ $x != hello ]]
-then	err_exit "command subsitution with stdout closed failed"
+then	err_exit "command substitution with stdout closed failed"
 fi
 exec >& 9
 cd $pwd

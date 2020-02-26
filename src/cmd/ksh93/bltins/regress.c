@@ -91,7 +91,7 @@ USAGE_LICENSE
             "\aoriginal-euid\a.]"
     "}"
 "[103:p_suid?Specifies a value for SHOPT_P_SUID. Effective uids greater "
-    "than the non-privileged-uid disable the priveleged mode. The intercepts "
+    "than the non-privileged-uid disable the privileged mode. The intercepts "
     "are:]#?[non-privileged-uid:=1]"
     "{"
         "[+SHOPT_P_SUID?The SHOPT_P_SUID macro value is overridden by "

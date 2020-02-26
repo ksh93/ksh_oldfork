@@ -341,7 +341,7 @@ then	err_exit "export inside function not working -- expected 'fun', got '$val'"
 fi
 val=$(export | sed -e '/^zzz=/!d' -e 's/^zzz=//')
 if	[[ $val ]]
-then	err_exit "unset varaible exported after function call -- expected '', got '$val'"
+then	err_exit "unset variable exported after function call -- expected '', got '$val'"
 fi
 
 unset zzz

@@ -594,7 +594,7 @@ dot=$(cat <<-EOF
 	EOF
 ) ) & sleep 1
 if      kill -0 $! 2> /dev/null
-then    err_exit  'command substitution containg here-doc with command substitution fails'
+then    err_exit  'command substitution containing here-doc with command substitution fails'
 fi
 
 printf=$(whence -p printf)
