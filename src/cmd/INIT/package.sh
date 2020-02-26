@@ -103,7 +103,7 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 [+DESCRIPTION?The \bpackage\b command controls source and binary
     packages. It is a \bsh\b(1) script coded for maximal portability. All
     package files are in the \b$PACKAGEROOT\b directory tree.
-    \b$PACKAGEROOT\b must at minumum contain a \bbin/package\b command or a
+    \b$PACKAGEROOT\b must at minimum contain a \bbin/package\b command or a
     \blib/package\b directory. Binary package files are in the
     \b$INSTALLROOT\b (\b$PACKAGEROOT/arch/\b\ahosttype\a) tree, where
     \ahosttpe\a=`\bpackage\b`. All \aactions\a but \bhost\b and \buse\b
@@ -170,7 +170,7 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
             are variable assignments. Set admin_ping to local conventions
             if \"'$admin_ping$'\" fails. If a package list is not specified
             on the command line the \aaction\a applies to all packages; a
-            variable assigment \bpackage\b=\"\alist\a\" applies \aaction\a
+            variable assignment \bpackage\b=\"\alist\a\" applies \aaction\a
             to the packages in \alist\a for subsequent hosts in \afile\a.
             The remaining line type is a host description consisting of 6
             tab separated fields. The first 3 are mandatory; the remaining
@@ -206,7 +206,7 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
             }
 	[+clean | clobber?Delete the \barch/\b\aHOSTTYPE\a hierarchy; this
 	    deletes all generated files and directories for \aHOSTTYPE\a.
-	    The heirarchy can be rebuilt by \bpackage make\b.]
+	    The hierarchy can be rebuilt by \bpackage make\b.]
         [+contents\b [ \apackage\a ... ]]?List description and
             components for \apackage\a on the standard output.]
         [+copyright\b [ \apackage\a ... ]]?List the general copyright
@@ -322,7 +322,7 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
         [+update\b [ beta ]] [ binary ]] [ source ]] [\aarchitecture\a ... ]] [ \aurl\a ]] [ \apackage\a ... ]]?Download
             the latest release of the selected and required packages from \aurl\a
             (e.g., \bhttp://www.research.att.com/sw/download\b) into the directory
-            \b$PACKAGEROOT/lib/package/tgz\b. \bbeta\b acesses beta packages;
+            \b$PACKAGEROOT/lib/package/tgz\b. \bbeta\b accesses beta packages;
             download these at your own risk. If \aarchitecture\a is omitted then
             only architectures already present in the \btgz\b directory will be
             downloaded. If \aarchitecture\a is \b-\b then all posted architectures
@@ -513,7 +513,7 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
     K&R, ANSI, and C++ dialects.]
 [+?All scripts and commands under \b$PACKAGEROOT\b use \b$PATH\b
     relative pathnames (via the \bast\b \bpathpath\b(3) function); there
-    are no imbedded absolute pathnames. This means that binaries generated
+    are no embedded absolute pathnames. This means that binaries generated
     under \b$PACKAGEROOT\b may be copied to a different root; users need
     only change their \b$PATH\b variable to reference the new installation
     root \bbin\b directory. \bpackage install\b installs binary packages in
@@ -864,9 +864,9 @@ original source. The ${bB}ast${eB} ${Mproto} command converts an ANSI C subset t
 that is compatible with K&R, ANSI, and C++ dialects.
 ${bP}
 All scripts and commands under ${bB}\$PACKAGEROOT${eB} use ${bB}\$PATH${eB} relative pathnames;
-there are no imbedded absolute pathnames. This means that binaries generated
+there are no embedded absolute pathnames. This means that binaries generated
 under ${bB}\$PACKAGEROOT${eB} may be copied to a different root; users need only change
-their ${bB}\$PATH${eB} variable to reference the new instalation root bin directory.
+their ${bB}\$PATH${eB} variable to reference the new installation root bin directory.
 ${bF}package install${eF} installs binary packages in a new ${bB}\$INSTALLROOT${eB}.
 ${eO}"
 			;;
@@ -990,7 +990,7 @@ ${bT}(5)${bD}Read all unread package archive(s):${bX}
 		ignored. Lines starting with id=value are variable assignments.
 		Set admin_ping to local conventions if \"$admin_ping\" fails.
 		If a package list is not specified on the command line the
-		action applies to all packages; a variable assigment
+		action applies to all packages; a variable assignment
 		package=list applies action to the packages in list for
 		subsequent hosts in FILE. The remaining line type is a host
 		description consisting of 6 tab separated fields. The first 3
@@ -1026,7 +1026,7 @@ ${bT}(5)${bD}Read all unread package archive(s):${bX}
 			   cc=compiler-version.
 	clean | clobber
 	    Delete the arch/HOSTTYPE hierarchy; this deletes all generated
-	    files and directories for HOSTTYPE. The heirarchy can be rebuilt
+	    files and directories for HOSTTYPE. The hierarchy can be rebuilt
 	    by package make.]
 	contents [ package ... ]
 		List description and components for PACKAGE on the standard
@@ -1143,7 +1143,7 @@ ${bT}(5)${bD}Read all unread package archive(s):${bX}
 		Download the latest release of the selected and required
 		packages from URL (e.g.,
 		http://www.research.att.com/sw/download) into the directory
-		\$PACKAGEROOT/lib/package/tgz. beta acesses beta packages;
+		\$PACKAGEROOT/lib/package/tgz. beta accesses beta packages;
 		download these at your own risk. If ARCHITECTURE is omitted
 		then only architectures already present in the tgz directory
 		will be downloaded. If ARCHITECTURE is - then all posted

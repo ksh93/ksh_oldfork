@@ -226,7 +226,7 @@ All recorded changes follow.
 12-07-02  A bug in which an exit status &gt; 256 corresponding to a signal was
           not returned by a function to indicate a signal exit has been fixed.
 12-06-28  Fix ulimit -a to list (Kibytes) instead of (kbytes).
-12-06-27  Fix unitialized data reference for &lt;CR&gt; as first char in --vi mode.
+12-06-27  Fix uninitialized data reference for &lt;CR&gt; as first char in --vi mode.
 12-06-26  The formatting of printf "%q" for multibyte locales has changed to
 	  output using \u&#0091;xxx&#0093; format for valid wide characters.
 12-06-25  The size limit for read -N and read -n has been raised to INT_MAX.
@@ -248,19 +248,19 @@ All recorded changes follow.
 12-06-12  For assignments if the form x=(foo bar), foo is only check for an
 	  alias if it is float, integer, compound, or nameref.
 12-06-12 +The shell supports 64 bit i-nodes even for 32 bit binaries.
-12-06-11  A bug wth &gt;; redirection systems for which vfork() was the same a
+12-06-11  A bug with &gt;; redirection systems for which vfork() was the same a
 	  fork() has been fixed.
 12-06-11  A bug in path lookup that ignored buffer boundaries has been fixed.
 12-06-08  typeset -a var and typeset -A var, first unset var when var is
 	  a compound variable.
-12-06-08  A bug in which running shcomp on a program containg namespace
+12-06-08  A bug in which running shcomp on a program containing namespace
 	  could core dump has been fixed.
 12-06-06  A bug in which unset of an associative array of compound variables
 	  did not completely unset the variable has been fixed.
-12-06-06  A bug in which exporting left or right justfied fields could loose
+12-06-06  A bug in which exporting left or right justified fields could loose
 	  the field width has been fixed.
 12-06-06  A bug on Solaris11 in which &gt;; did not work for /dev/null was fixed.
-12-06-05  A race condition which occured when stopping a builtin command
+12-06-05  A race condition which occurred when stopping a builtin command
 	  invoked from a subshell has been fixed.
 12-06-05  A bug with appending elements to an empty indexed array has been
 	  fixed.
@@ -270,14 +270,14 @@ All recorded changes follow.
 	  directory if they are killed or stopped.
 12-06-04  A bug in handling \&nbsp;in read has been fixed.
 12-05-31  Use getrlimit64/setrlimit64 on systems that support it.
-12-05-31  Fix 64 bit big-endian arithmentic bug that mishandled nan and inf.
+12-05-31  Fix 64 bit big-endian arithmetic bug that mishandled nan and inf.
 12-05-31  Handle ECONNRESET like EPIPE.
 12-05-31  Change .paths parse to use only the last BUILTIN_LIB from the top
 	  and treat BUILTIN_LIB value as a ':' separated list of lib names.
 12-05-29  Fix BUILTIN_LIB binding bug that ignored subsequent lookups.
 12-05-29  shtests: --nocompile omits the compile test and --compile does only
 	  the compile test.
-12-05-25  A command subsitution containing a here-document that itself contains
+12-05-25  A command substitution containing a here-document that itself contains
 	  a here-document no longer hangs.
 12-05-24  When the redirection operatory &gt;; is directed to a symlink, it now
 	  overwrites the file named by the link rather than the link.
@@ -356,7 +356,7 @@ All recorded changes follow.
 12-04-09  A bug in which the leading 0 was stripped from $x, when $x contained
 	  a heximadecimal constant inside an arithmetic expression inside
 	  a for or while loop.
-12-04-06  Modified namespaces to hand variabes FPATH, PATH, and OPTIND that
+12-04-06  Modified namespaces to hand variables FPATH, PATH, and OPTIND that
 	  are defined in name spaces appropriately.  This also fixed OPTIND
 	  and OPTARG processing for functions.
 12-04-04  A bug in which cd .. fails when the current directory has been
@@ -394,7 +394,7 @@ All recorded changes follow.
 	  cursor on the b rather than the a has been fixed.
 12-03-20  A bug which caused a core dump when defining a type with a field
 	  as ' integer -a data=(&#0091;0&#0093;=0)' has been fixed.
-12-03-19  Using typeset -a array when array is an associative arry not
+12-03-19  Using typeset -a array when array is an associative array not
 	  generated an error message.
 12-03-19  typeset +a, typeset +A, and typeset +C not displays the variables
 	  with the attributes a, A, and C respectively instead of an error.
@@ -409,7 +409,7 @@ All recorded changes follow.
 12-03-16  A bug in which an unset discipline from a variable defined in a
 	  subshell is not invoked in the subshell has been fixed.
 12-03-08  The assignment typeset -a (x=1 y=2) now creates an index array
-	  of two elements rathern than an array of one element which is
+	  of two elements rather than an array of one element which is
 	  a compound variable.
 12-03-02 +The vi and emacs edit modes now list all the entries in a directory
 	  when entering a &lt;tab&gt; for completion after a /.  
@@ -459,7 +459,7 @@ All recorded changes follow.
 	  characters correctly has been fixed.
 12-01-20  A bug that could cause the shell to hang waiting for an incorrect
 	  job pid has been fixed.
-12-01-19  A memory leak which occured for a nested command subtiution has been
+12-01-19  A memory leak which occurred for a nested command subtiution has been
 	  fixed.
 12-01-17  A bug in which typeset -u PS1 could enable the uppercase attribute
 	  for some other variables, for exampe, HISTFILE has been fixed.
@@ -483,7 +483,7 @@ All recorded changes follow.
 	  with a backshash.
 11-12-13  When tab is entered for completion after a ' or ", the ' and "
 	  characters are no longer deleted.
-11-12-07  A bug in which a program in the current direcotry with a . in the
+11-12-07  A bug in which a program in the current directory with a . in the
 	  name could fail to execute when both PATH and FPATH end with :. has
 	  been fixed.
 11-12-07  I fixed a bug in which a variable expansion in a large here-document
@@ -640,7 +640,7 @@ All recorded changes follow.
 11-03-04 +The tilde expansion on windows has been modified to handle user
 	  names of the form domain/user so that ~domain/user now expands
 	  to the home directory of that domain user.
-11-03-03  A bug in which the width of the prompt was calculated incorectly
+11-03-03  A bug in which the width of the prompt was calculated incorrectly
 	  which cause the wrong line length for edit commands has been fixed.
 11-03-02  A bug in which a global variables set from within a function inside
 	  a subshell can leave side effects in parent shell has been fixed.
@@ -655,7 +655,7 @@ All recorded changes follow.
 	  references defined and the script creates name references of the
 	  same name.
 11-02-21  The shell now fails with a syntax error when a here-document in a
-	  command substition is not completed before the closing ), for
+	  command substitution is not completed before the closing ), for
 	  example, $( foobar &lt;&lt;! )
 		here_doc
 	  !.
@@ -669,7 +669,7 @@ All recorded changes follow.
 11-02-08  --- Release ksh93u  ---
 11-02-08  A bug in which opening standard output after it has been closed with
 	  exec 1&gt;&amp;- doesn't work has been fixed.
-11-02-07  A bug on some systems for which a command subtitution could hang
+11-02-07  A bug on some systems for which a command substitution could hang
 	  has been fixed.
 11-01-28  A bug in file name completion for files containing both multibyte
 	  characters shell special characters has been fixed.
@@ -683,7 +683,7 @@ All recorded changes follow.
 	  variables when the same array was referenced on the left and the
 	  right hand side with different indices has been fixed.
 11-01-10  A bug in which the output of time was lost when { time...;} 2&gt;&amp;1
-	  occurred inside command substition has been fixed.
+	  occurred inside command substitution has been fixed.
 11-01-07  &#0091;&#0091; -v sh.match&#0091;i&#0093; &#0093;&#0093; was returning false when sh.match&#0091;i&#0093; was set.
 11-01-05  Added and modified warning messages with sh -n.
 11-01-02  Fixed bugs with typeset -l/-u/-M and arrays.
@@ -758,7 +758,7 @@ All recorded changes follow.
 	  when the type is initialized has been fixed.
 10-11-12  The sequences \&lt; and \&gt; are now preserved after patterns containing
 	  ~(E) in ${var/pattern/string} expansions.
-10-11-11  A bug in typeset -m when the variables were compound arrary instances
+10-11-11  A bug in typeset -m when the variables were compound array instances
 	  has been fixed.
 10-11-10  A bug in output of a compound variable with types containing types
 	  has been fixed.
@@ -919,7 +919,7 @@ All recorded changes follow.
 10-07-07  A bug in the output for compound variables containing
 	  multi-dimensional arrays has been fixed.
 10-07-06  ksh now recovers from changes made by bash to the history file without
-	  loosing history commands.
+	  losing history commands.
 10-06-25  A bug in which a large here document containing command substitutions
 	  of a dynamically loaded function that contained a here document
 	  could get truncated has been fixed.
@@ -986,7 +986,7 @@ All recorded changes follow.
 	  to make this the current line (n defaults to 1 of omitted) or
 	  &lt;ESC&gt;n&lt;cr&gt; to execute.
 10-05-20  A bug which caused an exception when multiple levels of composite
-	  functions in arithemtic expressions has been fixed.
+	  functions in arithmetic expressions has been fixed.
 10-05-19  &lt;&lt;&lt; with an empty string no longer gives an error.
 10-05-19  A bug in arithmetic evaluation when a name reference to an array
 	  instance was used has been fixed. 
@@ -1020,7 +1020,7 @@ All recorded changes follow.
 	  a non-zero element was specified and this has been fixed.
 10-04-26  A bug in which types defined in a subshell were not undefined when
 	  the subshell completed has been fixed.
-10-04-23  For file completion in commmand line editing, file names starting
+10-04-23  For file completion in command line editing, file names starting
 	  with # are now escaped so that they are not treated as comments.
 10-04-23  A bug in which ${t.var:=value}, where t is an instance of a type
 	  variable, could assign value to the type variable rather than to
@@ -1637,7 +1637,7 @@ All recorded changes follow.
 08-03-27  A bug in which the terminal group was not given back to the parent
 	  shell when the last part of a pipeline was handled by the parent shell
 	  and the other parts of the pipeline complete has been fixed. 
-	  The symptom was that the pipeline became uninterruptable.
+	  The symptom was that the pipeline became uninterruptible.
 08-03-25  A bug in restricted mode introduced in ksh93s that caused scripts
 	  that did not use #! to executed in restricted mode has been fixed.
 08-03-25  A bug in which the pipefail option did not work for a pipeline
@@ -1734,7 +1734,7 @@ All recorded changes follow.
 	  from a subshell has been fixed.
 08-01-17  A bug in which a command substitution consisting only of
 	  assignments was treated as a noop has been fixed.
-08-01-17  A bug in which discipline functions invoked from withing a
+08-01-17  A bug in which discipline functions invoked from within a
 	  compound assignment could fail has been fixed.
 08-01-16  Incomplete arithmetic assignments, for example ((x += )), now
 	  generate an error message.
@@ -1994,7 +1994,7 @@ All recorded changes follow.
 06-04-25  A bug in the vi edit mode which could cause the shell to core dump
 	  when switching from emacs mode.
 06-04-17  A bug in which using LANG or LC_ in assignment lists with builtins
-	  did not restore the localed correctly has been fixed.
+	  did not restore the locale correctly has been fixed.
 06-04-04  A bug in which discipline functions could not be added to variables
 	  whose names started with .sh has been fixed.
 06-03-28 +The -s option to typeset was added to modify -i to indicate short
@@ -2545,7 +2545,7 @@ All recorded changes follow.
 	  viraw mode will always be on.
 
 01-10-31  --- Release ksh93m  ---
-01-10-31  A for loop optimizer bug for subshells contained withing for
+01-10-31  A for loop optimizer bug for subshells contained within for
 	  loops has been fixed.
 01-10-16  typeset without arguments no longer outputs variable names
 	  that do not have any attributes that are set.
@@ -3585,7 +3585,7 @@ All recorded changes follow.
 09-01-31 features/sys: drop header sys/localedef.h
 09-01-28 include/fs3d.h,misc/fs3d.c: mount() =&gt; fs3d_mount() for diff std prototypes
 09-01-14 misc/fts_open.c: delay top list reorder until first fts_read()
-09-01-14 include/ls.h: LS_W_INUMBER =&gt; 9 to accomodate large st_ino
+09-01-14 include/ls.h: LS_W_INUMBER =&gt; 9 to accommodate large st_ino
 09-01-14 misc/optget.c: expand STYLE_usage input text
 09-01-09 features/uwin,stdio/_stdfun.c: iffe for _p__iob and __p__iob
 09-01-09 misc/magic.tab: add ISO filesystem image entries
@@ -3789,7 +3789,7 @@ All recorded changes follow.
 06-09-12 string/strelapsed.c: fix multi-char qualifier parse
 06-09-12 string/strtoi.h: drop &#0091;cClLqQwW&#0093; multipliers
 06-09-11 misc/optget.c: add numeric arg validity check
-06-09-07 misc/optget.c,tm/tmfix.c: fix uninitialzed var refs
+06-09-07 misc/optget.c,tm/tmfix.c: fix uninitialized var refs
 06-09-05 path/pathprobe.c: add version header verification
 06-08-01 Makefile: handle iffe vs FEATURE/common vs ast_common.h
 06-08-31 Makefile: add ast_map.h to the bootstrap list
@@ -3857,7 +3857,7 @@ All recorded changes follow.
 05-05-31 string/fmtbuf.c: unlock (spin) before each return -- doh
 05-05-30 sfio/sfpkrd.c: work around macos 10.4 recv(MSG_PEEK) bug
 05-05-27 regex: add REX_NEST (?%&#0091;S.&#0093;&#0091;T.&#0093;&#0091;OT&#0093;)
-	 magic.tab: ammend bsd db magic
+	 magic.tab: amend bsd db magic
 05-05-23 regex: REX_NEST (?%&#0091;D.&#0093;&#0091;E.&#0093;&#0091;L.&#0093;&#0091;Q.&#0093;&#0091;oc&#0093;...)
 05-05-21 regex: state.fold&#0091;&#0093; is now locale specific -- doh
 05-05-19 regex: add REX_NEST (?%\\()&lt;&gt;&#0091;&#0093;""...) %(...) nested match
@@ -4178,13 +4178,13 @@ All recorded changes follow.
 03-01-24 path/pathexists.c: fix abs dir bug and deal with case ignorance
 03-01-23 path/pathpath.c: honor PATH_ABSOLUTE for the easy case too
 03-01-22 path/pathprobe.c: fix search to find both the probe script and command
-03-01-17 misc/magic.tab: application/zip =&gt; appplication/(gzip|pzip|zip)
+03-01-17 misc/magic.tab: application/zip =&gt; application/(gzip|pzip|zip)
 03-01-14 misc/optget.c: change href="" to href="."
 03-01-10 include/ast_std.h: strtold() import hackery for static __CYGWIN__
 03-01-03 include/regex.h,regex/regcomp.h: add REG_SHELL_GROUP
 	 include/ast.h,string/strmatch.c: add STR_GROUP for REG_SHELL_GROUP
 02-12-15 include/error.h: errorcontext =&gt; Error_context_s (compatible til 2004)
-02-12-06 misc/sigdata.c: add NoF(sigdadata) -- why nmake was uninterruptable!
+02-12-06 misc/sigdata.c: add NoF(sigdadata) -- why nmake was uninterruptible!
 02-12-03 comp/omitted.c,features/omitted: handle cygwin alarm() return botch
 02-11-27 misc/swapop.c: op=3,size=4 =&gt; op=7
 	 string/strlcat.c,strlcpy.c: fix uwin decl clash
@@ -4417,7 +4417,7 @@ All recorded changes follow.
 01-10-05 misc/glob.c: fix `\(x/*' GLOB_NOMATCH bug that returned `(x'
 	 misc/optget.c: fix localization lookup that didn't drop doubled : ? &#0093;
 01-10-04 comp/setlocale.c: handle sizeof(wchar_t)!=4 in debug locale
-	 comp/conf.sh: handle sytems where _SC_* is both an enum and a macro
+	 comp/conf.sh: handle systems where _SC_* is both an enum and a macro
 01-09-25 astconf: add LIBPREFIX
 01-09-20 features/common: add __DYNAMIC__() for dll externs
 01-09-19 cdt: kpv update
@@ -4606,7 +4606,7 @@ All recorded changes follow.
 	 tmlex: check tm_info.format and tm_data.format
 	 tmfix: fix for tm_wday special case (via nl_langinfo on LC_TIME fields)
 	 strftime: fix for nl_langinfo special case
-	 ast_std.h: provide LC_* defauls if not defined
+	 ast_std.h: provide LC_* defaults if not defined
 	 sfnew: check ${_AST_sfio_bufsize} -- don't tell kpv
 	 catopen,nl_types.h: add intercept to mc* routines
 	 magic.tab: add ast message catalog
@@ -4665,7 +4665,7 @@ All recorded changes follow.
 99-10-22 tmfmt: %C=2-digit-century, %k=date(1), %y=2-digit-year-in-century
 99-10-18 fastfind: expanded default db lookup
 99-08-11 magic: fix off by one registry malloc
-	 features/fs: add __RENAME checks for stat familiy (netbsd)
+	 features/fs: add __RENAME checks for stat family (netbsd)
 	 features/fs: major()/minor() fixes for s5
 	 features/libpath.sh: netbsd fix -- ld.so not in std places
 	 misc/fastfind: fix codes path generation bug
@@ -4780,7 +4780,7 @@ All recorded changes follow.
 	 proc: add PROC_ZOMBIE
 98-02-06 strmatch() char class range bug fix
 	 regex char class range bug fix
-98-01-23 _WIN32: changed the #if logic again to accomodate _GNUC_
+98-01-23 _WIN32: changed the #if logic again to accommodate _GNUC_
 	 mnt: grab the mount options too
 	 ast_std.h: hide getopt,getsubopt from stdlib.h
 	 features/limits.c: add gnu guard macros to avoid limits.h recursion
@@ -5146,9 +5146,9 @@ All recorded changes follow.
 11-01-27 date: add { -R, --rfc-2822, -T, --rfc-3339=type }
 11-01-03 chgrp.c: --symlink =&gt; --physical
 10-12-10 rm.c: fix not-writable logic
-10-12-01 tee.c: add iterrupt logic for slow open(1) -- needs to be generalized
+10-12-01 tee.c: add interrupt logic for slow open(1) -- needs to be generalized
 10-11-30 chgrp.c: add -N,--numeric to bypass name lookup
-10-10-20 cp: add --timestamps (preserv timestamps and permissions)
+10-10-20 cp: add --timestamps (preserve timestamps and permissions)
 10-10-20 ln: fix 'cannot replace existing file' logic
 10-10-10 cp,mv: add --remove-destination
 10-08-11 cp.c,expr.c: use conformance("standard",0) test
@@ -5220,7 +5220,7 @@ All recorded changes follow.
 08-04-01 cut.c: add write error check
 08-04-01 paste.c: fix --noserial stream vector access bug
 08-04-01 pids.c: add ls/ps style --format=format
-08-04-01 stty.c: fix off2 unitialized reference
+08-04-01 stty.c: fix off2 uninitialized reference
 08-03-28 chgrp.c: add --before=file
 08-03-14 pids.c: add
 08-03-11 chgrp.c: fix -m to use uid:gid as lookup key
@@ -5264,12 +5264,12 @@ All recorded changes follow.
 06-11-15 cp.c: fix 06-10-31 ln -s enoent bug
 06-11-11 getconf.c: let astconf() handle "undefined" vs. ""
 06-11-11 getconf.c: fix deferred getconf path search
-06-11-11 fmt.c: handle two char { \t } in --usage ouput
+06-11-11 fmt.c: handle two char { \t } in --usage output
 06-10-31 global edit to eliminate most non-const static data0
 06-10-31 use &lt;cmd.h&gt; for all b_*() implementations; drop &lt;cmdlib.h&gt; 
 06-10-31 cmd.h: add CMD_ prefix to { BUILTIN DYNAMIC STANDALONE } 
 06-10-31 join.c: tone down /tmp usage vi SFSK_DISCARD
-06-10-31 cp.c,rm.c: update to &lt;fts.h&gt; to accomodate non-static data
+06-10-31 cp.c,rm.c: update to &lt;fts.h&gt; to accommodate non-static data
 06-10-29 date.c: "...%H%..." =&gt; "...%H" "%..." to avoid SCCS conflict
 06-10-26 fds.c: handle sctp
 06-10-18 tail.c: fix invalid suffix infinite loop
@@ -5397,7 +5397,7 @@ All recorded changes follow.
 	 cat: fix -n (was ignored, wow)
 00-01-27 getconf: add "-a" and "-v spec" for sol7.* compatibility
 99-09-09 join: fix -j1 vs. -j 1, add --ignorecase
-99-06-22 paste: defualt delim in writable string
+99-06-22 paste: default delim in writable string
 99-06-16 cat: fix --dos-ouput typo
 99-06-11 cp: tighten chown() diagnostics
 99-06-08 expr: nothing for NULL string bug fix

@@ -25,7 +25,7 @@
 12-07-02  A bug in which an exit status > 256 corresponding to a signal was
           not returned by a function to indicate a signal exit has been fixed.
 12-06-28  Fix ulimit -a to list (Kibytes) instead of (kbytes).
-12-06-27  Fix unitialized data reference for <CR> as first char in --vi mode.
+12-06-27  Fix uninitialized data reference for <CR> as first char in --vi mode.
 12-06-26  The formatting of printf "%q" for multibyte locales has changed to
 	  output using \u[xxx] format for valid wide characters.
 12-06-25  The size limit for read -N and read -n has been raised to INT_MAX.
@@ -47,16 +47,16 @@
 12-06-12  For assignments if the form x=(foo bar), foo is only check for an
 	  alias if it is float, integer, compound, or nameref.
 12-06-12 +The shell supports 64 bit i-nodes even for 32 bit binaries.
-12-06-11  A bug wth >; redirection systems for which vfork() was the same a
+12-06-11  A bug with >; redirection systems for which vfork() was the same a
 	  fork() has been fixed.
 12-06-11  A bug in path lookup that ignored buffer boundaries has been fixed.
 12-06-08  typeset -a var and typeset -A var, first unset var when var is
 	  a compound variable.
-12-06-08  A bug in which running shcomp on a program containg namespace
+12-06-08  A bug in which running shcomp on a program containing namespace
 	  could core dump has been fixed.
 12-06-06  A bug in which unset of an associative array of compound variables
 	  did not completely unset the variable has been fixed.
-12-06-06  A bug in which exporting left or right justfied fields could loose
+12-06-06  A bug in which exporting left or right justified fields could loose
 	  the field width has been fixed.
 12-06-06  A bug on Solaris11 in which >; did not work for /dev/null was fixed.
 12-06-05  A race condition which occured when stopping a builtin command
@@ -69,14 +69,14 @@
 	  directory if they are killed or stopped.
 12-06-04  A bug in handling \\ in read has been fixed.
 12-05-31  Use getrlimit64/setrlimit64 on systems that support it.
-12-05-31  Fix 64 bit big-endian arithmentic bug that mishandled nan and inf.
+12-05-31  Fix 64 bit big-endian arithmetic bug that mishandled nan and inf.
 12-05-31  Handle ECONNRESET like EPIPE.
 12-05-31  Change .paths parse to use only the last BUILTIN_LIB from the top
 	  and treat BUILTIN_LIB value as a ':' separated list of lib names.
 12-05-29  Fix BUILTIN_LIB binding bug that ignored subsequent lookups.
 12-05-29  shtests: --nocompile omits the compile test and --compile does only
 	  the compile test.
-12-05-25  A command subsitution containing a here-document that itself contains
+12-05-25  A command substitution containing a here-document that itself contains
 	  a here-document no longer hangs.
 12-05-24  When the redirection operatory >; is directed to a symlink, it now
 	  overwrites the file named by the link rather than the link.
@@ -155,7 +155,7 @@
 12-04-09  A bug in which the leading 0 was stripped from $x, when $x contained
 	  a heximadecimal constant inside an arithmetic expression inside
 	  a for or while loop.
-12-04-06  Modified namespaces to hand variabes FPATH, PATH, and OPTIND that
+12-04-06  Modified namespaces to hand variables FPATH, PATH, and OPTIND that
 	  are defined in name spaces appropriately.  This also fixed OPTIND
 	  and OPTARG processing for functions.
 12-04-04  A bug in which cd .. fails when the current directory has been
@@ -193,7 +193,7 @@
 	  cursor on the b rather than the a has been fixed.
 12-03-20  A bug which caused a core dump when defining a type with a field
 	  as ' integer -a data=([0]=0)' has been fixed.
-12-03-19  Using typeset -a array when array is an associative arry not
+12-03-19  Using typeset -a array when array is an associative array not
 	  generated an error message.
 12-03-19  typeset +a, typeset +A, and typeset +C not displays the variables
 	  with the attributes a, A, and C respectively instead of an error.
@@ -208,7 +208,7 @@
 12-03-16  A bug in which an unset discipline from a variable defined in a
 	  subshell is not invoked in the subshell has been fixed.
 12-03-08  The assignment typeset -a (x=1 y=2) now creates an index array
-	  of two elements rathern than an array of one element which is
+	  of two elements rather than an array of one element which is
 	  a compound variable.
 12-03-02 +The vi and emacs edit modes now list all the entries in a directory
 	  when entering a <tab> for completion after a /.  
@@ -258,7 +258,7 @@
 	  characters correctly has been fixed.
 12-01-20  A bug that could cause the shell to hang waiting for an incorrect
 	  job pid has been fixed.
-12-01-19  A memory leak which occured for a nested command subtiution has been
+12-01-19  A memory leak which occurred for a nested command subtiution has been
 	  fixed.
 12-01-17  A bug in which typeset -u PS1 could enable the uppercase attribute
 	  for some other variables, for exampe, HISTFILE has been fixed.
@@ -282,7 +282,7 @@
 	  with a backshash.
 11-12-13  When tab is entered for completion after a ' or ", the ' and "
 	  characters are no longer deleted.
-11-12-07  A bug in which a program in the current direcotry with a . in the
+11-12-07  A bug in which a program in the current directory with a . in the
 	  name could fail to execute when both PATH and FPATH end with :. has
 	  been fixed.
 11-12-07  I fixed a bug in which a variable expansion in a large here-document
@@ -439,7 +439,7 @@
 11-03-04 +The tilde expansion on windows has been modified to handle user
 	  names of the form domain/user so that ~domain/user now expands
 	  to the home directory of that domain user.
-11-03-03  A bug in which the width of the prompt was calculated incorectly
+11-03-03  A bug in which the width of the prompt was calculated incorrectly
 	  which cause the wrong line length for edit commands has been fixed.
 11-03-02  A bug in which a global variables set from within a function inside
 	  a subshell can leave side effects in parent shell has been fixed.
@@ -454,7 +454,7 @@
 	  references defined and the script creates name references of the
 	  same name.
 11-02-21  The shell now fails with a syntax error when a here-document in a
-	  command substition is not completed before the closing ), for
+	  command substitution is not completed before the closing ), for
 	  example, $( foobar <<! )
 		here_doc
 	  !.
@@ -468,7 +468,7 @@
 11-02-08  --- Release ksh93u  ---
 11-02-08  A bug in which opening standard output after it has been closed with
 	  exec 1>&- doesn't work has been fixed.
-11-02-07  A bug on some systems for which a command subtitution could hang
+11-02-07  A bug on some systems for which a command substitution could hang
 	  has been fixed.
 11-01-28  A bug in file name completion for files containing both multibyte
 	  characters shell special characters has been fixed.
@@ -482,7 +482,7 @@
 	  variables when the same array was referenced on the left and the
 	  right hand side with different indices has been fixed.
 11-01-10  A bug in which the output of time was lost when { time...;} 2>&1
-	  occurred inside command substition has been fixed.
+	  occurred inside command substitution has been fixed.
 11-01-07  [[ -v sh.match[i] ]] was returning false when sh.match[i] was set.
 11-01-05  Added and modified warning messages with sh -n.
 11-01-02  Fixed bugs with typeset -l/-u/-M and arrays.
@@ -557,7 +557,7 @@
 	  when the type is initialized has been fixed.
 10-11-12  The sequences \< and \> are now preserved after patterns containing
 	  ~(E) in ${var/pattern/string} expansions.
-10-11-11  A bug in typeset -m when the variables were compound arrary instances
+10-11-11  A bug in typeset -m when the variables were compound array instances
 	  has been fixed.
 10-11-10  A bug in output of a compound variable with types containing types
 	  has been fixed.
@@ -718,7 +718,7 @@
 10-07-07  A bug in the output for compound variables containing
 	  multi-dimensional arrays has been fixed.
 10-07-06  ksh now recovers from changes made by bash to the history file without
-	  loosing history commands.
+	  losing history commands.
 10-06-25  A bug in which a large here document containing command substitutions
 	  of a dynamically loaded function that contained a here document
 	  could get truncated has been fixed.
@@ -785,7 +785,7 @@
 	  to make this the current line (n defaults to 1 of omitted) or
 	  <ESC>n<cr> to execute.
 10-05-20  A bug which caused an exception when multiple levels of composite
-	  functions in arithemtic expressions has been fixed.
+	  functions in arithmetic expressions has been fixed.
 10-05-19  <<< with an empty string no longer gives an error.
 10-05-19  A bug in arithmetic evaluation when a name reference to an array
 	  instance was used has been fixed. 
@@ -819,7 +819,7 @@
 	  a non-zero element was specified and this has been fixed.
 10-04-26  A bug in which types defined in a subshell were not undefined when
 	  the subshell completed has been fixed.
-10-04-23  For file completion in commmand line editing, file names starting
+10-04-23  For file completion in command line editing, file names starting
 	  with # are now escaped so that they are not treated as comments.
 10-04-23  A bug in which ${t.var:=value}, where t is an instance of a type
 	  variable, could assign value to the type variable rather than to
@@ -1436,7 +1436,7 @@
 08-03-27  A bug in which the terminal group was not given back to the parent
 	  shell when the last part of a pipeline was handled by the parent shell
 	  and the other parts of the pipeline complete has been fixed. 
-	  The symptom was that the pipeline became uninterruptable.
+	  The symptom was that the pipeline became uninterruptible.
 08-03-25  A bug in restricted mode introduced in ksh93s that caused scripts
 	  that did not use #! to executed in restricted mode has been fixed.
 08-03-25  A bug in which the pipefail option did not work for a pipeline
@@ -1533,7 +1533,7 @@
 	  from a subshell has been fixed.
 08-01-17  A bug in which a command substitution consisting only of
 	  assignments was treated as a noop has been fixed.
-08-01-17  A bug in which discipline functions invoked from withing a
+08-01-17  A bug in which discipline functions invoked from within a
 	  compound assignment could fail has been fixed.
 08-01-16  Incomplete arithmetic assignments, for example ((x += )), now
 	  generate an error message.
@@ -1793,7 +1793,7 @@
 06-04-25  A bug in the vi edit mode which could cause the shell to core dump
 	  when switching from emacs mode.
 06-04-17  A bug in which using LANG or LC_ in assignment lists with builtins
-	  did not restore the localed correctly has been fixed.
+	  did not restore the locale correctly has been fixed.
 06-04-04  A bug in which discipline functions could not be added to variables
 	  whose names started with .sh has been fixed.
 06-03-28 +The -s option to typeset was added to modify -i to indicate short
@@ -2344,7 +2344,7 @@
 	  viraw mode will always be on.
 
 01-10-31  --- Release ksh93m  ---
-01-10-31  A for loop optimizer bug for subshells contained withing for
+01-10-31  A for loop optimizer bug for subshells contained within for
 	  loops has been fixed.
 01-10-16  typeset without arguments no longer outputs variable names
 	  that do not have any attributes that are set.

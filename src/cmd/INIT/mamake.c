@@ -69,7 +69,7 @@ USAGE_LICENSE
 "	directories containing a makefile named \bNmakefile\b, \bnmakefile\b,"
 "	\bMakefile\b or \bmakefile\b are considered. The first makefile"
 "	found in each leaf directory is scanned for leaf directory"
-"	prerequisites; the recusion order is determined by a topological sort"
+"	prerequisites; the recursion order is determined by a topological sort"
 "	of these prerequisites.]:[pattern]"
 "[C:?Do all work in \adirectory\a. All messages will mention"
 "	\adirectory\a.]:[directory]"

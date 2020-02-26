@@ -443,7 +443,7 @@ This flag guarantees that data written in any single \f5sfwrite()\fP or
 \f5sfputr()\fP call will always be output as a whole to the output device.
 This is useful in certain applications (e.g., networking) where a complex object
 must be output without being split in different system calls.
-Note that the respective stream still buffers data as much as the buffer can accomodate.
+Note that the respective stream still buffers data as much as the buffer can accommodate.
 .Tp
 \f5SF_MTSAFE\fP:
 This flag indicates that the respective stream may be accessed by more than one threads.
@@ -692,7 +692,7 @@ As with \f5SFMTX_LOCK\fP,
 an attempt to clear the lock count without a previously successful lock
 may result in undefined behavior.
 .PP
-.Ss "INPUT/OUPUT OPERATIONS"
+.Ss "INPUT/OUTPUT OPERATIONS"
 .PP
 .Ss "  int sfgetc(Sfio_t* f)"
 .Ss "  int sfputc(Sfio_t* f, int c)"
@@ -903,7 +903,7 @@ If \f5n > 0\fP, the stream I/O position is advanced by \f5n\fP.
 If \f5n < 0\fP, the stream I/O position is advanced by the amount
 of available data.
 For example, a successful \f5sfreserve(f, -1, -1)\fP call will return a
-buffer of data and simultanously advance the stream I/O position by the amount
+buffer of data and simultaneously advance the stream I/O position by the amount
 indicated by \f5sfvalue(f)\fP.
 .Tp
 \f5type == SF_LOCKR\fP:
@@ -1008,7 +1008,7 @@ can be modified by this function to redirect formatting or scanning.
 For example, consider a call from a \f5sfprintf()\fP function to process an
 unknown pattern \f5%t\fP (which we may take to mean ``time'') based on a
 formatting environment \f5fe\fP.
-\f5fe->extf\fP may reset \f5fe->fmt\fP to `\f5d\fP' upon returing
+\f5fe->extf\fP may reset \f5fe->fmt\fP to `\f5d\fP' upon returning
 to cause \f5sfprintf()\fP to process the value being formatted as an integer.
 
 Below are the fields of \f5Sffmt_t\fP:

@@ -313,7 +313,7 @@ of ksh.
 	    the value of a name reference contained a positional
 	    parameter and the name reference was not defined inside
 	    a function has been fixed.
-	o.  Arithmetic expressions now correctly handle hexidecimal
+	o.  Arithmetic expressions now correctly handle hexadecimal
 	    constants.
 	p.  A bug in which integer variables could be expanded
 	    with a leading 10# when declared with typeset -i

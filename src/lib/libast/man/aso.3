@@ -218,7 +218,7 @@ The default value \f50\fP disables the test.
 If \f5errorf\fP != \f50\fP then it is called for each \fIASO\fP fatal library condition.
 \f5type\fP may be one of: \f5ASO_METHOD\fP - a method error; \f5ASO_HUNG\fP - \f5asoloop\fP() was called
 \f52**Asometh_t.hung\fP times with no access to the loop resource.
-\f5mesg\fP is a 0-terminated messsage description.
+\f5mesg\fP is a 0-terminated message description.
 .Ss "  void ASODISC(Asodisc_t* disc, Asoerror_f errorf);"
 .PP
 This function-like-macro initializes \f5disc->version = ASO_VERSION\fP, \f5disc->errorf = errorf\fP,
@@ -248,7 +248,7 @@ When supported by the hardware / compiler, the library provides the "\fBintrinsi
 .Tp
 \f5ASO_SIGNAL\fP:
 This method type is suitable only for single-process single-thread applications.
-It can be used to provide locking between asyncronous \fBsignal\fP(2) handlers
+It can be used to provide locking between asynchronous \fBsignal\fP(2) handlers
 and the main program.
 The library provides the "\fBsignal\fP" method with type \f5ASO_SIGNAL\fP.
 This is the default method type when \f5ASO_INTRINSIC\fP is not supported.
@@ -265,7 +265,7 @@ The \fB-ltaso\fP library provides the "\fBspin\fP" (using \fBpthread_spin_lock\f
 \f5ASO_PROCESS\fP:
 This method type is suitable for single-process single-thread, and multi-process applications.
 Some \f5ASO_PROCESS\fP methods may also be suitable for multi-thread applications (if they have the \f5ASO_THREAD\fP type.)
-These methods are typically and noticably \fIslow\fP, up to 2 orders of magnitude slower than
+These methods are typically and noticeably \fIslow\fP, up to 2 orders of magnitude slower than
 \f5ASO_INTRINSIC\fP for some applications.
 They are provided as a last resort when other methods are not available.
 The library provides the "\fBsemaphore\fP" method with type \f5ASO_PROCESS|ASO_THREAD|ASO_SIGNAL\fP
@@ -343,7 +343,7 @@ Unlike other \fIAST\fP library discipline/method functions which can instantiate
 multiple discpline/method handles within a single process, the \fIASO\fP
 library allows only one discipline and method to be set at a time, with the additional
 restriction that it may only be set by the main and only thread of the calling process.
-For this reason there is no open/close interface with an instantation handle;
+For this reason there is no open/close interface with an instantiation handle;
 instead the global discipline/method is simply initialized by \f5asoinit()\fP.
 
 \f5ASO_THREAD\fP and \f5ASO_PROCESS\fP methods rely on the \f5Asometh_t.lockf()\fP

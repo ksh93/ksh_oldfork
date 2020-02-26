@@ -97,7 +97,7 @@ unit [ command [ arg ... ] ]
             and \bSAME\b calls following this \bEXEC\b up until the next
             \bEXEC\b or the end of the script provide details for the
             expected results. If no arguments are specified then the
-            arguments from the previious \bEXEC\b in the current \bTEST\b
+            arguments from the previous \bEXEC\b in the current \bTEST\b
             group are used, or no arguments if this is the first \bEXEC\b
             in the group.]
         [+EXIT \b\astatus\a?The command exit status is expected to match
@@ -113,7 +113,7 @@ unit [ command [ arg ... ] ]
             0 then tests until the next \bELIF\b, \bELSE\b or \bFI\b are
             enabled. Otherwise those tests are skipped. \bIF\b ... \bFI\b
             may be nested, but must not cross \bTEST\b boundaries. \anote\a
-            is listed on the standard error if the correspoding test block
+            is listed on the standard error if the corresponding test block
             is enabled; \bIF\b, \bELIF\b, \bELSE\b may nave a \anote\a
             operand.]
         [+IGNORE \b\afile\a ...?\afile\a is ignored for subsequent result

@@ -268,7 +268,7 @@
 09-01-31 features/sys: drop header sys/localedef.h
 09-01-28 include/fs3d.h,misc/fs3d.c: mount() => fs3d_mount() for diff std prototypes
 09-01-14 misc/fts_open.c: delay top list reorder until first fts_read()
-09-01-14 include/ls.h: LS_W_INUMBER => 9 to accomodate large st_ino
+09-01-14 include/ls.h: LS_W_INUMBER => 9 to accommodate large st_ino
 09-01-14 misc/optget.c: expand STYLE_usage input text
 09-01-09 features/uwin,stdio/_stdfun.c: iffe for _p__iob and __p__iob
 09-01-09 misc/magic.tab: add ISO filesystem image entries
@@ -472,7 +472,7 @@
 06-09-12 string/strelapsed.c: fix multi-char qualifier parse
 06-09-12 string/strtoi.h: drop [cClLqQwW] multipliers
 06-09-11 misc/optget.c: add numeric arg validity check
-06-09-07 misc/optget.c,tm/tmfix.c: fix uninitialzed var refs
+06-09-07 misc/optget.c,tm/tmfix.c: fix uninitialized var refs
 06-09-05 path/pathprobe.c: add version header verification
 06-08-01 Makefile: handle iffe vs FEATURE/common vs ast_common.h
 06-08-31 Makefile: add ast_map.h to the bootstrap list
@@ -540,7 +540,7 @@
 05-05-31 string/fmtbuf.c: unlock (spin) before each return -- doh
 05-05-30 sfio/sfpkrd.c: work around macos 10.4 recv(MSG_PEEK) bug
 05-05-27 regex: add REX_NEST (?%[S.][T.][OT])
-	 magic.tab: ammend bsd db magic
+	 magic.tab: amend bsd db magic
 05-05-23 regex: REX_NEST (?%[D.][E.][L.][Q.][oc]...)
 05-05-21 regex: state.fold[] is now locale specific -- doh
 05-05-19 regex: add REX_NEST (?%\\()<>[]""...) %(...) nested match
@@ -861,13 +861,13 @@
 03-01-24 path/pathexists.c: fix abs dir bug and deal with case ignorance
 03-01-23 path/pathpath.c: honor PATH_ABSOLUTE for the easy case too
 03-01-22 path/pathprobe.c: fix search to find both the probe script and command
-03-01-17 misc/magic.tab: application/zip => appplication/(gzip|pzip|zip)
+03-01-17 misc/magic.tab: application/zip => application/(gzip|pzip|zip)
 03-01-14 misc/optget.c: change href="" to href="."
 03-01-10 include/ast_std.h: strtold() import hackery for static __CYGWIN__
 03-01-03 include/regex.h,regex/regcomp.h: add REG_SHELL_GROUP
 	 include/ast.h,string/strmatch.c: add STR_GROUP for REG_SHELL_GROUP
 02-12-15 include/error.h: errorcontext => Error_context_s (compatible til 2004)
-02-12-06 misc/sigdata.c: add NoF(sigdadata) -- why nmake was uninterruptable!
+02-12-06 misc/sigdata.c: add NoF(sigdadata) -- why nmake was uninterruptible!
 02-12-03 comp/omitted.c,features/omitted: handle cygwin alarm() return botch
 02-11-27 misc/swapop.c: op=3,size=4 => op=7
 	 string/strlcat.c,strlcpy.c: fix uwin decl clash
@@ -1100,7 +1100,7 @@
 01-10-05 misc/glob.c: fix `\(x/*' GLOB_NOMATCH bug that returned `(x'
 	 misc/optget.c: fix localization lookup that didn't drop doubled : ? ]
 01-10-04 comp/setlocale.c: handle sizeof(wchar_t)!=4 in debug locale
-	 comp/conf.sh: handle sytems where _SC_* is both an enum and a macro
+	 comp/conf.sh: handle systems where _SC_* is both an enum and a macro
 01-09-25 astconf: add LIBPREFIX
 01-09-20 features/common: add __DYNAMIC__() for dll externs
 01-09-19 cdt: kpv update
@@ -1289,7 +1289,7 @@
 	 tmlex: check tm_info.format and tm_data.format
 	 tmfix: fix for tm_wday special case (via nl_langinfo on LC_TIME fields)
 	 strftime: fix for nl_langinfo special case
-	 ast_std.h: provide LC_* defauls if not defined
+	 ast_std.h: provide LC_* defaults if not defined
 	 sfnew: check ${_AST_sfio_bufsize} -- don't tell kpv
 	 catopen,nl_types.h: add intercept to mc* routines
 	 magic.tab: add ast message catalog
@@ -1348,7 +1348,7 @@
 99-10-22 tmfmt: %C=2-digit-century, %k=date(1), %y=2-digit-year-in-century
 99-10-18 fastfind: expanded default db lookup
 99-08-11 magic: fix off by one registry malloc
-	 features/fs: add __RENAME checks for stat familiy (netbsd)
+	 features/fs: add __RENAME checks for stat family (netbsd)
 	 features/fs: major()/minor() fixes for s5
 	 features/libpath.sh: netbsd fix -- ld.so not in std places
 	 misc/fastfind: fix codes path generation bug
@@ -1463,7 +1463,7 @@
 	 proc: add PROC_ZOMBIE
 98-02-06 strmatch() char class range bug fix
 	 regex char class range bug fix
-98-01-23 _WIN32: changed the #if logic again to accomodate _GNUC_
+98-01-23 _WIN32: changed the #if logic again to accommodate _GNUC_
 	 mnt: grab the mount options too
 	 ast_std.h: hide getopt,getsubopt from stdlib.h
 	 features/limits.c: add gnu guard macros to avoid limits.h recursion
