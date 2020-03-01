@@ -157,7 +157,7 @@ dumproot(register Hash_root_t* root, register int flags)
 /*
  * dump hash table accounting info
  * if tab is 0 then dump all tables in hash_info.list
- * flags are HASH_* flags that specifiy optional dump info
+ * flags are HASH_* flags that specify optional dump info
  */
 
 void

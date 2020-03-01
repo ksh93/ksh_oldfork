@@ -116,7 +116,7 @@ typedef struct Cenv_s
 	int		mappedslash;	/* inverse mapped '/'		*/
 	regflags_t	flags;		/* flags arg to regcomp		*/
 	int		type;		/* BRE,ERE,ARE,SRE,KRE		*/
-	unsigned char*	cursor;		/* curent point in re		*/
+	unsigned char*	cursor;		/* current point in re		*/
 	unsigned char*	pattern;	/* the original pattern		*/
 	unsigned char*	literal;	/* literal restart pattern	*/
 	int		parno;		/* number of last open paren	*/

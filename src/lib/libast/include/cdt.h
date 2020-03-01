@@ -143,7 +143,7 @@ struct _dtdisc_s
 struct _dt_s
 {	Dtsearch_f	searchf;/* search function		*/
 	Dtdisc_t*	disc;	/* object type definitition	*/
-	Dtdata_t*	data;	/* sharable data		*/
+	Dtdata_t*	data;	/* shareable data		*/
 	Dtmemory_f	memoryf;/* for memory allocation	*/
 	Dtmethod_t*	meth;	/* storage method		*/
 	ssize_t		nview;	/* #parent view dictionaries	*/
@@ -175,8 +175,8 @@ struct _dtstat_s
 #define DT_STACK	0000000040 /* stack: insert/delete at top	*/
 #define DT_QUEUE	0000000100 /* queue: insert top, delete at tail	*/
 #define DT_DEQUE	0000000200 /* deque: insert top, append at tail	*/
-#define DT_RHSET	0000000400 /* rhset: sharable unique objects	*/
-#define DT_RHBAG	0000001000 /* rhbag: sharable repeated objects	*/
+#define DT_RHSET	0000000400 /* rhset: shareable unique objects	*/
+#define DT_RHBAG	0000001000 /* rhbag: shareable repeated objects	*/
 #define DT_METHODS	0000001777 /* all currently supported methods	*/
 #define DT_ORDERED	(DT_OSET|DT_OBAG)
 

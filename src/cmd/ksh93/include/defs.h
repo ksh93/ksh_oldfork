@@ -102,7 +102,7 @@ struct limits
 	long		arg_max;	/* max arg+env exec() size */
 	int		open_max;	/* maximum number of file descriptors */
 	int		clk_tck;	/* number of ticks per second */
-	int		child_max;	/* maxumum number of children */
+	int		child_max;	/* maximum number of children */
 	int		ngroups_max;	/* maximum number of process groups */
 	unsigned char	posix_version;	/* posix version number */
 	unsigned char	posix_jobcontrol;/* non-zero for job control systems */
@@ -146,7 +146,7 @@ struct shared
 #define _SH_PRIVATE \
 	struct shared	*gd;		/* global data */ \
 	struct sh_scoped st;		/* scoped information */ \
-	Stk_t		*stk;		/* stack poiter */ \
+	Stk_t		*stk;		/* stack pointer */ \
 	Sfio_t		*heredocs;	/* current here-doc temp file */ \
 	Sfio_t		*funlog;	/* for logging function definitions */ \
 	int		**fdptrs;	/* pointer to file numbers */ \
@@ -160,7 +160,7 @@ struct shared
 	Namval_t	*namespace;	/* current active namespace*/ \
 	Namval_t	*last_table;	/* last table used in last nv_open  */ \
 	Namval_t	*prev_table;	/* previous table used in nv_open  */ \
-	Sfio_t		*outpool;	/* ouput stream pool */ \
+	Sfio_t		*outpool;	/* output stream pool */ \
 	long		timeout;	/* read timeout */ \
 	short		curenv;		/* current subshell number */ \
 	short		jobenv;		/* subshell number for jobs */ \

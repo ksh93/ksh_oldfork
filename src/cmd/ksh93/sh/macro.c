@@ -2260,7 +2260,7 @@ static void mac_copy(register Mac_t *mp,register const char *str, register int s
 	nopat = (mp->quote||(mp->assign==1)||mp->arith);
 	if(mp->zeros)
 	{
-		/* prevent leading 0's from becomming octal constants */
+		/* prevent leading 0's from becoming octal constants */
 		while(size>1 && *str=='0')
 		{
 			if(str[1]=='x' || str[1]=='X')

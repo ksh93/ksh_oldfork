@@ -514,7 +514,7 @@ struct dolnod *sh_argfree(Shell_t *shp, struct dolnod *blk,int flag)
 
 /*
  * grab space for arglist and copy args
- * The strings are copied after the argment vector
+ * The strings are copied after the argument vector
  */
 struct dolnod *sh_argcreate(register char *argv[])
 {

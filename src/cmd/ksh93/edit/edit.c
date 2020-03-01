@@ -185,7 +185,7 @@ int tty_get(register int fd, register struct termios *tty)
 				return(SYSERR);
 			errno = 0;
 		}
-		/* save terminal settings if in cannonical state */
+		/* save terminal settings if in canonical state */
 		if(ep->e_raw==0)
 		{
 			ep->e_savetty = *tty;

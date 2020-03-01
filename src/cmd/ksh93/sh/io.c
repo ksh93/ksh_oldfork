@@ -453,7 +453,7 @@ void sh_ioinit(Shell_t *shp)
 	sfnotify(sftrack);
 	sh_iostream(shp,0);
 	sh_iostream(shp,1);
-	/* all write steams are in the same pool and share outbuff */
+	/* all write streams are in the same pool and share outbuff */
 	shp->outpool = sfopen(NIL(Sfio_t*),NIL(char*),"sw");  /* pool identifier */
 	shp->outbuff = (char*)malloc(IOBSIZE+4);
 	shp->errbuff = (char*)malloc(IOBSIZE/4);
@@ -509,7 +509,7 @@ static int outexcept(register Sfio_t *iop,int type,void *data,Sfdisc_t *handle)
 
 /*
  * create or initialize a stream corresponding to descriptor <fd>
- * a buffer with room for a sentinal is allocated for a read stream.
+ * a buffer with room for a sentinel is allocated for a read stream.
  * A discipline is inserted when read stream is a tty or a pipe
  * For output streams, the buffer is set to sh.output and put into
  * the sh.outpool synchronization pool

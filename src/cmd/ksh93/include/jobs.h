@@ -113,7 +113,7 @@ struct jobs
 	short		fd;		/* tty descriptor number */
 #ifdef JOBS
 	int		suspend;	/* suspend character */
-	int		linedisc;	/* line dicipline */
+	int		linedisc;	/* line discipline */
 #endif /* JOBS */
 	char		jobcontrol;	/* turned on for real job control */
 	char		waitsafe;	/* wait will not block */

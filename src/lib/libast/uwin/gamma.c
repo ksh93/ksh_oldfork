@@ -42,7 +42,7 @@ static char sccsid[] = "@(#)gamma.c	8.1 (Berkeley) 6/4/93";
 /*
  * This code by P. McIlroy, Oct 1992;
  *
- * The financial support of UUNET Communications Services is greatfully
+ * The financial support of UUNET Communications Services is gratefully
  * acknowledged.
  */
 

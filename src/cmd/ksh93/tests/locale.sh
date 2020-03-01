@@ -291,7 +291,7 @@ LC_ALL=C
 x=$"hello"
 [[ $x == hello ]] || err_exit 'assignment of message strings not working'
 
-# tests for multibyte characteer at buffer boundary
+# tests for multibyte character at buffer boundary
 {
 	print 'cat << \\EOF'
 	for ((i=1; i < 164; i++))

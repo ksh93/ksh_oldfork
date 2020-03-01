@@ -368,7 +368,7 @@ expand(Notice_t* notice, register Buffer_t* b, const Item_t* item)
 }
 
 /*
- * generate a copright notice
+ * generate a copyright notice
  */
 
 static void

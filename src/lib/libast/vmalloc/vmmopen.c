@@ -63,7 +63,7 @@ void _STUB_vmmapopen(){}
 /* magic word signaling file/segment is ready */
 #define	MM_MAGIC	((unsigned int)(('P'<<24) | ('&'<<16) | ('N'<<8) | ('8')) )
 
-/* default mimimum region size */
+/* default minimum region size */
 #define MM_MINSIZE	(64*_Vmpagesize)
 
 /* macros to get the data section and size */

@@ -407,7 +407,7 @@ got=$r
 	err_exit "compound indexed array pretty print failed -- expected $exp, got $got"
 }
 
-# array of compund variables
+# array of compound variables
 typeset -C data=(
         typeset -a samples
 )

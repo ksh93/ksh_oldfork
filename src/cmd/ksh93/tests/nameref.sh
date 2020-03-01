@@ -417,14 +417,14 @@ fun3
 
 typeset -A x=( [a]=1 ) 
 nameref c=x[h]
-[[ -v x[h] ]] && err_exit 'creating reference to non-existant associative array element causes element to get added'
+[[ -v x[h] ]] && err_exit 'creating reference to non-existent associative array element causes element to get added'
 
 unset a
 function x
 {
 	nameref a=a
 	(( $# > 0 )) && typeset -A a
-	a[a b]=${1-99}  # this was cauing a syntax on the second call
+	a[a b]=${1-99}  # this was causing a syntax on the second call
 }
 x 7
 x 2> /dev/null

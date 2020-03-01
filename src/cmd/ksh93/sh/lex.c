@@ -2198,7 +2198,7 @@ struct argnod *sh_endword(Shell_t *shp,int mode)
 				 * None of the state tables contain
 				 * entries for multibyte characters,
 				 * however, they should be treated
-				 * the same as any other alph
+				 * the same as any other alpha
 				 * character.  Therefore, we'll use
 				 * the state of the 'a' character.
 				 */
@@ -2407,7 +2407,7 @@ struct argnod *sh_endword(Shell_t *shp,int mode)
 					 * None of the state tables contain
 					 * entries for multibyte characters,
 					 * however, they should be treated
-					 * the same as any other alph
+					 * the same as any other alpha
 					 * character.  Therefore, we'll use
 					 * the state of the 'a' character.
 					 */

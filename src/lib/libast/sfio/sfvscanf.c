@@ -686,7 +686,7 @@ loop_fmt:
 
 			if(v < 0)
 				goto pop_fmt;
-			else if(v > 0) /* extf comsumed v input bytes */
+			else if(v > 0) /* extf consumed v input bytes */
 			{	n_input += v;
 				if(!(ft->flags&SFFMT_SKIP) )
 					n_assign += 1;

@@ -23,7 +23,7 @@
 #include	"ulimit.h"
 
 /*
- * This is the list of resouce limits controlled by ulimit
+ * This is the list of resource limits controlled by ulimit
  * This command requires getrlimit(), vlimit(), or ulimit()
  */
 

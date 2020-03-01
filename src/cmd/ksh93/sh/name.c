@@ -2315,7 +2315,7 @@ static int scanfilter(Dt_t *dict, void *arg, void *data)
  *	are visited
  * If <mask> is zero, and <flags> non-zero, then nodes with one or
  *	more of <flags> is visited
- * If <mask> and <flags> are zero, then all nodes are visted
+ * If <mask> and <flags> are zero, then all nodes are visited
  */
 int nv_scan(Dt_t *root, void (*fn)(Namval_t*,void*), void *data,int mask, int flags)
 {

@@ -58,7 +58,7 @@ One line screen editor for any program
  *		- ^X^D command to show any debugging info
  *
  *  I do not pretend these for changes are completely independent,
- *  but you can use them to seperate features.
+ *  but you can use them to separate features.
  */
 
 #include	<ast.h>

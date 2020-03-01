@@ -56,8 +56,8 @@ struct subst
  * parse an /old/new/ string, delimiter expected as first char.
  * if "old" not specified, keep sb->str[0]
  * if "new" not specified, set sb->str[1] to empty string
- * read up to third delimeter char, \n or \0, whichever comes first.
- * return adress is one past the last valid char in s:
+ * read up to third delimiter char, \n or \0, whichever comes first.
+ * return address is one past the last valid char in s:
  * - the address containing \n or \0 or
  * - one char beyond the third delimiter
  */
@@ -67,7 +67,7 @@ static char *parse_subst(const char *s, struct subst *sb)
 	char	*cp,del;
 	int	off,n = 0;
 
-	/* build the strings on the stack, mainly for '&' substition in "new" */
+	/* build the strings on the stack, mainly for '&' substitution in "new" */
 	off = staktell();
 
 	/* init "new" with empty string */
@@ -155,7 +155,7 @@ int hist_expand(const char *ln, char **xp)
 		*tmp2=0;/* temporary line buffer */
 	Histloc_t hl;	/* history location */
 	static Namval_t *np = 0;	/* histchars variable */
-	static struct subst	sb = {0,0};	/* substition strings */
+	static struct subst	sb = {0,0};	/* substitution strings */
 	static Sfio_t	*wm=0;	/* word match from !?string? event designator */
 
 	if(!wm)
@@ -620,7 +620,7 @@ getsel:
 						str = cc + strlen(sb.str[0]);
 					}
 					else if(!sftell(tmp2))
-					{	/* not successfull */
+					{	/* not successful */
 						c = *cp;
 						*cp = '\0';
 						errormsg(SH_DICT, ERROR_ERROR,
@@ -641,7 +641,7 @@ getsel:
 			}
 
 			if(sftell(tmp2))
-			{ /* if any substitions done, swap buffers */
+			{ /* if any substitutions done, swap buffers */
 				if(wm != tmp)
 					sfclose(tmp);
 				tmp = tmp2;

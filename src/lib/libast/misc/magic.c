@@ -163,7 +163,7 @@ typedef unsigned long Cctype_t;
 	char		tbuf[2 * PATH_MAX];	/* type string		*/ \
 	Cctype_t	cctype[UCHAR_MAX + 1];	/* char code types	*/ \
 	unsigned int	count[UCHAR_MAX + 1];	/* char frequency count	*/ \
-	unsigned int	multi[UCHAR_MAX + 1];	/* muti char count	*/ \
+	unsigned int	multi[UCHAR_MAX + 1];	/* multi char count	*/ \
 	int		keep[MAXNEST];		/* ckmagic nest stack	*/ \
 	char*		cap[MAXNEST];		/* ckmagic mime stack	*/ \
 	char*		msg[MAXNEST];		/* ckmagic text stack	*/ \

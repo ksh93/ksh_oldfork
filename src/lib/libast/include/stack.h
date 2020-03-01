@@ -24,7 +24,7 @@
  * Glenn Fowler
  * AT&T Research
  *
- * homogenous stack routine definitions
+ * homogeneous stack routine definitions
  */
 
 #ifndef _STACK_H

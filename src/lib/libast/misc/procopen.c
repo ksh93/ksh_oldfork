@@ -25,7 +25,7 @@
  * AT&T Research
  *
  * common process execution support with
- * proper sfio, signal and wait() syncronization
+ * proper sfio, signal and wait() synchronization
  *
  * _ contains the process path name and is
  * placed at the top of the environment

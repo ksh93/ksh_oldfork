@@ -340,7 +340,7 @@ extern char *setstate(const char *arg_state)
 
 /* If we are using the trivial TYPE_0 R.N.G., just do the old linear
    congruential bit.  Otherwise, we do our fancy trinomial stuff, which is the
-   same in all ther other cases due to all the global variables that have been
+   same in all the other cases due to all the global variables that have been
    set up.  The basic operation is to add the number at the rear pointer into
    the one at the front pointer.  Then both pointers are advanced to the next
    location cyclically in the table.  The value returned is the sum generated,

@@ -32,7 +32,7 @@
 /* for use with env_open */
 #define ENV_STABLE	(-1)
 
-/* for third agument to env_add */
+/* for third argument to env_add */
 #define ENV_MALLOCED	1
 #define ENV_STRDUP	2
 

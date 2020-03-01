@@ -187,7 +187,7 @@ init(register char* s)
 	{
 		/*
 		 * load the default locale messages
-		 * this assumes one mesage set for ast (AST_MESSAGE_SET or fallback to 1)
+		 * this assumes one message set for ast (AST_MESSAGE_SET or fallback to 1)
 		 * different packages can share the same message catalog
 		 * name by using different message set numbers
 		 * see <mc.h> mcindex()

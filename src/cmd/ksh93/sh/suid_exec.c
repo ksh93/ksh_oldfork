@@ -355,7 +355,7 @@ static void setids(int mode,int owner,int group)
 
 #else
 /*
- * This version of setids creats a /tmp file and copies itself into it.
+ * This version of setids creates a /tmp file and copies itself into it.
  * The "clone" file is made executable with appropriate suid/sgid bits.
  * Finally, the clone is exec'ed.  This file is unlinked by a grandchild
  * of this program, who waits around until the text is free.

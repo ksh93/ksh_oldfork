@@ -556,7 +556,7 @@ tst	lib_memccpy string.h unistd.h stdlib.h fcntl.h signal.h sys/types.h sys/stat
 		signal(SIGALRM, gotcha);
 		/*
 		 * sgi ia64 dumps here as of 3Q 2001
-		 * bug acknowleged 1Q 2003
+		 * bug acknowledged 1Q 2003
 		 */
 		memccpy(dstbuf, srcbuf, 0, siz + 10);
 		alarm(0);

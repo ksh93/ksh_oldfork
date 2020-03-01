@@ -91,7 +91,7 @@ struct _vmalloc_s
 #define VM_TRACE	0000001		/* generate traces of calls	*/
 #define VM_DBCHECK	0000002		/* check for boundary overwrite	*/
 #define VM_DBABORT	0000004		/* abort on any warning		*/
-#define VM_SHARE	0000010		/* sharable across processes	*/
+#define VM_SHARE	0000010		/* shareable across processes	*/
 #define VM_MEMORYF	0000020		/* vm was allocated by memoryf	*/
 #define VM_FLAGS	0000017		/* user-settable flags		*/
 

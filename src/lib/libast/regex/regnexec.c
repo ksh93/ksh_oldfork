@@ -117,7 +117,7 @@ static const char* rexname(Rex_t* rex)
 #define GOOD		1	/* some parse was found			*/
 #define CUT		2	/* no match and no backtrack		*/
 #define BEST		3	/* an unbeatable parse was found	*/
-#define BAD		4	/* error ocurred			*/
+#define BAD		4	/* error occurred			*/
 
 /*
  * REG_SHELL_DOT test

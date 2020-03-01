@@ -173,7 +173,7 @@ void	sh_fault(register int sig)
 	if(trap)
 	{
 		/*
-		 * propogate signal to foreground group
+		 * propagate signal to foreground group
 		 */
 		if(sig==SIGHUP && job.curpgid)
 			killpg(job.curpgid,SIGHUP);

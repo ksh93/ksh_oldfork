@@ -658,7 +658,7 @@ static struct regnod*	syncase(Lex_t *lexp,register int esym)
  * This routine creates the parse tree for the arithmetic for
  * When called, shlex.arg contains the string inside ((...))
  * When the first argument is missing, a while node is returned
- * Otherise a list containing an arithmetic command and a while
+ * Otherwise a list containing an arithmetic command and a while
  * is returned.
  */
 static Shnode_t	*arithfor(Lex_t *lexp,register Shnode_t *tf)

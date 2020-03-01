@@ -24,7 +24,7 @@
  * Glenn Fowler
  * AT&T Research
  *
- * multi-pass commmand line option parse assist
+ * multi-pass command line option parse assist
  *
  *	int fun(char** argv, int last)
  *

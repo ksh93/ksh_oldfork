@@ -1086,7 +1086,7 @@ Namval_t *nv_search(const char *name, Dt_t *root, int mode)
  * if var!=0 the variable pointer is returned and the built-in name
  *    is put onto the stack at the current offset.
  * otherwise, a pointer to the builtin (variable or type) is returned
- * and var contains the poiner to the variable
+ * and var contains the pointer to the variable
  * if last==0 and first component of name is a reference, nv_bfsearch()
 	will return 0.
  */ 

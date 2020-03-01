@@ -495,7 +495,7 @@ int job_reap(register int sig)
 					pw->p_flag |= P_COREDUMP;
 				pw->p_exit = WTERMSIG(wstat);
 				/* if process in current jobs terminates from
-				 * an interrupt, propogate to parent shell
+				 * an interrupt, propagate to parent shell
 				 */
 				if(pw->p_pgrp && pw->p_pgrp==job.curpgid && pw->p_exit==SIGINT && sh_isstate(SH_STOPOK))
 				{
@@ -1479,7 +1479,7 @@ static void job_prmsg(register struct process *pw)
  * If pid < -1, then wait can be interrupted, -pid is waited for (wait builtin)
  * pid=0 to unpost all done processes
  * pid=1 to wait for at least one process to complete
- * pid=-1 to wait for all runing processes
+ * pid=-1 to wait for all running processes
  */
 
 int	job_wait(register pid_t pid)
@@ -1639,7 +1639,7 @@ int	job_wait(register pid_t pid)
 	if(pw->p_pgrp)
 	{
 		job_reset(pw);
-		/* propogate keyboard interrupts to parent */
+		/* propagate keyboard interrupts to parent */
 		if((pw->p_flag&P_SIGNALLED) && pw->p_exit==SIGINT && !(shp->sigflag[SIGINT]&SH_SIGOFF))
 			kill(getpid(),SIGINT); 
 #ifdef SIGTSTP

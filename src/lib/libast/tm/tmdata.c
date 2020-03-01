@@ -184,7 +184,7 @@ static short	sum[] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 36
  * tl.time is the seconds since the epoch for the leap event
  *
  *	adding:		the first additional second
- *	subtracting:	the first dissappearing second
+ *	subtracting:	the first disappearing second
  */
 
 static Tm_leap_t	leap[] =
@@ -245,10 +245,10 @@ static Tm_zone_t	zone[] =
  "CAN",	"AST",	"ADT",	 ( 4 * 60),	TM_DST,	/* Atlantic		*/
  0,	"NST",	0,	 ( 3 * 60 + 30),     0,	/* Newfoundland		*/
  "GBR",	"",	"BST",	 ( 0 * 60),	TM_DST,	/* British Summer	*/
- "EUR",	"WET",	"WEST",	 ( 0 * 60),	TM_DST,	/* Western Eurpoean	*/
+ "EUR",	"WET",	"WEST",	 ( 0 * 60),	TM_DST,	/* Western European	*/
  0,	"CET",	"CEST",	-( 1 * 60),	TM_DST,	/* Central European	*/
  0,	"MET",	"MEST",	-( 1 * 60),	TM_DST,	/* Middle European	*/
- 0,	"EET",	"EEST",	-( 2 * 60),	TM_DST,	/* Eastern Eurpoean	*/
+ 0,	"EET",	"EEST",	-( 2 * 60),	TM_DST,	/* Eastern European	*/
  "ISR",	"IST",	"IDT",  -( 3 * 60),	TM_DST,	/* Israel		*/
  "IND",	"IST",	0,  	-( 5 * 60 + 30 ),    0,	/* India		*/
  "CHN",	"HKT",	0,	-( 8 * 60),	     0,	/* Hong Kong		*/

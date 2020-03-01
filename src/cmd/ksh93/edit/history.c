@@ -1133,7 +1133,7 @@ char *hist_word(char *string,int size,int word)
 #if SHOPT_ESH
 /*
  * given the current command and line number,
- * and number of lines back or foward,
+ * and number of lines back or forward,
  * compute the new command and line number.
  */
 

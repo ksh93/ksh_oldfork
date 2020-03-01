@@ -6703,7 +6703,7 @@ test)	requirements source $package
 
 	$make cd $INSTALLROOT/src
 
-	# disable core dumps (could be disasterous over nfs)
+	# disable core dumps (could be disastrous over nfs)
 
 	(ulimit -c 0) > /dev/null 2>&1 && ulimit -c 0
 

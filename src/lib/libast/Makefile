@@ -383,7 +383,7 @@ atmain.o : atmain.C
 		fi
 	fi
 
-/* astsa is a standalone subset of ast for imbedded applications */
+/* astsa is a standalone subset of ast for embedded applications */
 
 PAXFILTER = ;*.[ch];$(PROTO) $(PROTOFLAGS) -c "" -p
 

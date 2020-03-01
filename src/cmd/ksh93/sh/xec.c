@@ -97,7 +97,7 @@ struct funenv
 #endif /* !SHOPT_DEVFD */
 
 /*
- * The following two functions allow command substituion for non-builtins
+ * The following two functions allow command substitution for non-builtins
  * to use a pipe and to wait for the pipe to close before restoring to a
  * temp file.
  */
@@ -1860,7 +1860,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 				if((type&COMMSK)!=TCOM)
 				{
 					/* don't clear job table for out
-					   pipes so that jobs comand can
+					   pipes so that jobs command can
 					   be used in a pipeline
 					 */
 					if(!no_fork && !(type&FPOU))

@@ -45,7 +45,7 @@ SHOPT_P_SUID ==			/* real uid's that require -p for set[ug]id */
 SHOPT_RAWONLY == 1		/* make viraw the only vi mode */
 SHOPT_REGRESS ==		/* enable __regress__ builtin and instrumented intercepts for testing */
 SHOPT_REMOTE ==			/* enable --rc if running as a remote shell */
-SHOPT_SEVENBIT ==		/* strip the eigth bit from characters */
+SHOPT_SEVENBIT ==		/* strip the eighth bit from characters */
 SHOPT_SPAWN ==			/* use spawnveg for fork/exec */
 SHOPT_STATS ==	1		/* add .sh.stats variable */
 SHOPT_SUID_EXEC == 1		/* allow (safe) suid/sgid shell scripts */
@@ -97,7 +97,7 @@ SH_DICT ==			/* message catalog */
 DEBUG ==			/* debugging purposes only */
 
 if  CC.HOSTTYPE == "win32*"
-	SHOPT_CRNL == 1		/* <cr><nl> is eqivalent to <nl> */
+	SHOPT_CRNL == 1		/* <cr><nl> is equivalent to <nl> */
 end
 
 if SHOPT_BASH

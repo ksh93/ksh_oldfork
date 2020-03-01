@@ -76,7 +76,7 @@ putexport(Coshell_t* co, Sfio_t* sp, char* n, int old, int coex, int flags)
 		n++;
 
 	/*
-	 * currently limited to valid identifer env var names
+	 * currently limited to valid identifier env var names
 	 */
 
 	if (!co->export || !dtmatch(co->export, n))
