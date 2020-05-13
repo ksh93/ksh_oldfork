@@ -1,0 +1,24 @@
+This documents significant changes in the 93u+m conservative bugfix
+branch of AT&T ksh93. For full details, see the git log at:
+	https://github.com/modernish/ksh
+
+Any uppercase BUG_* names are modernish shell bug IDs.
+
+2020-05-13:
+- Fix BUG_CASELIT: an undocumented 'case' pattern matching misbehaviour that
+  goes back to the original Bourne shell, but wasn't discovered until 2018.
+  If a pattern doesn't match as a pattern, it was tried again as a literal
+  string. This broke common validation use cases, e.g.:
+      n='[0-9]'
+      case $n in
+      ( [0-9] )  echo "$n is a number" ;;
+      esac
+  would output "[0-9] is a number" as the literal string fallback matches the
+  pattern. As this misbehaviour was never documented anywhere (not for Bourne,
+  ksh88, or ksh93), and it was never replicated in other shells (not even in
+  ksh88 clones pdksh and mksh), it is unlikely any scripts rely on it.
+     Of course, a literal string fallback, should it be needed, is trivial to
+  implement correctly without this breakage:
+      case $n in
+      ( [0-9] | "[0-9]")  echo "$n is a number or the number pattern" ;;
+      esac

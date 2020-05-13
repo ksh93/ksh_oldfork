@@ -65,7 +65,6 @@
 #endif /* SHOPT_SPAWN */
 
 static void	sh_funct(Shell_t *,Namval_t*, int, char*[], struct argnod*,int);
-static int	trim_eq(const char*, const char*);
 static void	coproc_init(Shell_t*, int pipes[]);
 
 static void	*timeout;
@@ -2556,8 +2555,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 						s = rex->argval;
 					type = (rex->argflag&ARG_RAW);
 					if((type && strcmp(r,s)==0) ||
-						(!type && (strmatch(r,s)
-						|| trim_eq(r,s))))
+						(!type && strmatch(r,s)))
 					{
 						do	sh_exec(t->reg.regcom,(t->reg.regflag?(flags&sh_state(SH_ERREXIT)):flags));
 						while(t->reg.regflag &&
@@ -2981,24 +2979,6 @@ int sh_run(int argn, char *argv[])
 	else
 		stakseek(savtop);
 	return(argn);
-}
-
-/*
- * test for equality with second argument trimmed
- * returns 1 if r == trim(s) otherwise 0
- */
-
-static int trim_eq(register const char *r,register const char *s)
-{
-	register char c;
-	while(c = *s++)
-	{
-		if(c=='\\')
-			c = *s++;
-		if(c && c != *r++)
-			return(0);
-	}
-	return(*r==0);
 }
 
 /*
