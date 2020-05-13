@@ -6,17 +6,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2020-05-13:
 
-- Add TODO file with list of known bugs
-
-- README.md: add build instructions for macOS
-
 - Rename release ID from 93u+ to 93u+m, to distinguish this bugfix branch
 
-- Fix 229 typos in documentation and help/error messages
-
-- Patch vulnerability CVE-2019-14868 (patch from Red Hat)
-
-- Apply security patches from Apple's /bin/ksh (ksh-27.tar.gz)
+- Fix build scripts to compile ksh on macOS (Mac OS X)
 
 - Fix BUG_CASELIT: an undocumented 'case' pattern matching misbehaviour that
   goes back to the original Bourne shell, but wasn't discovered until 2018.
@@ -44,3 +36,11 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   for reading and writing, you now need '1<>'.
   Ref.:	https://github.com/att/ast/issues/75
 	http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_07_07
+
+- Patch vulnerability CVE-2019-14868 (patch from Red Hat)
+
+- Apply security patches from Apple's /bin/ksh (ksh-27.tar.gz)
+
+- Fix 229 typos in documentation and help/error messages
+
+- Add TODO file with list of known bugs

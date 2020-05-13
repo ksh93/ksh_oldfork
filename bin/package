@@ -2487,7 +2487,7 @@ int b() { return 0; }
 			;;
 		*)	case $bits in
 			'')	case `file /bin/sh 2>/dev/null` in
-				*universal*64*)
+				*universal*64* | *64-bit* | *x86[_-]64*)
 					pwd=`pwd`
 					cd ${TMPDIR:-/tmp}
 					tmp=hi$$
