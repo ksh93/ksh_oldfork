@@ -5,6 +5,19 @@ branch of AT&T ksh93. For full details, see the git log at:
 Any uppercase BUG_* names are modernish shell bug IDs.
 
 2020-05-13:
+
+- Add TODO file with list of known bugs
+
+- README.md: add build instructions for macOS
+
+- Rename release ID from 93u+ to 93u+m, to distinguish this bugfix branch
+
+- Fix 229 typos in documentation and help/error messages
+
+- Patch vulnerability CVE-2019-14868 (patch from Red Hat)
+
+- Apply security patches from Apple's /bin/ksh (ksh-27.tar.gz)
+
 - Fix BUG_CASELIT: an undocumented 'case' pattern matching misbehaviour that
   goes back to the original Bourne shell, but wasn't discovered until 2018.
   If a pattern doesn't match as a pattern, it was tried again as a literal
@@ -22,3 +35,4 @@ Any uppercase BUG_* names are modernish shell bug IDs.
       case $n in
       ( [0-9] | "[0-9]")  echo "$n is a number or the number pattern" ;;
       esac
+  Ref.: https://github.com/att/ast/issues/476
