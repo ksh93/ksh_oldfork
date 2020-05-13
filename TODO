@@ -1,0 +1,85 @@
+TODO for AT&T ksh93, 93u+m bugfix branch
+
+Fix currently known bugs affecting shell scripting. These are identified by
+their modernish IDs. For exact details, see code/comments in:
+https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
+
+- BUG_BRACQUOT: shell quoting within bracket patterns has no effect. This
+  bug means the '-' retains it special meaning of 'character range', and an
+  initial ! (and, on some shells, ^) retains the meaning of negation, even
+  in quoted strings within bracket patterns, including quoted variables.
+
+- BUG_CMDEXPAN: if the 'command' command results from an expansion, it acts
+  like 'command -v', showing the path of the command instead of executing it.
+  For example:
+	v=command; "$v" ls
+  or
+	set -- command ls; "$@"
+  don't work.
+
+- BUG_CMDSPASGN: preceding a "special builtin"[*] with 'command' does not
+  stop preceding invocation-local variable assignments from becoming global.
+  [*] https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_14
+
+- BUG_CMDSPEXIT: preceding a "special builtin"[*] (other than 'eval', 'exec',
+  'return' or 'exit') with 'command' does not always stop it from exiting
+  the shell if the builtin encounters error.
+  [*] https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_14
+
+- BUG_CSUBSTDO: If standard output (file descriptor 1) is closed before
+  entering a $(command substitution), and any other file descriptors are
+  redirected within the command substitution, commands such as 'echo' will
+  not work within the command substitution, acting as if standard output is
+  still closed.
+
+- BUG_FNSUBSH: Function definitions within subshells (including command
+  substitutions) are ignored if a function by the same name exists in the
+  main shell, so the wrong function is executed. 'unset -f' is also silently
+  ignored. This only applies to non-forked subshells.
+
+- BUG_IFSGLOBS: In glob pattern matching (as in case or parameter
+  substitution with # and %), if IFS starts with ? or * and the "$*"
+  parameter expansion inserts any IFS separator characters, those characters
+  are erroneously interpreted as wildcards when quoted "$*" is used as the
+  glob pattern.
+
+- BUG_IFSISSET: ${IFS+s} always yields 's' even if IFS is unset. This applies
+  to IFS only.
+
+- BUG_ISSETLOOP: Expansions like ${var+set} remain static when used within a
+  'for', 'while' or 'until' loop; the expansions don't change along with the
+  state of the variable, so they cannot be used to check whether a variable
+  is set within a loop if the state of that variable may change in the
+  course of the loop.
+
+- BUG_KUNSETIFS: ksh93: Can't unset IFS under very specific circumstances.
+  unset -v IFS is a known POSIX shell idiom to activate default field
+  splitting. With this bug, the unset builtin silently fails to unset IFS
+  (i.e. fails to activate field splitting) if we're executing an eval or a
+  trap and a number of specific conditions are met.
+
+- BUG_LOOPRET2: If a 'return' command is given without a status argument
+  within the set of conditional commands in a 'while' or 'until' loop (i.e.,
+  between 'while'/'until' and 'do'), the exit status passed down from the
+  previous command is ignored and the function returns with status 0
+  instead.
+
+- BUG_MULTIBIFS: We're on a UTF-8 locale and the shell supports UTF-8
+  characters in general (i.e. we don't have WRN_MULTIBYTE) – however, using
+  multi-byte characters as IFS field delimiters still doesn't work. For
+  example, "$*" joins positional parameters on the first byte of IFS instead
+  of the first character.
+
+- BUG_PUTIOERR: Shell builtins that output strings (echo, printf, ksh/zsh
+  print), and thus also modernish put and putln, do not check for I/O errors
+  on output. This means a script cannot check for them, and a script process
+  in a pipe can get stuck in an infinite loop if SIGPIPE is ignored.
+
+- BUG_REDIRIO: the I/O redirection operator <> (open a file descriptor for
+  both read and write) defaults to opening standard output (i.e. is short
+  for 1<>) instead of defaulting to opening standard input (0<>) as POSIX
+  specifies[*].
+  [*] http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_07_07
+
+- BUG_TESTERR1A: test/[ exits with a non-error false status (1) if an
+  invalid argument is given to an operator.
