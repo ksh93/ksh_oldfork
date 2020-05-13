@@ -1,5 +1,27 @@
 TODO for AT&T ksh93, 93u+m bugfix branch
 
+______
+Fix or remove broken default aliases:
+
+- Remove alias times='{ { time;} 2>&1;}' which does not produce POSIX-
+  compliant output; reimplement as a proper POSIX-compliant builtin.
+  In any case, implementing a standard utility as an alias is unacceptable
+  as 'unalias -a' (remove all aliases) should not remove standard utilities!
+  Backport the builtin from the abandoned Vashisht/Rader branch:
+  https://github.com/att/ast/pull/1332
+
+- Remove alias command='command '. Continuing alias substitution after
+  'command' (due to the final space in the alias) is inherently broken, as
+  aliases may contain arbitrary shell grammar. For instance, when combining
+  this default alias with the default 'times' alias ('command times'), which
+  is perfectly valid per POSIX, you get a syntax error!
+
+- Remove alias nohup='nohup '. Same reason as for 'command ' above.
+
+- Remove pointless default aliases 'fc' and 'type'; these are already
+  implemented as normal shell builtins. Add man page entries for these.
+
+______
 Fix currently known bugs affecting shell scripting. These are identified by
 their modernish IDs. For exact details, see code/comments in:
 https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
