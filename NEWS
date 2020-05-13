@@ -36,3 +36,11 @@ Any uppercase BUG_* names are modernish shell bug IDs.
       ( [0-9] | "[0-9]")  echo "$n is a number or the number pattern" ;;
       esac
   Ref.: https://github.com/att/ast/issues/476
+
+- Fix BUG_REDIRIO: ksh used to redirect standard output by default when no
+  file descriptor was specified with the rarely used '<>' reading/writing
+  redirection operator. It now redirects standard input by default, as POSIX
+  specifies and as all other POSIX shells do. To redirect standard output
+  for reading and writing, you now need '1<>'.
+  Ref.:	https://github.com/att/ast/issues/75
+	http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_07_07

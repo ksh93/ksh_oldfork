@@ -75,11 +75,5 @@ https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
   on output. This means a script cannot check for them, and a script process
   in a pipe can get stuck in an infinite loop if SIGPIPE is ignored.
 
-- BUG_REDIRIO: the I/O redirection operator <> (open a file descriptor for
-  both read and write) defaults to opening standard output (i.e. is short
-  for 1<>) instead of defaulting to opening standard input (0<>) as POSIX
-  specifies[*].
-  [*] http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_07_07
-
 - BUG_TESTERR1A: test/[ exits with a non-error false status (1) if an
   invalid argument is given to an operator.
