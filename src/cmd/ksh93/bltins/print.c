@@ -329,7 +329,13 @@ skip2:
 		} while(*pdata.nextarg && pdata.nextarg!=argv);
 		if(pdata.nextarg == nullarg && pdata.argsize>0)
 			sfwrite(outfile,stakptr(staktell()),pdata.argsize);
-		if(sffileno(outfile)!=sffileno(sfstderr))
+		/*
+		 * -f flag skips adding newline at the end of output, which causes issues
+		 * with syncing history if -s and -f are used together. So don't sync now
+		 * if sflag was given. History is synced later with hist_flush() function.
+		 * https://github.com/att/ast/issues/425
+		 */
+		if(!sflag && sffileno(outfile)!=sffileno(sfstderr))
 			sfsync(outfile);
 		sfpool(sfstderr,pool,SF_WRITE);
 		exitval = pdata.err;

@@ -4,6 +4,14 @@ branch of AT&T ksh93. For full details, see the git log at:
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-05-14:
+
+- Fix syncing history when print -s -f is used. For example, the
+  following now correctly adds a 'cd' command to the history:
+	print -s -f 'cd -- %q\n' "$PWD"
+  Ref.:	https://github.com/att/ast/issues/425
+	https://github.com/att/ast/pull/442
+
 2020-05-13:
 
 - Rename release ID from 93u+ to 93u+m, to distinguish this bugfix branch
