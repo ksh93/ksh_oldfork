@@ -114,18 +114,6 @@ fi
 printf $'\342\202\254\342\202\254' > $tmp/two_euro_chars.txt
 exp="6 2 6"
 set -- $($SHELL -c "
-	unset LC_CTYPE
-	export LANG=$locale
-	export LC_ALL=C
-	command wc -C < $tmp/two_euro_chars.txt
-	unset LC_ALL
-	command wc -C < $tmp/two_euro_chars.txt
-	export LC_ALL=C
-	command wc -C < $tmp/two_euro_chars.txt
-")
-got=$*
-[[ $got == $exp ]] || err_exit "command wc LC_ALL default failed -- expected '$exp', got '$got'"
-set -- $($SHELL -c "
 	if	builtin wc 2>/dev/null || builtin -f cmd wc 2>/dev/null
 	then	unset LC_CTYPE
 		export LANG=$locale
