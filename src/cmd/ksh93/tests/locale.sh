@@ -189,10 +189,11 @@ printf 'f1\357\274\240f2\n' > input1
 printf 't2\357\274\240f1\n' > input2
 printf '\357\274\240\n' > delim
 print "export LC_ALL=$locale
-join -j1 1 -j2 2 -o 1.1 -t \$(cat delim) input1 input2 > out" > script
+builtin cut || exit
+cut -f 1 -d \$(cat delim) input1 input2 > out" > script
 $SHELL -c 'unset LANG ${!LC_*}; $SHELL ./script' ||
-err_exit "join test script failed -- exit code $?"
-exp="f1"
+err_exit "'cut' builtin failed -- exit code $?"
+exp=$'f1\nt2'
 got="$(<out)"
 [[ $got == "$exp" ]] || err_exit "LC_ALL test script failed -- expected '$exp', got '$got'"
 
