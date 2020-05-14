@@ -20,3 +20,12 @@ compiler and linker flags by appending it to the command shown above. E.g.:
 ./bin/package make \
     SHELL=/bin/bash CCFLAGS="-xc99 -D_XPG6 -m64 -xO4" LDFLAGS="-m64"
 ```
+
+## Test
+After compiling, you can run the regression tests.
+Start by reading the information printed by:
+```sh
+./bin/shtests --man
+```
+Note that several regression tests are known to fail or crash as of the last
+official 2012-08-01 release and some of the failures have not been fixed yet.
