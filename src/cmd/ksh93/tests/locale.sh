@@ -330,8 +330,11 @@ then	LC_ALL=en_US.UTF-8
 	x=$(printf "hello\u[20ac]\xee world")
 	[[ $(print -r -- "$x") == $'hello\u[20ac]\xee world' ]] || err_exit '%q with unicode and non-unicode not working'
 	if	[[ $(whence od) ]]
-	then	got='68 65 6c 6c 6f e2 82 ac ee 20 77 6f 72 6c 64 0a'
-		[[ $(print -r -- "$x" | od -An -tx1) == "$got" ]] || err_exit "incorrect string from printf %q"
+	then	got='68656c6c6fe282acee20776f726c640a'
+		[[ $(print -r -- "$x" | od -An -tx1 \
+			| awk 'BEGIN { ORS=""; } { for (i=1; i<=NF; i++) print $i; }') \
+			== "$got" ]] \
+		|| err_exit "incorrect string from printf %q"
 	fi
 	
 fi
