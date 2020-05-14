@@ -8,7 +8,7 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 - Rename release ID from 93u+ to 93u+m, to distinguish this bugfix branch
 
-- Fix build scripts to compile ksh on macOS (Mac OS X)
+- ksh now builds on macOS and FreeBSD.
 
 - Fix BUG_CASELIT: an undocumented 'case' pattern matching misbehaviour that
   goes back to the original Bourne shell, but wasn't discovered until 2018.

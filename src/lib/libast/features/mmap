@@ -16,14 +16,7 @@ tst	lib_mmap note{ standard mmap interface that works }end execute{
 
 	#define Failed(file)	(remove(file),1)
 
-	int
-	#if _STD_
-	main(int argc, char** argv)
-	#else
-	main(argc,argv)
-	int     argc;
-	char**  argv;
-	#endif
+	int main(int argc, char** argv)
 	{
 		caddr_t		mm;
 		char		*t, *u, *f;
@@ -326,17 +319,12 @@ tst	note{ mmap is worth using }end output{
 cat{
 
 	/* some systems get it wrong but escape concise detection */
-	#ifndef _NO_MMAP
 	#if __CYGWIN__
 	#define _NO_MMAP	1
-	#endif
 	#endif
 
 	#if _NO_MMAP
 	#undef	_lib_mmap
 	#undef	_lib_mmap64
-	#undef	_mmap_anon
-	#undef	_mmap_devzero
-	#undef	_mmap_worthy
 	#endif
 }end

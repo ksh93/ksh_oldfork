@@ -1,0 +1,54 @@
+: unix wrapper for FreeBSD cc : 2020-05-14 :
+
+HOSTTYPE=freebsd.generic
+
+case " $* " in
+*" -dumpmachine "*) echo $HOSTTYPE; exit ;;
+esac
+
+CC=/usr/bin/cc
+op=init
+for arg
+do	case $op in
+	init)	op=ld
+		set ''
+		;;
+	esac
+	case $arg in
+	-c)	op=cc
+		;;
+	-E)	op=cpp
+		continue
+		;;
+	-G)	op=dll
+		continue
+		;;
+	-lc)	continue
+		;;
+	-lm)	continue
+		;;
+	-O)	continue
+		;;
+	esac
+	set "$@" "$arg"
+done
+case $# in
+0)	;;
+*)	shift ;;
+esac
+case $* in
+-v)	$CC "$@"; exit ;;
+esac
+case $op in
+init)	echo "cc: arguments expected" >&2
+	exit 1
+	;;
+cpp)	$CC -E "$@"
+	;;
+cc)	$CC -DMAP_TYPE -Wno-unused-value -Wno-parentheses "$@"
+	;;
+dll)	$CC "$@" -lm
+	;;
+ld)	$CC "$@" -lm
+	;;
+esac
