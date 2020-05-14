@@ -275,8 +275,14 @@ then	s=${SHELL:##*sh}
 fi
 if	(( compile ))
 then	if	whence $SHCOMP > /dev/null
-	then	tmp=$(mktemp -dt) || { echo mktemp -dt failed >&2; exit 1; }
-		trap "cd /; rm -rf $tmp" EXIT
+	then	tmp=$(
+			d=${TMPDIR:-/tmp}/ksh93.shtests.$$.${RANDOM:-0}
+			mkdir -m700 -- "$d" && CDPATH= cd -P -- "$d" && pwd
+		) || {
+			echo 'mkdir failed' >&2
+			exit 1
+		}
+		trap 'cd / && rm -rf "$tmp"' EXIT
 	elif	(( compile > 1 ))
 	then	echo $0: --compile: $SHCOMP not found >&2
 		exit 1
@@ -288,8 +294,14 @@ then	if	[[ -x $SHELL-g ]]
 	then	SHELL=$SHELL-g
 	fi
 	if	[[ ! $tmp ]]
-	then	tmp=$(mktemp -dt) || { echo mktemp -dt failed >&2; exit 1; }
-		trap "cd /; rm -rf $tmp" EXIT
+	then	tmp=$(
+			d=${TMPDIR:-/tmp}/ksh93.shtests.$$.${RANDOM:-0}
+			mkdir -m700 -- "$d" && CDPATH= cd -P -- "$d" && pwd
+		) || {
+			echo 'mkdir failed' >&2
+			exit 1
+		}
+		trap 'cd / && rm -rf "$tmp"' EXIT
 	fi
 	valxml=$tmp/valgrind.xml
 	valgrind+=" --xml-file=$valxml"

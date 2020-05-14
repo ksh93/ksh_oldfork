@@ -29,6 +29,15 @@ alias err_exit='err_exit $LINENO'
 float DELAY=${1:-0.2}
 integer FOREGROUND=10 BACKGROUND=2 Errors=0
 
+tmp=$(
+	d=${TMPDIR:-/tmp}/ksh93.sigchld.$$.${RANDOM:-0}
+	mkdir -m700 -- "$d" && CDPATH= cd -P -- "$d" && pwd
+) || {
+	err_exit 'mkdir failed'
+	exit 1
+}
+trap 'cd / && rm -rf "$tmp"' EXIT
+
 s=$($SHELL -c '
 integer i foreground=0 background=0
 float delay='$DELAY' d=0 s=0
@@ -146,8 +155,6 @@ done
 (( d==2000 )) ||  err_exit "trap '' CHLD  causes side effects d=$d"
 trap - CHLD
 
-tmp=$(mktemp -dt)
-trap 'rm -rf $tmp' EXIT
 x=$($SHELL 2> /dev/null -ic '/bin/notfound; sleep .5 & sleep 1;jobs')
 [[ $x == *Done* ]] || err_exit 'SIGCHLD blocked after notfound'
 x=$($SHELL 2> /dev/null  -ic 'kill -0 12345678901234567876; sleep .5 & sleep 1;jobs')

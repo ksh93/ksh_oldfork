@@ -28,8 +28,14 @@ alias err_exit='err_exit $LINENO'
 Command=${0##*/}
 integer Errors=0
 
-tmp=$(mktemp -dt) || { err_exit mktemp -dt failed; exit 1; }
-trap "cd /; rm -rf $tmp" EXIT
+tmp=$(
+	d=${TMPDIR:-/tmp}/ksh93.namespace.$$.${RANDOM:-0}
+	mkdir -m700 -- "$d" && CDPATH= cd -P -- "$d" && pwd
+) || {
+	err_exit 'mkdir failed'
+	exit 1
+}
+trap 'cd / && rm -rf "$tmp"' EXIT
 
 foo=abc
 typeset -C bar=(x=3 y=4 t=7)

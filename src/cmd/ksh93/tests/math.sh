@@ -34,8 +34,14 @@ set -o nounset
 typeset tmp
 
 # create temporary test directory
-tmp=$(mktemp -dt) || { err_exit mktemp -dt failed; exit 1; }
-trap "cd /; rm -rf $tmp" EXIT
+tmp=$(
+	d=${TMPDIR:-/tmp}/ksh93.math.$$.${RANDOM:-0}
+	mkdir -m700 -- "$d" && CDPATH= cd -P -- "$d" && pwd
+) || {
+	err_exit 'mkdir failed'
+	exit 1
+}
+trap 'cd / && rm -rf "$tmp"' EXIT
 cd $tmp || exit
 
 function test_arithmetric_expression_accesss_array_element_through_nameref

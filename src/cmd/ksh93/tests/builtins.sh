@@ -28,8 +28,14 @@ alias err_exit='err_exit $LINENO'
 Command=${0##*/}
 integer Errors=0
 
-tmp=$(mktemp -dt) || { err_exit mktemp -dt failed; exit 1; }
-trap "cd /; rm -rf $tmp" EXIT
+tmp=$(
+	d=${TMPDIR:-/tmp}/ksh93.builtins.$$.${RANDOM:-0}
+	mkdir -m700 -- "$d" && CDPATH= cd -P -- "$d" && pwd
+) || {
+	err_exit 'mkdir failed'
+	exit 1
+}
+trap 'cd / && rm -rf "$tmp"' EXIT
 
 # test shell builtin commands
 builtin getconf
@@ -187,7 +193,7 @@ mkdir -p $tmp/a/b/c 2>/dev/null || err_exit  "mkdir -p failed"
 $SHELL -c "cd $tmp/a/b; cd c" 2>/dev/null || err_exit "initial script relative cd fails"
 
 trap 'print TERM' TERM
-exp=$'trap -- \'print TERM\' TERM\ntrap -- \'cd /; rm -rf '$tmp$'\' EXIT'
+exp=$'trap -- \'print TERM\' TERM\ntrap -- \'cd / && rm -rf "$tmp"\' EXIT'
 got=$(trap)
 [[ $got == $exp ]] || err_exit "\$(trap) failed -- expected \"$exp\", got \"$got\""
 exp='print TERM'

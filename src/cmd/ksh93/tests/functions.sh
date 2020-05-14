@@ -33,8 +33,14 @@ read -n4 c < $0 2> /dev/null
 
 ulimit -c 0
 
-tmp=$(mktemp -dt) || { err_exit mktemp -dt failed; exit 1; }
-trap "cd /; rm -rf $tmp" EXIT
+tmp=$(
+	d=${TMPDIR:-/tmp}/ksh93.functions.$$.${RANDOM:-0}
+	mkdir -m700 -- "$d" && CDPATH= cd -P -- "$d" && pwd
+) || {
+	err_exit 'mkdir failed'
+	exit 1
+}
+trap 'cd / && rm -rf "$tmp"' EXIT
 
 integer foo=33
 bar=bye
