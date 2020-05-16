@@ -356,4 +356,19 @@ test ! ! ! 2> /dev/null || err_exit 'test ! ! ! should return 0'
 test ! ! x 2> /dev/null || err_exit 'test ! ! x should return 0'
 test ! ! '' 2> /dev/null && err_exit 'test ! ! "" should return non-zero'
 
+# ======
+# Verify that [ -t 1 ] behaves sensibly inside a command substitution.
+
+# This is the simple case that doesn't do any redirection of stdout within the command
+# substitution. Thus the [ -t 1 ] test should be false.
+var=$(echo begin; { [ -t 1 ] || test -t 1 || [[ -t 1 ]]; } && echo -t 1 is true; echo end)
+[[ $var == $'begin\nend' ]] || err_exit "test -t 1 in comsub fails"
+
+# This is the more complex case that does redirect stdout within the command substitution to the
+# actual tty. Thus the [ -t 1 ] test should be true.
+var=$(echo begin; exec >/dev/tty; [ -t 1 ] && test -t 1 && [[ -t 1 ]]) \
+&& [[ $var == $'begin' ]] \
+|| err_exit "test -t 1 in comsub with exec >/dev/tty fails"
+
+# ======
 exit $((Errors<125?Errors:125))

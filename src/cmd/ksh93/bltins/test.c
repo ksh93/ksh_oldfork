@@ -425,6 +425,9 @@ int test_unop(Shell_t *shp,register int op,register const char *arg)
 	    {
 		char *last;
 		op = strtol(arg,&last, 10);
+		/* To make '-t 1' work in a $(comsub), fork. https://github.com/att/ast/issues/1079 */
+		if (op == 1 && shp->subshell && shp->comsub && !shp->subshare)
+			sh_subfork();
 		return(*last?0:tty_check(op));
 	    }
 	    case 'v':

@@ -4,6 +4,18 @@ branch of AT&T ksh93. For full details, see the git log at:
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-05-16:
+
+- Fix 'test -t 1', '[ -t 1 ]', '[[ -t 1 ]]' in command substitutions.
+  Standard output (file descriptor 1) tested as being on a terminal within a
+  command substitution, which makes no sense as the command substitution is
+  supposed to be catching standard output.
+	v=$(echo begincomsub
+	    [ -t 1 ] && echo oops
+	    echo endcomsub)
+	echo "$v"
+  This now does not output "oops".
+
 2020-05-14:
 
 - Fix syncing history when print -s -f is used. For example, the
