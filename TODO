@@ -92,10 +92,5 @@ https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
   example, "$*" joins positional parameters on the first byte of IFS instead
   of the first character.
 
-- BUG_PUTIOERR: Shell builtins that output strings (echo, printf, ksh/zsh
-  print), and thus also modernish put and putln, do not check for I/O errors
-  on output. This means a script cannot check for them, and a script process
-  in a pipe can get stuck in an infinite loop if SIGPIPE is ignored.
-
 - BUG_TESTERR1A: test/[ exits with a non-error false status (1) if an
   invalid argument is given to an operator.

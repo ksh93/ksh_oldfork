@@ -336,9 +336,11 @@ skip2:
 		 * https://github.com/att/ast/issues/425
 		 */
 		if(!sflag && sffileno(outfile)!=sffileno(sfstderr))
-			sfsync(outfile);
+			if (sfsync(outfile) < 0)
+				exitval = 1;
 		sfpool(sfstderr,pool,SF_WRITE);
-		exitval = pdata.err;
+		if (pdata.err)
+			exitval = 1;
 	}
 	else if(vflag)
 	{
@@ -353,7 +355,10 @@ skip2:
 	{
 		/* echo style print */
 		if(nflag && !argv[0])
-			sfsync((Sfio_t*)0);
+		{
+			if (sfsync((Sfio_t*)0) < 0)
+				exitval = 1;
+		}
 		else if(sh_echolist(shp,outfile,rflag,argv) && !nflag)
 			sfputc(outfile,'\n');
 	}
@@ -365,8 +370,11 @@ skip2:
 	else if(n&SF_SHARE)
 	{
 		sfset(outfile,SF_SHARE|SF_PUBLIC,1);
-		sfsync(outfile);
+		if (sfsync(outfile) < 0)
+			exitval = 1;
 	}
+	if (exitval)
+		errormsg(SH_DICT, 2, e_io);
 	return(exitval);
 }
 

@@ -639,4 +639,26 @@ read baz <<< 'foo\\\\bar'
 : ~root
 [[ $(builtin) == *.sh.tilde* ]] &&  err_exit 'builtin contains .sh.tilde'
 
+# ======
+# Check that I/O errors are detected <https://github.com/att/ast/issues/1093>
+actual=$(
+    {
+        (
+            trap "" PIPE
+            for ((i = SECONDS + 1; SECONDS < i; )); do
+                print hi || {
+                    print $? >&2
+                    exit
+                }
+            done
+        ) | true
+    } 2>&1
+)
+expect=$': print: I/O error\n1'
+if [[ $actual != *"$expect" ]]
+then
+    err_exit "I/O error not detected (expected '$expect', got '$actual')"
+fi
+
+# ======
 exit $((Errors<125?Errors:125))

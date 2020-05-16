@@ -12,6 +12,11 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   Ref.:	https://github.com/att/ast/issues/425
 	https://github.com/att/ast/pull/442
 
+- Fix BUG_PUTIOERR: Output builtins now correctly detect and report
+  input/output errors. This allows scripts to check for a nonzero exit
+  status on the 'print', 'printf' and 'echo' builtins and prevent possible
+  infinite loops if SIGPIPE is ignored.
+
 2020-05-13:
 
 - Rename release ID from 93u+ to 93u+m, to distinguish this bugfix branch

@@ -266,7 +266,7 @@ _COSHELL_msgfd=5
 function cop
 {
 	read
-	print ok
+	print ok 2>/dev/null
 }
 
 exp=ok
@@ -342,7 +342,7 @@ wait
 function cop
 {
         read
-        print ok
+        print ok 2>/dev/null
 }
 exp=ok
 cop |&
