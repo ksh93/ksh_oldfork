@@ -247,7 +247,7 @@ exec:
 }
 
 /*
- * return true of shell ends in sh of ksh
+ * return true if shell ends in sh or ksh
  */
 
 static int endsh(register const char *shell)
@@ -265,7 +265,7 @@ static int endsh(register const char *shell)
 
 
 /*
- * return true of shell is in <dir> directory
+ * return true if shell is in <dir> directory
  */
 
 static int in_dir(register const char *dir,register const char *shell)
