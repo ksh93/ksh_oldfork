@@ -155,7 +155,7 @@ char *sh_mactry(Shell_t *shp,register char *string)
  * expansion on <str>. 
  * If <mode> greater than 1 file expansion is performed if the result 
  * yields a single pathname.
- * If <mode> negative, than expansion rules for assignment are applied.
+ * If <mode> negative, then expansion rules for assignment are applied.
  */
 char *sh_mactrim(Shell_t *shp, char *str, register int mode)
 {

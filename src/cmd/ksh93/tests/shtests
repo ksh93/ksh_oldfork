@@ -43,8 +43,8 @@ USAGE=$'
     script names matching \b'$timesensitive$'\b are run with
     \bVMALLOC_OPTIONS\b unset.]
 [V:valgrind?Set \b--novmalloc_options\b and run the test scripts with
-    \bvalgrind\b(1) on \bksh\b. If \b$SHELL-g\b exists and is executable
-    than it is used instead of \b$SHELL\b.]
+    \bvalgrind\b(1) on \bksh\b. If \b$SHELL-g\b exists and is executable,
+    then it is used instead of \b$SHELL\b.]
 [x:trace?Enable script execution trace.]
 
 [ test.sh ... ] [ name=value ... ]

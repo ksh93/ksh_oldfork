@@ -458,7 +458,7 @@ should leave \f5SF_MTSAFE\fP off and performs explicit locking with \f5sfmutex()
 This flag indicates that I/O system calls should not be resumed 
 after being interrupted by signals. It is useful for 
 aborting I/O operations on such interruptions. Note, however,
-than certain operating systems (e.g., BSD Unix systems) may automatically
+that certain operating systems (e.g., BSD Unix systems) may automatically
 resume interrupted system calls outside the scope of the library. On such systems,
 \f5SF_IOINTR\fP will be ineffective.
 
