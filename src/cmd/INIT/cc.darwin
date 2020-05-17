@@ -27,7 +27,7 @@ do	case $op in
 		;;
 	-lm)	continue
 		;;
-	-O)	continue
+	-O)	arg='-Os'  # default to small code: Apple compiles its /bin/ksh with -Os
 		;;
 	esac
 	set "$@" "$arg"
