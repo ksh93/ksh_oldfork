@@ -1,6 +1,7 @@
-This documents significant changes in the 93u+m conservative bugfix
-branch of AT&T ksh93. For full details, see the git log at:
-	https://github.com/modernish/ksh
+KornShell 93u+m -- summary of fixes
+
+This documents significant changes in the 93u+m bugfix branch of AT&T ksh93.
+For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
@@ -29,7 +30,7 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   status on the 'print', 'printf' and 'echo' builtins and prevent possible
   infinite loops if SIGPIPE is ignored.
 
-- Add a convenient bin/run_ksh_tests script to the source tree that
+- Add a convenient bin/shtests wrapper script to the source tree that
   sets up the necessary environment and runs the ksh regression tests.
 
 2020-05-13:
