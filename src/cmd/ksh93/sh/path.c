@@ -56,11 +56,14 @@ static void		funload(Shell_t*,int,const char*);
 static void		exscript(Shell_t*,char*, char*[], char**);
 static int		path_chkpaths(Shell_t*,Pathcomp_t*,Pathcomp_t*,Pathcomp_t*,int);
 static void		path_checkdup(Shell_t *shp,register Pathcomp_t*);
+static			Pathcomp_t *defpath_init(Shell_t *shp);
 
-static const char	*std_path;
+static const char	*std_path = NULL;
 
-static int onstdpath(const char *name)
+static int onstdpath(Shell_t *shp, const char *name)
 {
+	if(!std_path)
+		defpath_init(shp);
 	register const char *cp = std_path, *sp;
 	if(cp)
 		while(*cp)
@@ -379,7 +382,7 @@ static void path_checkdup(Shell_t *shp,register Pathcomp_t *pp)
 	pp->mtime = statb.st_mtime;
 	pp->ino = statb.st_ino;
 	pp->dev = statb.st_dev;
-	if(*name=='/' && onstdpath(name))
+	if(*name=='/' && onstdpath(shp, name))
 		flag = PATH_STD_DIR;
 	first = (pp->flags&PATH_CDPATH)?(Pathcomp_t*)shp->cdpathlist:path_get(shp,"");
 	for(oldpp=first; oldpp && oldpp!=pp; oldpp=oldpp->next)
@@ -450,6 +453,8 @@ Pathcomp_t *path_nextcomp(Shell_t *shp,register Pathcomp_t *pp, const char *name
 
 static Pathcomp_t* defpath_init(Shell_t *shp)
 {
+	if(!std_path && !(std_path=astconf("PATH",NIL(char*),NIL(char*))))
+		std_path = e_defpath;
 	Pathcomp_t *pp = (void*)path_addpath(shp,(Pathcomp_t*)0,(std_path),PATH_PATH);
 	return(pp);
 }
@@ -458,8 +463,6 @@ static void path_init(Shell_t *shp)
 {
 	const char *val;
 	Pathcomp_t *pp;
-	if(!std_path && !(std_path=astconf("PATH",NIL(char*),NIL(char*))))
-		std_path = e_defpath;
 	if(val=sh_scoped(shp,(PATHNOD))->nvalue.cp)
 	{
 		shp->pathlist = pp = (void*)path_addpath(shp,(Pathcomp_t*)shp->pathlist,val,PATH_PATH);

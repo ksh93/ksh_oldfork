@@ -397,5 +397,11 @@ ${.sh.version}
 END
 ) || err_exit '${.sh.xxx} variables causes cat not be found'
 
+# ======
+# Check that 'command -p' searches the default OS utility PATH.
+v=$(PATH=/dev/null "$SHELL" -c 'command -p ls /dev/null')
+[[ $v == /dev/null ]] || err_exit 'command -p fails to find standard utility'
+
+# ======
 exit $((Errors<125?Errors:125))
 

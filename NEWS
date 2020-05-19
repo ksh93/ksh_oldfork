@@ -5,6 +5,13 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-05-19:
+
+- Fix 'command -p'. The -p option causes the operating system's standard
+  utilities path (as output by 'getconf PATH') to be searched instead of $PATH.
+  Before this fix, this was broken on non-interactive shells as the internal
+  variable holding the default PATH value was not correctly initialised.
+
 2020-05-16:
 
 - Fix 'test -t 1', '[ -t 1 ]', '[[ -t 1 ]]' in command substitutions.
