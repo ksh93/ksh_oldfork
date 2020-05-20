@@ -5,6 +5,12 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-05-21:
+
+- Fix truncating of files with the combined redirections '<>;file' and
+  '<#pattern'. The bug was caused by out-of-sync streams.
+  Details and discussion: https://github.com/att/ast/issues/61
+
 2020-05-20:
 
 - Fix BUG_ISSETLOOP. Expansions like ${var+set} remained static when used

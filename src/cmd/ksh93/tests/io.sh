@@ -502,4 +502,24 @@ done	{n}< /dev/null
 n=$( exec {n}< /dev/null; print -r -- $n)
 [[ -r /dev/fd/$n ]] && err_exit "file descriptor n=$n left open after subshell"
 
+# ======
+# Truncating a file using <> and >#num
+# https://github.com/att/ast/issues/61
+
+for ((i=1; i<=10; i++)) do print "$i"; done | tee "$tmp/nums2" > "$tmp/nums1"
+expect=$'1\n2\n3\n4'
+
+(1<>;"$tmp/nums1" >#5)
+actual=$(cat "$tmp/nums1")
+[[ "$actual" = "$expect" ]] || err_exit "Failed to truncate file in subshell \
+(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+
+: <<\INACTIVE	# TODO: the >#5 is optimised away by a '-c' optimisation corner case bug
+"$SHELL" -c '1<>;"$1/nums2" >#5' x "$tmp"
+actual=$(cat "$tmp/nums2")
+[[ "$actual" = "$expect" ]] || err_exit "Failed to truncate file in -c script \
+(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+INACTIVE
+
+# ======
 exit $((Errors<125?Errors:125))
