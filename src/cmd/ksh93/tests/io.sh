@@ -310,14 +310,14 @@ fi
 $SHELL -c 'exec 3<>; /dev/null'  2> /dev/null && err_exit '<>; with exec should be an error'
 $SHELL -c ': 3<>; /dev/null'  2> /dev/null || err_exit '<>; not working with at all'
 print $'hello\nworld' > $tmp/1
-if      ! $SHELL -c "false <>; $tmp/1"  2> /dev/null
+if      ! $SHELL -c "false 1<>; $tmp/1"  2> /dev/null
 then    [[ $(<$tmp/1) == $'hello\nworld' ]] || err_exit '<>; not preserving file on failure'
 fi
-if	! $SHELL -c "head -1 $tmp/1" <>; $tmp/1  2> /dev/null
+if	! $SHELL -c "head -1 $tmp/1" 1<>; $tmp/1  2> /dev/null
 then	[[ $(<$tmp/1) == hello ]] || err_exit '<>; not truncating file on success of head'
 fi
 print $'hello\nworld' > $tmp/1
-if	! $SHELL -c head  < $tmp/1 <#((6)) <>; $tmp/1  2> /dev/null
+if	! $SHELL -c head  < $tmp/1 <#((6)) 1<>; $tmp/1  2> /dev/null
 then	[[ $(<$tmp/1) == world ]] || err_exit '<>; not truncating file on success of behead'
 fi
 
@@ -341,7 +341,7 @@ abcdefg
 (print -n a; sleep 1; print -n bcde) | { read -N3 a; read -N1 b;}
 [[ $a == abc ]] || err_exit 'read -N3 from pipe not working'
 [[ $b == d ]] || err_exit 'read -N1 from pipe not working'
-(print -n a; sleep 1; print -n bcde) |read -n3 a
+(print -n a; sleep 1; print -n bcde) 2>/dev/null |read -n3 a
 [[ $a == a ]] || err_exit 'read -n3 from pipe not working'
 if	mkfifo $tmp/fifo 2> /dev/null
 then	(print -n a; sleep 2; print -n bcde) > $tmp/fifo &
