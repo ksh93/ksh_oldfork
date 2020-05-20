@@ -45,7 +45,7 @@ init)	echo "cc: arguments expected" >&2
 	;;
 cpp)	$CC -E "$@"
 	;;
-cc)	$CC -DSHOPT_SPAWN=1 -D_ast_int8_t=int64_t -D_lib_memccpy \
+cc)	$CC -DSHOPT_SPAWN=0 -D_ast_int8_t=int64_t -D_lib_memccpy \
 		-Wno-unused-value -Wno-parentheses -Wno-macro-redefined "$@"
 	;;
 dll)	$CC -Wl,-flat_namespace -dynamiclib -undefined dynamic_lookup "$@"
