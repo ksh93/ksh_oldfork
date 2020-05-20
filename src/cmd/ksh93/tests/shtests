@@ -308,7 +308,8 @@ then	if	[[ -x $SHELL-g ]]
 fi
 typeset -A tests
 for i in ${*-*.sh}
-do	if	[[ ! -r $i ]]
+do	[[ $i == *.sh ]] || i+='.sh'
+	if	[[ ! -r $i ]]
 	then	echo $0: $i: not found >&2
 		continue
 	fi
