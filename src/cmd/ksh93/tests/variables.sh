@@ -680,4 +680,62 @@ level=$($SHELL -c $'$SHELL -c \'print -r "$SHLVL"\'')
 $SHELL -c 'unset .sh' 2> /dev/null
 [[ $? == 1 ]] || err_exit 'unset .sh should return 1'
 
+#'
+
+# ======
+# ${var+set} within a loop.
+_test_isset() { eval "
+	$1=initial_value
+	function _$1_test {
+		typeset $1	# make local and initially unset
+		for i in 1 2 3 4 5; do
+			case \${$1+s} in
+			( s )	print -n 'S'; unset -v $1 ;;
+			( '' )	print -n 'U'; $1='' ;;
+			esac
+		done
+	}
+	_$1_test
+	[[ -n \${$1+s} && \${$1} == initial_value ]] || exit
+	for i in 1 2 3 4 5; do
+		case \${$1+s} in
+		( s )	print -n 's'; unset -v $1 ;;
+		( '' )	print -n 'u'; $1='' ;;
+		esac
+	done
+"; }
+expect='USUSUsusus'
+actual=$(_test_isset var)
+[[ "$actual" = "$expect" ]] || err_exit "\${var+s} expansion fails in loops (expected '$expect', got '$actual')"
+actual=$(_test_isset IFS)
+[[ "$actual" = "$expect" ]] || err_exit "\${IFS+s} expansion fails in loops (expected '$expect', got '$actual')"
+
+# [[ -v var ]] within a loop.
+_test_v() { eval "
+	$1=initial_value
+	function _$1_test {
+		typeset $1	# make local and initially unset
+		for i in 1 2 3 4 5; do
+			if	[[ -v $1 ]]
+			then	print -n 'S'; unset -v $1
+			else	print -n 'U'; $1=''
+			fi
+		done
+	}
+	_$1_test
+	[[ -v $1 && \${$1} == initial_value ]] || exit
+	for i in 1 2 3 4 5; do
+		if	[[ -v $1 ]]
+		then	print -n 's'; unset -v $1
+		else	print -n 'u'; $1=''
+		fi
+	done
+"; }
+expect='USUSUsusus'
+actual=$(_test_v var)
+[[ "$actual" = "$expect" ]] || err_exit "[[ -v var ]] expansion fails in loops (expected '$expect', got '$actual')"
+actual=$(_test_v IFS)
+[[ "$actual" = "$expect" ]] || err_exit "[[ -v IFS ]] expansion fails in loops (expected '$expect', got '$actual')"
+
+# ======
 exit $((Errors<125?Errors:125))

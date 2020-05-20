@@ -65,15 +65,6 @@ https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
   are erroneously interpreted as wildcards when quoted "$*" is used as the
   glob pattern.
 
-- BUG_IFSISSET: ${IFS+s} always yields 's' even if IFS is unset. This applies
-  to IFS only.
-
-- BUG_ISSETLOOP: Expansions like ${var+set} remain static when used within a
-  'for', 'while' or 'until' loop; the expansions don't change along with the
-  state of the variable, so they cannot be used to check whether a variable
-  is set within a loop if the state of that variable may change in the
-  course of the loop.
-
 - BUG_KUNSETIFS: ksh93: Can't unset IFS under very specific circumstances.
   unset -v IFS is a known POSIX shell idiom to activate default field
   splitting. With this bug, the unset builtin silently fails to unset IFS

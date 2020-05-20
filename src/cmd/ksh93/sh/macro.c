@@ -1306,7 +1306,15 @@ retry1:
 		{
 			if(mp->shp->argaddr)
 				flag &= ~NV_NOADD;
-			np = nv_open(id,mp->shp->var_tree,flag|NV_NOFAIL);
+			/*
+			 * Get a node pointer (np) to the parameter, if any.
+			 *
+			 * The IFS node always exists, so we must special-case IFS by checking if it has
+			 * a value; otherwise it always follows the code path for a set parameter, so is
+			 * not subject to 'set -u', and may test as set even after 'unset -v IFS'.
+			 */
+			if(!(*id=='I' && strcmp(id,"IFS")==0 && nv_getval(sh_scoped(mp->shp,IFSNOD)) == NULL))
+				np = nv_open(id,mp->shp->var_tree,flag|NV_NOFAIL);
 			if(!np)
 			{
 				sfprintf(mp->shp->strbuf,"%s%c",id,0);
@@ -1393,8 +1401,12 @@ retry1:
 		if((type==M_VNAME||type==M_SUBNAME)  && mp->shp->argaddr && strcmp(nv_name(np),id))
 			mp->shp->argaddr = 0;
 		c = (type>M_BRACE && isastchar(mode));
+		/*
+		 * Check if the parameter is set or unset.
+		 */
 		if(np && (type==M_TREE || !c || !ap))
 		{
+			/* The parameter is set. */
 			char *savptr;
 			c = *((unsigned char*)stkptr(stkp,offset-1));
 			savptr = stkfreeze(stkp,0);
@@ -1430,7 +1442,13 @@ retry1:
 					if(ap)
 						v = nv_arrayisset(np,ap)?(char*)"x":0;
 					else
+					{
+#if SHOPT_OPTIMIZE
+						if(mp->shp->argaddr)
+							nv_optimize(np);  /* avoid BUG_ISSETLOOP */
+#endif /* SHOPT_OPTIMIZE */
 						v = nv_isnull(np)?0:(char*)"x";
+					}
 				}
 				else
 					v = nv_getval(np);
@@ -1446,6 +1464,7 @@ retry1:
 		}
 		else
 		{
+			/* The parameter is unset. */
 			if(sh_isoption(SH_NOUNSET) && !isastchar(mode) && (type==M_VNAME || type==M_SIZE))
 				errormsg(SH_DICT,ERROR_exit(1),e_notset,id);
 			v = 0;

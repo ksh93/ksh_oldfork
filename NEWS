@@ -5,6 +5,17 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-05-20:
+
+- Fix BUG_ISSETLOOP. Expansions like ${var+set} remained static when used
+  within a 'for', 'while' or 'until' loop; the expansions din't change along
+  with the state of the variable, so they could not be used to check whether a
+  variable is set within a loop if the state of that variable changed in the
+  course of the loop.
+
+- Fix BUG_IFSISSET. ${IFS+s} always yielded 's', and [[ -v IFS ]] always
+  yielded true, even if IFS is unset. This applied to IFS only.
+
 2020-05-19:
 
 - Fix 'command -p'. The -p option causes the operating system's standard
