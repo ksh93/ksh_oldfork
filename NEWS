@@ -73,10 +73,6 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   Ref.:	https://github.com/att/ast/issues/75
 	http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_07_07
 
-- Patch vulnerability CVE-2019-14868 (patch from Red Hat)
-
-- Apply security patches from Apple's /bin/ksh (ksh-27.tar.gz)
-
 - Fix 229 typos in documentation and help/error messages
 
 - Add TODO file with list of known bugs
