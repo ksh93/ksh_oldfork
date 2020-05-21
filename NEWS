@@ -11,6 +11,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   '<#pattern'. The bug was caused by out-of-sync streams.
   Details and discussion: https://github.com/att/ast/issues/61
 
+- Patched code injection vulerability CVE-2019-14868. As a result, you can
+  no longer use expressions in imported numeric environment variables; only
+  integer literals are allowed.
+
 2020-05-20:
 
 - Fix BUG_ISSETLOOP. Expansions like ${var+set} remained static when used

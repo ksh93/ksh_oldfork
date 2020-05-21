@@ -738,4 +738,28 @@ actual=$(_test_v IFS)
 [[ "$actual" = "$expect" ]] || err_exit "[[ -v IFS ]] expansion fails in loops (expected '$expect', got '$actual')"
 
 # ======
+# Verify that importing untrusted environment variables does not allow evaluating
+# arbitrary expressions, but does recognize all integer literals recognized by ksh.
+
+expect=8
+actual=$(env SHLVL='7' "$SHELL" -c 'echo $SHLVL')
+[[ $actual == $expect ]] || err_exit "decimal int literal not recognized (expected '$expect', got '$actual')"
+
+expect=14
+actual=$(env SHLVL='013' "$SHELL" -c 'echo $SHLVL')
+[[ $actual == $expect ]] || err_exit "leading zeros int literal not recognized (expected '$expect', got '$actual')"
+
+expect=4
+actual=$(env SHLVL='2#11' "$SHELL" -c 'echo $SHLVL')
+[[ $actual == $expect ]] || err_exit "base#value int literal not recognized (expected '$expect', got '$actual')"
+
+expect=12
+actual=$(env SHLVL='16#B' "$SHELL" -c 'echo $SHLVL')
+[[ $actual == $expect ]] || err_exit "base#value int literal not recognized (expected '$expect', got '$actual')"
+
+expect=1
+actual=$(env SHLVL="2#11+x[\$(env echo Exploited vuln CVE-2019-14868 >&2)0]" "$SHELL" -c 'echo $SHLVL' 2>&1)
+[[ $actual == $expect ]] || err_exit "expression allowed on env var import (expected '$expect', got '$actual')"
+
+# ======
 exit $((Errors<125?Errors:125))
