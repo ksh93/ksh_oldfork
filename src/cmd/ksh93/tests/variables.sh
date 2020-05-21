@@ -733,9 +733,9 @@ _test_v() { eval "
 "; }
 expect='USUSUsusus'
 actual=$(_test_v var)
-[[ "$actual" = "$expect" ]] || err_exit "[[ -v var ]] expansion fails in loops (expected '$expect', got '$actual')"
+[[ "$actual" = "$expect" ]] || err_exit "[[ -v var ]] command fails in loops (expected '$expect', got '$actual')"
 actual=$(_test_v IFS)
-[[ "$actual" = "$expect" ]] || err_exit "[[ -v IFS ]] expansion fails in loops (expected '$expect', got '$actual')"
+[[ "$actual" = "$expect" ]] || err_exit "[[ -v IFS ]] command fails in loops (expected '$expect', got '$actual')"
 
 # ======
 # Verify that importing untrusted environment variables does not allow evaluating
