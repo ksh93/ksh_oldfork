@@ -282,6 +282,10 @@ PATH=$path
 scr=$tmp/script
 exp=126
 
+if [[ $(id -u) == '0' ]]; then
+	print -u2 -r "${Command}[$LINENO]: warning: running as root: skipping tests involving unreadable scripts"
+else
+
 : > $scr
 chmod a=x $scr
 { got=$($scr; print $?); } 2>/dev/null
@@ -308,6 +312,8 @@ got=$($SHELL -c "$scr; print \$?" 2>/dev/null)
 [[ "$got" == "$exp" ]] || err_exit "\$SHELL -c of unreadable non-empty script should fail -- expected $exp, got" $got
 got=$($SHELL -c "command $scr; print \$?" 2>/dev/null)
 [[ "$got" == "$exp" ]] || err_exit "\$SHELL -c of command of unreadable non-empty script should fail -- expected $exp, got" $got
+
+fi  # if [[ $(id -u) == '0' ]]
 
 # whence -a bug fix
 cd "$tmp"
