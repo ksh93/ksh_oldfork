@@ -402,7 +402,7 @@ Dt_t *sh_subfuntree(int create)
 	register struct subshell *sp = subshell_data;
 	if(!sp || sp->shp->curenv==0)
 		return(sh.fun_tree);
-	if(!sp->sfun && create)
+	if(!sp->sfun && create && !sp->shp->subshare)
 	{
 		sp->sfun = dtopen(&_Nvdisc,Dtoset);
 		dtview(sp->sfun,sp->shp->fun_tree);

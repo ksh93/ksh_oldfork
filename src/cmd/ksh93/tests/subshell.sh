@@ -623,4 +623,34 @@ do	if	[[ -e $f ]]
 	fi
 done
 
+# ======
+# Unsetting or redefining functions within subshells
+
+# ...function can be unset in subshell
+
+func() { echo mainfunction; }
+(unset -f func; typeset -f func >/dev/null 2>&1) && err_exit 'function fails to be unset in subshell'
+v=$(unset -f func; typeset -f func >/dev/null 2>&1) && err_exit 'function fails to be unset in comsub'
+v=${ unset -f func 2>&1; } && ! typeset -f func >/dev/null 2>&1 || err_exit 'function unset fails to survive ${ ...; }'
+
+# ...function can be redefined in subshell
+func() { echo mainfunction; }
+(func() { echo sub; }; [[ ${ func; } == sub ]]) || err_exit 'function fails to be redefined in subshell'
+v=$(func() { echo sub; }; func) && [[ $v == sub ]] || err_exit 'function fails to be redefined in comsub'
+v=${ { func() { echo sub; }; } 2>&1; } && [[ $(PATH=/dev/null func) == sub ]] \
+	|| err_exit 'function redefine fails to survive ${ ...; }'
+
+# ...some more fun from Stéphane Chazelas: https://github.com/att/ast/issues/73#issuecomment-384178095
+a=$tmp/morefun.sh
+cat >| "$a" <<EOF
+true() { echo WRONG; }
+(true() { echo ok; } && true && unset -f true && true) || false
+# the extra '|| false' avoids optimising out the subshell
+EOF
+v=$("$SHELL" "$a") && [[ $v == ok ]] || err_exit 'fail: more fun 1'
+v=$("$SHELL" -c "$(cat "$a")") && [[ $v == ok ]] || err_exit 'fail: more fun 2'
+v=$("$SHELL" -c 'eval "$(cat "$1")"' x "$a") && [[ $v == ok ]] || err_exit "fail: more fun 3"
+v=$("$SHELL" -c '. "$1"' x "$a") && [[ $v == ok ]] || err_exit "fail: more fun 4"
+
+# ======
 exit $((Errors<125?Errors:125))

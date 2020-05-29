@@ -1465,10 +1465,10 @@ static Shnode_t *simple(Lex_t *lexp,int flag, struct ionod *io)
 			{
 				/* check for builtin command */
 				Namval_t *np=nv_bfsearch(argp->argval,lexp->sh->fun_tree, (Namval_t**)&t->comnamq,(char**)0);
-				if(cmdarg==0)
-					t->comnamp = (void*)np;
 				if(np && is_abuiltin(np))
 				{
+					if(cmdarg==0)
+						t->comnamp = (void*)np;
 					if(nv_isattr(np,BLT_DCL))
 					{
 						assignment = 1+(*argp->argval=='a');

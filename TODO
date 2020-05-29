@@ -54,11 +54,6 @@ https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
   not work within the command substitution, acting as if standard output is
   still closed.
 
-- BUG_FNSUBSH: Function definitions within subshells (including command
-  substitutions) are ignored if a function by the same name exists in the
-  main shell, so the wrong function is executed. 'unset -f' is also silently
-  ignored. This only applies to non-forked subshells.
-
 - BUG_IFSGLOBS: In glob pattern matching (as in case or parameter
   substitution with # and %), if IFS starts with ? or * and the "$*"
   parameter expansion inserts any IFS separator characters, those characters

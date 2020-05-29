@@ -5,6 +5,20 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-05-29:
+
+- Fix BUG_FNSUBSH: functions can now be correctly redefined and unset in
+  subshell environments (such as ( ... ), $(command substitutions), etc).
+  Before this fix, this was silently ignored, causing the function by the
+  same name from the parent shell environment to be executed instead.
+	fn() { echo mainsh; }
+	(fn() { echo subsh; }; fn); fn
+  This now correctly outputs "subsh mainsh" instead of "mainsh mainsh".
+	ls() { echo "ls executed"; }
+	(unset -f ls; ls); ls
+  This now correctly lists your directory and then prints "ls executed",
+  instead of printing "ls executed" twice.
+
 2020-05-21:
 
 - Fix truncating of files with the combined redirections '<>;file' and

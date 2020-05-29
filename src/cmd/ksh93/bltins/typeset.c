@@ -1171,6 +1171,12 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 	while(r = optget(argv,name)) switch(r)
 	{
 		case 'f':
+			/*
+			 * Unsetting functions in a virtual/non-forked subshell doesn't work due to limitations
+			 * in the subshell function tree mechanism. Work around this by forking the subshell.
+			 */
+			if(shp->subshell && !shp->subshare)
+				sh_subfork();
 			troot = sh_subfuntree(1);
 			break;
 		case 'a':
@@ -1253,7 +1259,18 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 			if(troot==shp->var_tree && shp->st.real_fun && (dp=shp->var_tree->walk) && dp==shp->st.real_fun->sdict)
 				nv_delete(np,dp,NV_NOFREE);
 			else if(isfun && !(np->nvalue.rp && np->nvalue.rp->running))
+			{
 				nv_delete(np,troot,0);
+				/*
+				 * If we have just unset a function in a subshell tree that overrode a function by the same
+				 * name in the main shell, then the above nv_delete() call incorrectly restores the function
+				 * from the main shell scope. So walk though troot's parent views and delete any such zombie
+				 * functions. Note that this only works because 'unset -f' now forks if we're in a subshell.
+				 */
+				Dt_t *troottmp;
+				while((troottmp = troot->view) && (np = nv_search(name,troottmp,0)) && is_afunction(np))
+					nv_delete(np,troottmp,0);
+			}
 #if 0
 			/* causes unsetting local variable to expose global */
 			else if(shp->var_tree==troot && shp->var_tree!=shp->var_base && nv_search((char*)np,shp->var_tree,HASH_BUCKET|HASH_NOSCOPE))
