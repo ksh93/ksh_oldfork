@@ -653,4 +653,33 @@ v=$("$SHELL" -c 'eval "$(cat "$1")"' x "$a") && [[ $v == ok ]] || err_exit "fail
 v=$("$SHELL" -c '. "$1"' x "$a") && [[ $v == ok ]] || err_exit "fail: more fun 4"
 
 # ======
+# Unsetting or redefining aliases within subshells
+
+# ...alias can be unset in subshell
+
+alias al="echo 'mainalias'"
+
+(unalias al; alias al >/dev/null) && err_exit 'alias fails to be unset in subshell'
+
+v=$(unalias al; alias al >/dev/null) && err_exit 'alias fails to be unset in comsub'
+
+[[ $(eval 'al') == 'mainalias' ]] || err_exit 'main alias fails to survive unset in subshell(s)'
+
+v=${ eval 'al'; unalias al 2>&1; } && [[ $v == 'mainalias' ]] && ! alias al >/dev/null \
+|| err_exit 'main shell alias wrongly survives unset within ${ ...; }'
+
+# ...alias can be redefined in subshell
+
+alias al="echo 'mainalias'"
+
+(alias al='echo sub'; [[ $(eval 'al') == sub ]]) || err_exit 'alias fails to be redefined in subshell'
+
+v=$(alias al='echo sub'; eval 'al') && [[ $v == sub ]] || err_exit 'alias fails to be redefined in comsub'
+
+[[ $(eval 'al') == 'mainalias' ]] || err_exit 'main alias fails to survive redefinition in subshell(s)'
+
+v=${ eval 'al'; alias al='echo subshare'; } && [[ $v == 'mainalias' && $(eval 'al') == subshare ]] \
+|| err_exit 'alias redefinition fails to survive ${ ...; }'
+
+# ======
 exit $((Errors<125?Errors:125))

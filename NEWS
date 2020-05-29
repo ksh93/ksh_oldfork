@@ -19,6 +19,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   This now correctly lists your directory and then prints "ls executed",
   instead of printing "ls executed" twice.
 
+- Fix a similar bug with aliases. These can now be correctly unset
+  in subshell environments.
+
 2020-05-21:
 
 - Fix truncating of files with the combined redirections '<>;file' and

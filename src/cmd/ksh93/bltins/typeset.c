@@ -197,6 +197,8 @@ int    b_alias(int argc,register char *argv[],Shbltin_t *context)
 			troot = tdata.sh->track_tree;
 		}
 	}
+	if(context->shp->subshell && !context->shp->subshare)
+		sh_subfork();
 	return(setall(argv,flag,troot,&tdata));
 }
 
@@ -1142,6 +1144,8 @@ int    b_set(int argc,register char *argv[],Shbltin_t *context)
 int    b_unalias(int argc,register char *argv[],Shbltin_t *context)
 {
 	Shell_t *shp = context->shp;
+	if(shp->subshell && !shp->subshare)
+		sh_subfork();
 	return(unall(argc,argv,shp->alias_tree,shp));
 }
 
@@ -1161,11 +1165,7 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 	struct checkpt buff;
 	NOT_USED(argc);
 	if(troot==shp->alias_tree)
-	{
 		name = sh_optunalias;
-		if(shp->subshell)
-			troot = sh_subaliastree(0);
-	}
 	else
 		name = sh_optunset;
 	while(r = optget(argv,name)) switch(r)

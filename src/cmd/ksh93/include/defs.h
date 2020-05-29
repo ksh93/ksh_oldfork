@@ -423,7 +423,6 @@ extern void		sh_printopts(Shopt_t,int,Shopt_t*);
 extern int 		sh_readline(Shell_t*,char**,volatile int,int,ssize_t,long);
 extern Sfio_t		*sh_sfeval(char*[]);
 extern void		sh_setmatch(Shell_t*,const char*,int,int,int[],int);
-extern Dt_t		*sh_subaliastree(int);
 extern void             sh_scope(Shell_t*, struct argnod*, int);
 extern Namval_t		*sh_scoped(Shell_t*, Namval_t*);
 extern Dt_t		*sh_subfuntree(int);

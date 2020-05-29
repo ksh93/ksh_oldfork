@@ -1390,8 +1390,6 @@ Namval_t *nv_open(const char *name, Dt_t *root, int flags)
 		msg = e_aliname;
 		while((c= *(unsigned char*)cp++) && (c!='=') && (c!='/') &&
 			(c>=0x200 || !(c=sh_lexstates[ST_NORM][c]) || c==S_EPAT || c==S_COLON));
-		if(shp->subshell && c=='=')
-			root = sh_subaliastree(1);
 		if(c= *--cp)
 			*cp = 0;
 		np = nv_search(name, root, (flags&NV_NOADD)?0:NV_ADD); 

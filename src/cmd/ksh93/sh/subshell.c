@@ -71,7 +71,6 @@ static struct subshell
 	Dt_t		*var;	/* variable table at time of subshell */
 	struct Link	*svar;	/* save shell variable table */
 	Dt_t		*sfun;	/* function scope for subshell */
-	Dt_t		*salias;/* alias scope for subshell */
 	Pathcomp_t	*pathlist; /* for PATH variable */
 #if (ERROR_VERSION >= 20030214L)
 	struct Error_context_s *errcontext;
@@ -373,24 +372,6 @@ static void nv_restore(struct subshell *sp)
 		sp->svar = lq;
 	}
 	sp->shpwd=save;
-}
-
-/*
- * return pointer to alias tree
- * create new one if in a subshell and one doesn't exist and create is non-zero
- */
-Dt_t *sh_subaliastree(int create)
-{
-	register struct subshell *sp = subshell_data;
-	if(!sp || sp->shp->curenv==0)
-		return(sh.alias_tree);
-	if(!sp->salias && create)
-	{
-		sp->salias = dtopen(&_Nvdisc,Dtoset);
-		dtview(sp->salias,sp->shp->alias_tree);
-		sp->shp->alias_tree = sp->salias;
-	}
-	return(sp->salias);
 }
 
 /*
@@ -710,12 +691,6 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	{
 		int n;
 		shp->options = sp->options;
-		if(sp->salias)
-		{
-			shp->alias_tree = dtview(sp->salias,0);
-			table_unset(sp->salias,0);
-			dtclose(sp->salias);
-		}
 		if(sp->sfun)
 		{
 			shp->fun_tree = dtview(sp->sfun,0);
