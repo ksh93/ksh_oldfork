@@ -130,7 +130,7 @@ static char *overflow(int n)
 }
 
 /*
- * initialize stkstd, sfio operations may have already occcured
+ * initialize stkstd, sfio operations may have already occurred
  */
 static void stkinit(size_t size)
 {

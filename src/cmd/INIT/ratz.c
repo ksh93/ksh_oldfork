@@ -1398,7 +1398,7 @@ typedef struct internal_state {
     int nice_match; /* Stop searching when current match exceeds this */
 
                 /* used by trees.c: */
-    /* Didn't use ct_data typedef below to supress compiler warning */
+    /* Didn't use ct_data typedef below to suppress compiler warning */
     struct ct_data_s dyn_ltree[HEAP_SIZE];   /* literal and length tree */
     struct ct_data_s dyn_dtree[2*D_CODES+1]; /* distance tree */
     struct ct_data_s bl_tree[2*BL_CODES+1];  /* Huffman tree for bit lengths */
@@ -3822,7 +3822,7 @@ gzFile ZEXPORT gzfopen (fp, mode)
 /* ===========================================================================
      Read a byte from a gz_stream; update next_in and avail_in. Return EOF
    for end of file.
-   IN assertion: the stream s has been sucessfully opened for reading.
+   IN assertion: the stream s has been successfully opened for reading.
 */
 local int get_byte(s)
     gz_stream *s;
@@ -3847,7 +3847,7 @@ local int get_byte(s)
     mode to transparent if the gzip magic header is not present; set s->err
     to Z_DATA_ERROR if the magic header is present but the rest of the header
     is incorrect.
-    IN assertion: the stream s has already been created sucessfully;
+    IN assertion: the stream s has already been created successfully;
        s->stream.avail_in is zero for the first time, but may be non-zero
        for concatenated .gz files.
 */

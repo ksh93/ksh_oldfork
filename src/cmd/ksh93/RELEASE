@@ -59,7 +59,7 @@
 12-06-06  A bug in which exporting left or right justified fields could loose
 	  the field width has been fixed.
 12-06-06  A bug on Solaris11 in which >; did not work for /dev/null was fixed.
-12-06-05  A race condition which occured when stopping a builtin command
+12-06-05  A race condition which occurred when stopping a builtin command
 	  invoked from a subshell has been fixed.
 12-06-05  A bug with appending elements to an empty indexed array has been
 	  fixed.

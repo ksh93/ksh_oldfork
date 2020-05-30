@@ -654,7 +654,7 @@ test1
 test2
 
 
-# Test visibilty of "global" vs. "static" variables. if we have a "static" variable in a
+# Test visibility of "global" vs. "static" variables. if we have a "static" variable in a
 # function and "unset" it we should see a global variable with the same
 # name, right ?
 integer hx=5

@@ -675,7 +675,7 @@ typeset -a arr=( ( 1 2 3 ) ( 4 5 6 ) ( 7 8 9 ))
 typeset -n ref=arr[1]
 [[ $ref == 4 ]] || err_exit '$ref should be 4'
 [[ ${ref[@]} == '4 5 6' ]] || err_exit '${ref[@]} should be "4 5 6"'
-[[ $ref == "${arr[1]}" ]] || err_exit '$ref shuld be ${arr[1]}'
+[[ $ref == "${arr[1]}" ]] || err_exit '$ref should be ${arr[1]}'
 [[ ${ref[@]} == "${arr[1][@]}" ]] || err_exit '${ref[@]} should be ${arr[1][@]}'
 
 function fun2
