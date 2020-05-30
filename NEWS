@@ -5,6 +5,14 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-05-30:
+
+- Fix POSIX compliance of 'test'/'[' exit status on error. The command now
+  returns status 2 instead of 1 when given an invalid number or arithmetic
+  expression, e.g.:
+	[ 123 -eq 123x ]; echo $?
+  now outputs 2 instead of 1.
+
 2020-05-29:
 
 - Fix BUG_FNSUBSH: functions can now be correctly redefined and unset in

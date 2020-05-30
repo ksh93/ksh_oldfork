@@ -82,6 +82,23 @@ static char *nxtarg(struct test*,int);
 static int expr(struct test*,int);
 static int e3(struct test*);
 
+/*
+ * POSIX requires error status > 1 for test builtin.
+ * Since ksh 'test' can parse arithmetic expressions, the #define
+ * override is also needed in sh/arith.c and sh/streval.c
+ */
+int _ERROR_exit_b_test(int exitval)
+{
+	if(sh_in_test_builtin)
+	{
+		sh_in_test_builtin = 0;
+		if(exitval < 2)
+			exitval = 2;
+	}
+	return(ERROR_exit(exitval));
+}
+#define ERROR_exit(n) _ERROR_exit_b_test(n)
+
 static int test_strmatch(Shell_t *shp,const char *str, const char *pat)
 {
 	regoff_t match[2*(MATCH_MAX+1)],n;
@@ -113,6 +130,9 @@ int b_test(int argc, char *argv[],Shbltin_t *context)
 	struct test tdata;
 	register char *cp = argv[0];
 	register int not;
+	int exitval;
+
+	sh_in_test_builtin = 1;
 	tdata.sh = context->shp;
 	tdata.av = argv;
 	tdata.ap = 1;
@@ -123,7 +143,10 @@ int b_test(int argc, char *argv[],Shbltin_t *context)
 			errormsg(SH_DICT,ERROR_exit(2),e_missing,"']'");
 	}
 	if(argc <= 1)
-		return(1);
+	{
+		exitval = 1;
+		goto done;
+	}
 	cp = argv[1];
 	if(c_eq(cp,'(') && argc<=6 && c_eq(argv[argc-1],')'))
 	{
@@ -153,18 +176,31 @@ int b_test(int argc, char *argv[],Shbltin_t *context)
 				if(argc==5)
 					break;
 				if(not && cp[0]=='-' && cp[2]==0)
-					return(test_unop(tdata.sh,cp[1],argv[3])!=0);
+				{
+					exitval = (test_unop(tdata.sh,cp[1],argv[3])!=0);
+					goto done;
+				}
 				else if(argv[1][0]=='-' && argv[1][2]==0)
-					return(!test_unop(tdata.sh,argv[1][1],cp));
+				{
+					exitval = (!test_unop(tdata.sh,argv[1][1],cp));
+					goto done;
+				}
 				else if(not && c_eq(argv[2],'!'))
-					return(*argv[3]==0);
+				{
+					exitval = (*argv[3]==0);
+					goto done;
+				}
 				errormsg(SH_DICT,ERROR_exit(2),e_badop,cp);
 			}
-			return(test_binop(tdata.sh,op,argv[1],argv[3])^(argc!=5));
+			exitval = (test_binop(tdata.sh,op,argv[1],argv[3])^(argc!=5));
+			goto done;
 		}
 		case 3:
 			if(not)
-				return(*argv[2]!=0);
+			{
+				exitval = (*argv[2]!=0);
+				goto done;
+			}
 			if(cp[0] != '-' || cp[2] || cp[1]=='?')
 			{
 				if(cp[0]=='-' && (cp[1]=='-' || cp[1]=='?') &&
@@ -180,12 +216,17 @@ int b_test(int argc, char *argv[],Shbltin_t *context)
 				}
 				break;
 			}
-			return(!test_unop(tdata.sh,cp[1],argv[2]));
+			exitval = (!test_unop(tdata.sh,cp[1],argv[2]));
+			goto done;
 		case 2:
-			return(*cp==0);
+			exitval = (*cp==0);
+			goto done;
 	}
 	tdata.ac = argc;
-	return(!expr(&tdata,0));
+	exitval = (!expr(&tdata,0));
+done:
+	sh_in_test_builtin = 0;
+	return(exitval);
 }
 
 /*

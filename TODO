@@ -77,6 +77,3 @@ https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
   multi-byte characters as IFS field delimiters still doesn't work. For
   example, "$*" joins positional parameters on the first byte of IFS instead
   of the first character.
-
-- BUG_TESTERR1A: test/[ exits with a non-error false status (1) if an
-  invalid argument is given to an operator.

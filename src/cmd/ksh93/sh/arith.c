@@ -31,6 +31,9 @@
 #include	"variables.h"
 #include	"builtins.h"
 
+/* POSIX requires error status > 1 if called from test builtin */
+#define ERROR_exit(n) _ERROR_exit_b_test(n)
+
 #ifndef LLONG_MAX
 #define LLONG_MAX	LONG_MAX
 #endif

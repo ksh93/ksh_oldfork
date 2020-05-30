@@ -371,4 +371,9 @@ var=$(echo begin; exec >/dev/tty; [ -t 1 ] && test -t 1 && [[ -t 1 ]]) \
 || err_exit "test -t 1 in comsub with exec >/dev/tty fails"
 
 # ======
+# POSIX specifies that on error, test builtin should always return status > 1
+test 123 -eq 123x 2>/dev/null
+[[ $? -ge 2 ]] || err_exit 'test builtin should return value greater than 1 on error'
+
+# ======
 exit $((Errors<125?Errors:125))
