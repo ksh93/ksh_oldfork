@@ -508,7 +508,8 @@ static int	path_opentype(Shell_t *shp,const char *name, register Pathcomp_t *pp,
 {
 	register int fd= -1;
 	struct stat statb;
-	Pathcomp_t *oldpp;
+	Pathcomp_t *nextpp;
+
 	if(!pp && !shp->pathlist)
 		path_init(shp);
 	if(!fun && strchr(name,'/'))
@@ -516,12 +517,15 @@ static int	path_opentype(Shell_t *shp,const char *name, register Pathcomp_t *pp,
 		if(sh_isoption(SH_RESTRICTED))
 			errormsg(SH_DICT,ERROR_exit(1),e_restricted,name);
 	}
+
+	nextpp = pp;
 	do
 	{
-		pp = path_nextcomp(shp,oldpp=pp,name,0);
-		while(oldpp && (oldpp->flags&PATH_SKIP))
-			oldpp = oldpp->next;
-		if(fun && (!oldpp || !(oldpp->flags&PATH_FPATH)))
+		pp = nextpp;
+		nextpp = path_nextcomp(shp,pp,name,0);
+		if(pp && (pp->flags&PATH_SKIP))
+			continue;
+		if(fun && (!pp || !(pp->flags&PATH_FPATH)))
 			continue;
 		if((fd = sh_open(path_relative(shp,stakptr(PATH_OFFSET)),O_RDONLY,0)) >= 0)
 		{
@@ -533,7 +537,8 @@ static int	path_opentype(Shell_t *shp,const char *name, register Pathcomp_t *pp,
 			}
 		}
 	}
-	while( fd<0 && pp);
+	while(fd<0 && nextpp);
+
 	if(fd>=0 && (fd = sh_iomovefd(fd)) > 0)
 	{
 		fcntl(fd,F_SETFD,FD_CLOEXEC);

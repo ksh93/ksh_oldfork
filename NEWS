@@ -5,6 +5,14 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-05-31:
+
+- Fix a bug in autoloading functions. Directories in the path search list
+  which should be skipped (e.g. because they don't exist) did not interact
+  correctly with autoloaded functions, so that a function to autoload was
+  not always found correctly.
+  Details: https://github.com/att/ast/issues/1454
+
 2020-05-30:
 
 - Fix POSIX compliance of 'test'/'[' exit status on error. The command now

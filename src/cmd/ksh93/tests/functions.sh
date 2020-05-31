@@ -1213,4 +1213,33 @@ rc=$?
 exp=$((256+$(kill -l TERM) ))
 [[  $rc == "$exp" ]] || err_exit "expected exitval $exp got $rc"
 
+# ======
+# Verify that directories in the path search list which should be skipped
+# (e.g. because they don't exist) interact correctly with autoloaded functions.
+# See https://github.com/att/ast/issues/1454
+expect="Func cd called with |$tmp/usr|
+$tmp/usr"
+actual=$(
+	set -- wrong args passed
+	mkdir -p "$tmp/usr/bin"
+	print 'echo "wrong file executed ($*)"' >"$tmp/usr/bin/cd"
+	prefix=$tmp/ksh.$$
+
+	FPATH=$prefix/bad:$prefix/functions
+	mkdir -p "$prefix/functions"
+	print 'function cd { echo "Func cd called with |$*|"; command cd "$@"; }' >"$prefix/functions/cd"
+	typeset -fu cd
+
+	PATH=$tmp/arglebargle:$PATH:$tmp/usr/bin:$tmp/bin
+	cd "$tmp/usr"
+	pwd
+)
+actual_status=$?
+expect_status=0
+[[ $actual_status == "$expect_status" ]] ||
+    err_exit "autoload function skipped dir test wrong status (expected $expect_status, got $actual_status)"
+[[ $actual == "$expect" ]] ||
+    err_exit "autoload function skipped dir test wrong output (expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+
+# ======
 exit $((Errors<125?Errors:125))
