@@ -66,7 +66,7 @@ fi
 if	[[ ! -w $file ]]
 then	err_exit "-w: $file should be writable"
 fi
-if	[[ ! -w $file ]]
+if	[[ ! -x $file ]]
 then	err_exit "-x: $file should be executable"
 fi
 if	[[ ! -w $file || ! -r $file ]]
@@ -79,30 +79,35 @@ if	[[ ! -f $file ]]
 then	err_exit "-f: $file should be an ordinary file"
 fi
 if	[[  -d $file ]]
-then	err_exit "-f: $file should not be a directory file"
+then	err_exit "-d: $file should not be a directory file"
 fi
 if	[[  ! -d . ]]
-then	err_exit "-d: . should not be a directory file"
+then	err_exit "-d: . should be a directory file"
 fi
 if	[[  -f /dev/null ]]
 then	err_exit "-f: /dev/null  should not be an ordinary file"
 fi
 chmod 000 $file
-if	[[ -r $file ]]
-then	err_exit "-r: $file should not be readable"
+
+if	[[ $(id -u) == '0' ]]
+then	print -u2 -r "${Command}[$LINENO]: warning: running as root: skipping tests involving r/w permissions"
+else	if	[[ -r $file ]]
+	then	err_exit "-r: $file should not be readable"
+	fi
+	if	[[ -w $file ]]
+	then	err_exit "-w: $file should not be writable"
+	fi
+	if	[[ -w $file || -r $file ]]
+	then	err_exit "-rw: $file should not be readable/writable"
+	fi
 fi
 if	[[ ! -O $file ]]
-then	err_exit "-r: $file should be owned by me"
+then	err_exit "-O: $file should be owned by me"
 fi
-if	[[ -w $file ]]
-then	err_exit "-w: $file should not be writable"
-fi
-if	[[ -w $file ]]
+if	[[ -x $file ]]
 then	err_exit "-x: $file should not be executable"
 fi
-if	[[ -w $file || -r $file ]]
-then	err_exit "-rw: $file should not be readable/writable"
-fi
+
 if	[[   -z x &&  -z x || ! -z x ]]
 then	:
 else	err_exit " wrong precedence"
