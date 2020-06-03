@@ -557,7 +557,7 @@ $SHELL 2> /dev/null -c 'cd ""' && err_exit 'cd "" not producing an error'
 bincat=$(whence -p cat)
 builtin cat
 out=$tmp/seq.out
-seq 11 >$out
+for ((i=1; i<=11; i++)); do print "$i"; done >$out
 cmp -s <(print -- "$($bincat<( $bincat $out ) )") <(print -- "$(cat <( cat $out ) )") || err_exit "builtin cat differs from $bincat"
 
 [[ $($SHELL -c '{ printf %R "["; print ok;}' 2> /dev/null) == ok ]] || err_exit $'\'printf %R "["\' causes shell to abort'
