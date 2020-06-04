@@ -339,19 +339,21 @@ do	[[ $i == *.sh ]] || i+='.sh'
 				lang=LANG=$lang
 			fi
 			echo test $o begins ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"}
-			E=error
 			eval $lang \$valgrind \$SHELL \$trace \$i
 			e=$?
 			if	[[ $valgrind ]]
 			then	valxml $valxml
 				(( e += $? ))
 			fi
+			if	(( e > 256 ))
+			then	E="(killed by SIG$(kill -l "$e"))"
+			elif	(( e == 1 ))
+			then	E="1 error"
+			else	E="$e errors"
+			fi
 			if	(( e == 0 ))
-			then	echo test $o passed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} "[ $t $T 0 ${E}s ]"
-			else	if	(( e != 1 ))
-				then	E=${E}s
-				fi
-				echo test $o failed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} with exit code $e "[ $t $T $e $E ]"
+			then	echo test $o passed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} "[ $t $T $E ]"
+			else	echo test $o failed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} with exit code $e "[ $t $T $E ]"
 			fi
 		done
 	fi
@@ -359,20 +361,20 @@ do	[[ $i == *.sh ]] || i+='.sh'
 	then	c=$tmp/shcomp-$u.ksh
 		o="$u(shcomp)"
 		echo test $o begins ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"}
-		E=error
 		if	$SHCOMP $i > $c
 		then	if	$valgrind $SHELL $trace $c
-			then	echo test $o passed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} "[ $t $T 0 ${E}s ]"
+			then	echo test $o passed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} "[ $t $T 0 errors ]"
 			else	e=$?
-				if	(( e != 1 ))
-				then	E=${E}s
+				if	(( e > 256 ))
+				then	E="(killed by SIG$(kill -l "$e"))"
+				elif	(( e == 1 ))
+				then	E="1 error"
+				else	E="$e errors"
 				fi
-				echo test $o failed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} with exit code $e "[ $t $T $e $E ]"
+				echo test $o failed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} with exit code $e "[ $t $T $E ]"
 			fi
 		else	e=$?
-			t=1
-			T=test
-			echo test $o failed to compile ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} with exit code $e "[ $t $T 1 $E ]"
+			echo test $o failed to compile ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} with exit code $e "[ 1 test 1 error ]"
 		fi
 		if	[[ $i == $timesensitive ]]
 		then	VMALLOC_OPTIONS=$vmalloc_options
