@@ -474,7 +474,7 @@ chmod +x $tmp/script
     (( .sh.subshell == 1 )) || err_exit ".sh.subshell not working in a subshell"
 )
 TIMEFORMAT='this is a test'
-[[ $({ { time :;} 2>&1;}) == "$TIMEFORMAT" ]] || err_exit 'TIMEFORMAT not working'
+[[ $(set +x; { { time :;} 2>&1;}) == "$TIMEFORMAT" ]] || err_exit 'TIMEFORMAT not working'
 : ${.sh.version}
 [[ $(alias integer) == *.sh.* ]] && err_exit '.sh. prefixed to alias name'
 : ${.sh.version}
@@ -541,6 +541,8 @@ esac
 	}
 } 2> /dev/null || err_exit "cannot add get discipline to .sh.foobar"
 [[ ${.sh.foobar} == world ]]  || err_exit 'get discipline for .sh.foobar not working'
+
+[[ -o xtrace ]] && opt_x=-x || opt_x=+x
 x='a|b'
 IFS='|'
 set -- $x
@@ -548,10 +550,11 @@ set -- $x
 exec 3>&2 2> /dev/null
 set -x
 ( IFS= ) 2> /dev/null
-set +x
+set "$opt_x"
 exec 2>&3-
 set -- $x
 [[ $2 == b ]] || err_exit '$2 should be b after subshell'
+
 : & pid=$!
 ( : & )
 [[ $pid == $! ]] || err_exit '$! value not preserved across subshells'
@@ -616,33 +619,40 @@ set -- {1..32768}
 (( $# == 32768 )) || err_exit "\$# failed -- expected 32768, got $#"
 set --
 
-unset r v x
-path=$PATH
-x=foo
-for v in EDITOR VISUAL OPTIND CDPATH FPATH PATH ENV LINENO RANDOM SECONDS _
-do	nameref r=$v
-	unset $v
-	if	( $SHELL -c "unset $v; : \$$v" ) 2>/dev/null
-	then	[[ $r ]] && err_exit "unset $v failed -- expected '', got '$r'"
-		r=$x
-		[[ $r == $x ]] || err_exit "$v=$x failed -- expected '$x', got '$r'"
-	else	err_exit "unset $v; : \$$v failed"
-	fi
-done
+(
+	# TODO: namerefs are broken in non-forked/virtual subshells.
+	# For now, fork it using ulimit; remove the ulimit to expose the test failures.
+	ulimit -t unlimited
 
-x=x
-for v in LC_ALL LC_CTYPE LC_MESSAGES LC_COLLATE LC_NUMERIC
-do	nameref r=$v
-	unset $v
-	[[ $r ]] && err_exit "unset $v failed -- expected '', got '$r'"
-	d=$($SHELL -c "$v=$x" 2>&1)
-	[[ $d ]] || err_exit "$v=$x failed -- expected locale diagnostic"
-	{ g=$( r=$x; print -- $r ); } 2>/dev/null
-	[[ $g == '' ]] || err_exit "$v=$x failed -- expected '', got '$g'"
-	{ g=$( r=C; r=$x; print -- $r ); } 2>/dev/null
-	[[ $g == 'C' ]] || err_exit "$v=C; $v=$x failed -- expected 'C', got '$g'"
-done
-PATH=$path
+	unset r v x
+	x=foo
+	for v in EDITOR VISUAL OPTIND CDPATH FPATH PATH ENV LINENO RANDOM SECONDS _
+	do	nameref r=$v
+		unset $v
+		if	( $SHELL -c "unset $v; : \$$v" ) 2>/dev/null
+		then	[[ $r ]] && err_exit "unset $v failed -- expected '', got '$r'"
+			r=$x
+			[[ $r == $x ]] || err_exit "$v=$x failed -- expected '$x', got '$r'"
+		else	err_exit "unset $v; : \$$v failed"
+		fi
+	done
+
+	x=x
+	for v in LC_ALL LC_CTYPE LC_MESSAGES LC_COLLATE LC_NUMERIC
+	do	nameref r=$v
+		unset $v
+		[[ $r ]] && err_exit "unset $v failed -- expected '', got '$r'"
+		d=$($SHELL -c "$v=$x" 2>&1)
+		[[ $d ]] || err_exit "$v=$x failed -- expected locale diagnostic"
+		{ g=$( r=$x; print -- $r ); } 2>/dev/null
+		[[ $g == '' ]] || err_exit "$v=$x failed -- expected '', got '$g'"
+		{ g=$( r=C; r=$x; print -- $r ); } 2>/dev/null
+		[[ $g == 'C' ]] || err_exit "$v=C; $v=$x failed -- expected 'C', got '$g'"
+	done
+
+	exit $Errors
+)
+Errors=$?  # in case of failures, ensure error count survives subshell
 
 cd $tmp
 
