@@ -22,6 +22,8 @@ To see what's left to fix, see [TODO](./TODO).
 4. No 100% bug compatibility. Broken and undocumented behaviour gets fixed.
 5. No bureaucracy, no formalities. Just fix it, or report it: create issues,
    send pull requests. Every interested party is invited to contribute.
+6. To help increase everyone's understanding of this code base, fixes and
+   significant changes should be fully documented in commit messages.
 
 ## Why?
 
