@@ -2394,8 +2394,8 @@ int main()
 			esac
 			case $lhs in
 			bsdi)			lhs=bsd ;;
-			darwin)			case $rel in
-						[01234567].*)	lhs=${lhs}7 ;;
+			darwin)			case $(/usr/bin/cc --version) in
+						*'(GCC)'*)	lhs=${lhs}_old ;;
 						esac
 						;;
 			freebsd)		case $rel in
