@@ -478,9 +478,9 @@ print hello there world > $tmp/foobar
 $SHELL -c "sed  -e 's/there //' $tmp/foobar  >; $tmp/foobar"
 [[ $(<$tmp/foobar) == 'hello world' ]] || err_exit '>; redirection not working with -c on a simple command'
 
-rm -f "$tmp/junk"
+binfalse=$(whence -p false)
 for	(( i=1; i < 50; i++ ))
-do      out=$(/bin/ls "$tmp/junk" 2>/dev/null)
+do      out=$("$binfalse" 2>/dev/null)
 	if	(( $? == 0 ))
 	then    err_exit 'wrong error code with redirection'
 		break

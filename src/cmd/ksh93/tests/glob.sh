@@ -105,7 +105,7 @@ case $* in
 'b B')	contrary=1 ;;
 b|B)	ignorant=1 ;;
 esac
-set -- $(LC_ALL=C /bin/sh -c 'echo [a-c]')
+set -- $(LC_ALL=C sh -c 'echo [a-c]')
 case $* in
 B)	aware=1 ;;
 esac

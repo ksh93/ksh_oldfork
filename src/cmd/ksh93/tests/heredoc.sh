@@ -36,6 +36,7 @@ tmp=$(
 	exit 1
 }
 trap 'cd / && rm -rf "$tmp"' EXIT
+bincat=$(whence -p cat)
 
 f=$tmp/here1
 g=$tmp/here2
@@ -125,7 +126,7 @@ done
 } > $f
 chmod +x "$f"
 $SHELL "$f" > /dev/null  || err_exit "large here-doc with command substitution fails"
-x=$(/bin/cat <<!
+x=$("$bincat" <<!
 $0
 !
 )
@@ -186,7 +187,7 @@ cat  > "$f" <<- '!!!!'
 	exec 0<&-
 	foobar()
 	{
-		/bin/cat <<- !
+		"$bincat" <<- !
 		foobar
 		!
 	}
@@ -212,7 +213,7 @@ cat  > "$f" <<- '!!!!'
 	EOF
 	print -r -- "$(foobar)"
 !!!!
-if	[[ $($SHELL  "$f") != foobar ]]
+if	[[ $(export bincat; "$SHELL" "$f") != foobar ]]
 then	err_exit	'here document with stdin closed failed'
 fi
 printf $'cat   <<# \\!!!\n\thello\n\t\tworld\n!!!' > $f

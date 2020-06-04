@@ -41,6 +41,7 @@ tmp=$(
 	exit 1
 }
 trap 'cd / && rm -rf "$tmp"' EXIT
+bincat=$(whence -p cat)
 
 if	[[ $( ${SHELL-ksh} -s hello<<-\!
 		print $1
@@ -367,7 +368,7 @@ pipeline=(
 	( nopipefail=1 pipefail=1 command='true|true|false' )
 	( nopipefail=1 pipefail=1 command='false|false|false' )
 	( nopipefail=0 pipefail=0 command='true|true|true' )
-	( nopipefail=0 pipefail=0 command='print hi|(sleep 1;/bin/cat)>/dev/null' )
+	( nopipefail=0 pipefail=0 command='print hi|(sleep 1;"$bincat")>/dev/null' )
 )
 set --nopipefail
 for ((i = 0; i < ${#pipeline[@]}; i++ ))

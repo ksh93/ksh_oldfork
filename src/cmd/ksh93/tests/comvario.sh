@@ -529,11 +529,6 @@ print -v c2
         [[ "${out.stdout}" != '' ]] || err_exit "$0: Expected nonempty stdout."
        	[[ "${out.stderr}" == '' ]] || err_exit "$0: Expected empty stderr, got $(printf '%q\n' "${out.stderr}")"
 
-	if [[ -f 'core' && -x '/usr/bin/pstack' ]] ; then
-		pstack 'core'
-		rm 'core'
-	fi
-
 	return 0
 }
 

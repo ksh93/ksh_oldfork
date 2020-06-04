@@ -36,6 +36,7 @@ tmp=$(
 	exit 1
 }
 trap 'cd / && rm -rf "$tmp"' EXIT
+binecho=$(whence -p echo)
 
 # test restricted shell
 pwd=$PWD
@@ -57,7 +58,7 @@ ln -s $SHELL rksh
 PATH=$PWD:$PATH
 rksh -c  '[[ -o restricted ]]' || err_exit 'restricted option not set'
 [[ $(rksh -c 'print hello') == hello ]] || err_exit 'unable to run print'
-check_restricted /bin/echo || err_exit '/bin/echo not resticted'
+check_restricted "$binecho" || err_exit "$binecho not resticted"
 check_restricted ./echo || err_exit './echo not resticted'
 check_restricted 'SHELL=ksh' || err_exit 'SHELL assignment not resticted'
 check_restricted 'PATH=/bin' || err_exit 'PATH assignment not resticted'
@@ -70,7 +71,7 @@ print 'echo hello' > script
 chmod +x ./script
 ! check_restricted script ||  err_exit 'script without builtins should run in restricted mode'
 check_restricted ./script ||  err_exit 'script with / in name should not run in restricted mode'
-print '/bin/echo hello' > script
+printf '%q hello\n' "$binecho" > script
 ! check_restricted script ||  err_exit 'script with pathnames should run in restricted mode'
 print 'echo hello> file' > script
 ! check_restricted script ||  err_exit 'script with output redirection should run in restricted mode'

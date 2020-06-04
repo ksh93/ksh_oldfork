@@ -283,18 +283,18 @@ then	float s=$SECONDS
 	(( SECONDS-s < 4 )) && err_exit 'parent completes early'
 fi
 
-yes=$(whence -p yes)
-if	[[ $yes ]]
-then	for exp in TERM VTALRM PIPE
+yes() for ((;;)); do print y; done
+
+	for exp in TERM VTALRM PIPE
 	do	if	[[ ${SIG[$exp]} ]]
 		then	{
-				$SHELL <<- EOF
+				bindate=$(whence -p date) "$SHELL" <<- EOF
 				foo() { return 0; }
 				trap foo EXIT
 				{ sleep 2; kill -$exp \$\$; sleep 3; kill -0 \$\$ && kill -KILL \$\$; } &
-				$yes |
+				yes |
 				while read yes
-				do	(/bin/date; sleep .1)
+				do	("\$bindate"; sleep .1)
 				done > /dev/null
 				EOF
     			} 2>> /dev/null
@@ -302,7 +302,6 @@ then	for exp in TERM VTALRM PIPE
     			[[ $exp == $got ]] || err_exit "kill -$exp \$\$ failed, required termination by signal '$got'"
 		fi
 	done
-fi
 
 SECONDS=0
 $SHELL 2> /dev/null -c 'sleep 2 && kill $$ & trap "print done; exit 3" EXIT; (sleep 5); print finished' > $tmp/sig

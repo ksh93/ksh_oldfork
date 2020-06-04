@@ -155,7 +155,7 @@ done
 (( d==2000 )) ||  err_exit "trap '' CHLD  causes side effects d=$d"
 trap - CHLD
 
-x=$($SHELL 2> /dev/null -ic '/bin/notfound; sleep .5 & sleep 1;jobs')
+x=$($SHELL 2> /dev/null -ic '/dev/null/notfound; sleep .5 & sleep 1;jobs')
 [[ $x == *Done* ]] || err_exit 'SIGCHLD blocked after notfound'
 x=$($SHELL 2> /dev/null  -ic 'kill -0 12345678901234567876; sleep .5 & sleep 1;jobs')
 [[ $x == *Done* ]] || err_exit 'SIGCHLD blocked after error message'

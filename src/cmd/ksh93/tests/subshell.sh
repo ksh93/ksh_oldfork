@@ -39,6 +39,7 @@ trap 'cd / && rm -rf "$tmp"' EXIT
 
 builtin getconf
 bincat=$(PATH=$(getconf PATH) whence -p cat)
+binecho=$(PATH=$(getconf PATH) whence -p echo)
 
 z=()
 z.foo=( [one]=hello [two]=(x=3 y=4) [three]=hi)
@@ -466,9 +467,9 @@ exp=ok
 got=$($SHELL -c "$cmd" 2>&1)
 [[ $got == "$exp" ]] ||  err_exit "'$cmd' failed -- expected '$exp', got '$got'"
 
-cmd='eval "for i in 1 2; do eval /bin/echo x; done"'
+cmd='eval '\''for i in 1 2; do eval "\"\$binecho\" x"; done'\'
 exp=$'x\nx'
-got=$($SHELL -c "$cmd")
+got=$(export binecho; $SHELL -c "$cmd")
 if	[[ $got != "$exp" ]]
 then	EXP=$(printf %q "$exp")
 	GOT=$(printf %q "$got")
@@ -482,7 +483,7 @@ $SHELL -c 'sleep 20 & pid=$!; { x=$( ( seq 60000 ) );kill -9 $pid;}&;wait $pid'
 
 (.sh.foo=foobar)
 [[ ${.sh.foo} == foobar ]] && err_exit '.sh subvariables in subshells remain set'
-[[ $($SHELL -c 'print 1 | : "$(/bin/cat <(/bin/cat))"') ]] && err_exit 'process substitution not working correctly in subshells'
+[[ $($SHELL -c 'print 1 | : "$("$bincat" <("$bincat"))"') ]] && err_exit 'process substitution not working correctly in subshells'
 
 # config hang bug
 integer i

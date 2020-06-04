@@ -27,6 +27,8 @@ alias err_exit='err_exit $LINENO'
 
 Command=${0##*/}
 integer Errors=0
+binecho=$(whence -p echo)
+
 if	[[ 'hi there' != "hi there" ]]
 then	err_exit "single quotes not the same as double quotes"
 fi
@@ -184,7 +186,7 @@ fi
 if	[[ $x$ != '$hi$' ]]
 then	err_exit ' $x$, with x=$hi, does not expand to $hi$'
 fi
-set -- $(/bin/echo foo;sleep 1;/bin/echo bar)
+set -- $("$binecho" foo; sleep 1; "$binecho" bar)
 if	[[ $# != 2 ]]
 then	err_exit 'word splitting after command substitution not working'
 fi

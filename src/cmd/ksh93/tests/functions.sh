@@ -41,6 +41,7 @@ tmp=$(
 	exit 1
 }
 trap 'cd / && rm -rf "$tmp"' EXIT
+binecho=$(whence -p echo)
 
 integer foo=33
 bar=bye
@@ -141,7 +142,7 @@ fi
 if	[[ $PWD != "$dir" ]]
 then	err_exit 'cd inside nested subshell changes $PWD'
 fi
-fun() /bin/echo hello
+fun() "$binecho" hello
 if	[[ $(fun) != hello ]]
 then	err_exit one line functions not working
 fi

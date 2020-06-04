@@ -36,6 +36,8 @@ tmp=$(
 	exit 1
 }
 trap 'cd / && rm -rf "$tmp"' EXIT
+bincat=$(whence -p cat)
+binecho=$(whence -p echo)
 
 # test basic file operations like redirection, pipes, file expansion
 set -- \
@@ -155,7 +157,7 @@ then	err_exit "$foobar is not foobar"
 fi
 {
 	print foo
-	/bin/echo bar
+	"$binecho" bar
 	print bam
 } > $tmp/foobar
 if	[[ $( < $tmp/foobar) != $'foo\nbar\nbam' ]]
@@ -163,17 +165,17 @@ then	err_exit "output file pointer not shared correctly"
 fi
 cat > $tmp/foobar <<\!
 	print foo
-	/bin/echo bar
+	"$binecho" bar
 	print bam
 !
 chmod +x $tmp/foobar
-if	[[ $($tmp/foobar) != $'foo\nbar\nbam' ]]
+if	[[ $(export binecho; $tmp/foobar) != $'foo\nbar\nbam' ]]
 then	err_exit "script not working"
 fi
-if	[[ $($tmp/foobar | /bin/cat) != $'foo\nbar\nbam' ]]
+if	[[ $(export binecho; $tmp/foobar | "$bincat") != $'foo\nbar\nbam' ]]
 then	err_exit "script | cat not working"
 fi
-if	[[ $( $tmp/foobar) != $'foo\nbar\nbam' ]]
+if	[[ $(export binecho; $tmp/foobar) != $'foo\nbar\nbam' ]]
 then	err_exit "output file pointer not shared correctly"
 fi
 rm -f $tmp/foobar
@@ -181,13 +183,13 @@ x=$( (print foo) ; (print bar) )
 if	[[ $x != $'foo\nbar' ]]
 then	err_exit " ( (print foo);(print bar ) failed"
 fi
-x=$( (/bin/echo foo) ; (print bar) )
+x=$( ("$binecho" foo) ; (print bar) )
 if	[[ $x != $'foo\nbar' ]]
-then	err_exit " ( (/bin/echo);(print bar ) failed"
+then	err_exit " ( ("$binecho");(print bar ) failed"
 fi
-x=$( (/bin/echo foo) ; (/bin/echo bar) )
+x=$( ("$binecho" foo) ; ("$binecho" bar) )
 if	[[ $x != $'foo\nbar' ]]
-then	err_exit " ( (/bin/echo);(/bin/echo bar ) failed"
+then	err_exit " ( ("$binecho");("$binecho" bar ) failed"
 fi
 cat > $tmp/script <<\!
 if	[[ -p /dev/fd/0 ]]
@@ -221,7 +223,7 @@ if	[[ $x != "hello there" ]]
 then	err_exit "scripts in subshells fail"
 fi
 cd ~- || err_exit "cd back failed"
-x=$( (/bin/echo foo) 2> /dev/null )
+x=$( ("$binecho" foo) 2> /dev/null )
 if	[[ $x != foo ]]
 then	err_exit "subshell in command substitution fails"
 fi
@@ -233,15 +235,15 @@ then	err_exit "command substitution with stdout closed failed"
 fi
 exec >& 9
 cd $pwd
-x=$(cat <<\! | $SHELL
-/bin/echo | /bin/cat
-/bin/echo hello
+x=$(export binecho bincat; cat <<\! | $SHELL
+"$binecho" | "$bincat"
+"$binecho" hello
 !
 )
 if	[[ $x != $'\n'hello ]]
 then	err_exit "$SHELL not working when standard input is a pipe"
 fi
-x=$( (/bin/echo hello) 2> /dev/null )
+x=$( ("$binecho" hello) 2> /dev/null )
 if	[[ $x != hello ]]
 then	err_exit "subshell in command substitution with 1 closed fails"
 fi
@@ -265,22 +267,22 @@ fi
 trap - INT
 cat > $tmp/script <<- \!
 read line
-/bin/cat
+"$bincat"
 !
-if	[[ $($SHELL $tmp/script <<!
+if	[[ $(export bincat; $SHELL $tmp/script <<!
 one
 two
 !
 )	!= two ]]
 then	err_exit "standard input not positioned correctly"
 fi
-word=$(print $'foo\nbar' | { read line; /bin/cat;})
+word=$(print $'foo\nbar' | { read line; "$bincat";})
 if	[[ $word != bar ]]
-then	err_exit "pipe to { read line; /bin/cat;} not working"
+then	err_exit "pipe to { read line; $bincat;} not working"
 fi
-word=$(print $'foo\nbar' | ( read line; /bin/cat) )
+word=$(print $'foo\nbar' | ( read line; "$bincat") )
 if	[[ $word != bar ]]
-then	err_exit "pipe to ( read line; /bin/cat) not working"
+then	err_exit "pipe to ( read line; $bincat) not working"
 fi
 if	[[ $(print x{a,b}y) != 'xay xby' ]]
 then	err_exit 'brace expansion not working'

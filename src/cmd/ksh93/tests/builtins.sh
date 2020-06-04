@@ -36,6 +36,7 @@ tmp=$(
 	exit 1
 }
 trap 'cd / && rm -rf "$tmp"' EXIT
+bincat=$(whence -p cat)
 
 # test shell builtin commands
 builtin getconf
@@ -101,7 +102,7 @@ hello \
 !
 [[ $REPLY == 'hello 	world' ]] || err_exit "read continuation2 failed"
 print "one\ntwo" | { read line
-	print $line | /bin/cat > /dev/null
+	print $line | "$bincat" > /dev/null
 	read line
 }
 read <<\!
@@ -559,6 +560,7 @@ builtin cat
 out=$tmp/seq.out
 for ((i=1; i<=11; i++)); do print "$i"; done >$out
 cmp -s <(print -- "$($bincat<( $bincat $out ) )") <(print -- "$(cat <( cat $out ) )") || err_exit "builtin cat differs from $bincat"
+builtin -d cat
 
 [[ $($SHELL -c '{ printf %R "["; print ok;}' 2> /dev/null) == ok ]] || err_exit $'\'printf %R "["\' causes shell to abort'
 
