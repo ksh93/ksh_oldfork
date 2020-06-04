@@ -1360,11 +1360,10 @@ static Shnode_t	*item(Lex_t *lexp,int flag)
 		return(t);
 	}
 	sh_lex(lexp);
+	/* redirection(s) following a compound command */
 	if(io=inout(lexp,io,0))
 	{
-		if((tok=t->tre.tretyp&COMMSK) != TFORK)
-			tok = TSETIO;
-		t=makeparent(lexp,tok,t);
+		t=makeparent(lexp,TSETIO,t);
 		t->tre.treio=io;
 	}
 done:

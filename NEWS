@@ -5,6 +5,16 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-06-04:
+
+- Fix BUG_KBGPID: the $! special parameter was not set if a background job
+  (somecommand &) or co-process (somecommand |&) was launched as the only
+  command within a braces block with an attached redirection, for example:
+	{
+		somecommand &
+	} >&2
+  With the bug, $! was unchanged; now it contains the PID of somecommand.
+
 2020-05-31:
 
 - Fix a bug in autoloading functions. Directories in the path search list

@@ -558,6 +558,15 @@ set -- $x
 : & pid=$!
 ( : & )
 [[ $pid == $! ]] || err_exit '$! value not preserved across subshells'
+
+pid=$!
+{ : & } >&2
+[[ $pid == $! ]] && err_exit '$! value not updated after bg job in braces+redir'
+
+pid=$!
+{ : |& } >&2
+[[ $pid == $! ]] && err_exit '$! value not updated after co-process in braces+redir'
+
 unset foo
 typeset -A foo
 function foo.set
