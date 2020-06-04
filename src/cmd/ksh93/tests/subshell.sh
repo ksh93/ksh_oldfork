@@ -652,6 +652,31 @@ v=$("$SHELL" -c "$(cat "$a")") && [[ $v == ok ]] || err_exit 'fail: more fun 2'
 v=$("$SHELL" -c 'eval "$(cat "$1")"' x "$a") && [[ $v == ok ]] || err_exit "fail: more fun 3"
 v=$("$SHELL" -c '. "$1"' x "$a") && [[ $v == ok ]] || err_exit "fail: more fun 4"
 
+# ...multiple levels of subshell
+func() { echo mainfunction; }
+v=$(
+	(
+		func() { echo sub1; }
+		(
+			func() { echo sub2; }
+			(
+				func() { echo sub3; }
+				func
+				PATH=/dev/null
+				unset -f func
+				func 2>/dev/null
+				(($? == 127)) && echo ok_nonexistent || echo fail_zombie
+			)
+			func
+		)
+		func
+	)
+	func
+)
+expect=$'sub3\nok_nonexistent\nsub2\nsub1\nmainfunction'
+[[ $v == "$expect" ]] \
+|| err_exit "multi-level subshell function failure (expected $(printf %q "$expect"), got $(printf %q "$v"))"
+
 # ======
 # Unsetting or redefining aliases within subshells
 

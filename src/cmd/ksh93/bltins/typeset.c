@@ -1267,8 +1267,8 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 				 * from the main shell scope. So walk though troot's parent views and delete any such zombie
 				 * functions. Note that this only works because 'unset -f' now forks if we're in a subshell.
 				 */
-				Dt_t *troottmp;
-				while((troottmp = troot->view) && (np = nv_search(name,troottmp,0)) && is_afunction(np))
+				Dt_t *troottmp = troot;
+				while((troottmp = troottmp->view) && (np = nv_search(name,troottmp,0)) && is_afunction(np))
 					nv_delete(np,troottmp,0);
 			}
 #if 0
