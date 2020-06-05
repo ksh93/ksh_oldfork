@@ -440,7 +440,7 @@ void sh_subjobcheck(pid_t pid)
 }
 
 /*
- * Run command tree <t> in a virtual sub-shell
+ * Run command tree <t> in a virtual subshell
  * If comsub is not null, then output will be placed in temp file (or buffer)
  * If comsub is not null, the return value will be a stream consisting of
  * output of command <t>.  Otherwise, NULL will be returned.
