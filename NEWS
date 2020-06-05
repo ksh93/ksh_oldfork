@@ -5,6 +5,13 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-06-05:
+
+- Fix a bug that caused special variables such as PATH, LANG, LC_ALL,
+  etc. to lose their effect after being unset in a subshell. For example:
+    (unset PATH; PATH=/dev/null; ls); : wrongly ran 'ls'
+    (unset LC_ALL; LC_ALL=badlocale); : failed to print a diagnostic
+
 2020-06-04:
 
 - Fix BUG_KBGPID: the $! special parameter was not set if a background job

@@ -1209,6 +1209,33 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 		dtclear(troot);
 		return(r);
 	}
+
+	/*
+	 * Check for variables with internal trap/discipline functions (PATH, LANG, LC_*, LINENO, etc.).
+	 * Unsetting these in a virtual/non-forked subshell would cause them to lose their discipline actions,
+	 * so, for example, (unset PATH; PATH=/dev/null; ls) would run 'ls'! Until a fix is found, make the problem
+	 * go away by forking the subshell. To avoid crashing, this must be done before calling sh_pushcontext(),
+	 * so we need to loop through the args separately to check if any variable to unset has a discipline function.
+	 */
+	if(shp->subshell && !shp->subshare && troot==shp->var_tree)
+	{
+		char **argv_tmp = argv;
+		while(name = *argv_tmp++)
+		{
+			np=nv_open(name,troot,NV_NOADD|nflag);
+			if(!np)
+				continue;
+			/* Has discipline function, and is not a nameref? */
+			if(np->nvfun && np->nvfun->disc && !nv_isref(np))
+			{
+				nv_close(np);
+				sh_subfork();
+				break;
+			}
+			nv_close(np);
+		}
+	}
+
 	sh_pushcontext(shp,&buff,1);
 	while(name = *argv++)
 	{

@@ -642,9 +642,6 @@ set --
 		fi
 	done
 
-	# TODO: changing the locale is somehow broken in non-forked/virtual subshells.
-	# For now, fork it using ulimit; remove the ulimit to expose the test failures.
-	ulimit -t unlimited
 	x=x
 	for v in LC_ALL LC_CTYPE LC_MESSAGES LC_COLLATE LC_NUMERIC
 	do	nameref r=$v
