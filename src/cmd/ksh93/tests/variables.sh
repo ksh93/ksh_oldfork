@@ -621,8 +621,25 @@ function a.set
 	[[ ${.sh.subshell} == 1 ]] || err_exit '${.sh.subshell} should be 1'
 	(
 		[[ ${.sh.subshell} == 2 ]] || err_exit '${.sh.subshell} should be 2'
+		exit $Errors
 	)
 )
+Errors=$?	# ensure error count survives subshell
+
+actual=$(
+	{
+		(
+			echo ${.sh.subshell} | cat	# left element of pipe should increase ${.sh.subshell}
+			echo ${.sh.subshell}
+			ulimit -t unlimited		# fork
+			echo ${.sh.subshell}		# should be same after forking existing virtual subshell
+		)
+		echo ${.sh.subshell}			# a background job should also increase ${.sh.subshell}
+	} & wait "$!"
+	echo ${.sh.subshell}
+)
+expect=$'4\n3\n3\n2\n1'
+[[ $actual == "$expect" ]] || err_exit "\${.sh.subshell} failure (expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
 set -- {1..32768}
 (( $# == 32768 )) || err_exit "\$# failed -- expected 32768, got $#"
@@ -657,7 +674,7 @@ set --
 
 	exit $Errors
 )
-let "Errors += $?"  # ensure error count survives subshell
+Errors=$?  # ensure error count survives subshell
 
 cd $tmp
 

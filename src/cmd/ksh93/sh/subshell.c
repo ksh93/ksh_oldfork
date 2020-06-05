@@ -171,7 +171,7 @@ void	sh_subtmpfile(Shell_t *shp)
 
 
 /*
- * This routine creates a temp file if necessary and creates a subshell.
+ * This routine creates a temp file if necessary, then forks a virtual subshell into a real subshell.
  * The parent routine longjmps back to sh_subshell()
  * The child continues possibly with its standard output replaced by temp file
  */
@@ -210,10 +210,11 @@ void sh_subfork(void)
 		subshell_data = 0;
 		shp->subshell = 0;
 		shp->comsub = 0;
-		SH_SUBSHELLNOD->nvalue.s = 0;
 		sp->subpid=0;
 		shp->st.trapcom[0] = trap;
 		shp->savesig = 0;
+		/* sh_fork() increases ${.sh.subshell} but we forked an existing virtual subshell, so undo */
+		SH_SUBSHELLNOD->nvalue.s--;
 	}
 }
 
@@ -454,7 +455,6 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	int savecurenv = shp->curenv;
 	int savejobpgid = job.curpgid;
 	int *saveexitval = job.exitval;
-	int16_t subshell;
 	char *savsig;
 	Sfio_t *iop=0;
 	struct checkpt buff;
@@ -475,9 +475,8 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	shp->curenv = ++subenv;
 	savst = shp->st;
 	sh_pushcontext(shp,&buff,SH_JMPSUB);
-	subshell = shp->subshell+1;
-	SH_SUBSHELLNOD->nvalue.s = subshell;
-	shp->subshell = subshell;
+	shp->subshell++;		/* increase level of virtual subshells */
+	SH_SUBSHELLNOD->nvalue.s++;	/* increase ${.sh.subshell} */
 	sp->prev = subshell_data;
 	sp->shp = shp;
 	sp->sig = 0;
@@ -757,8 +756,10 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	shp->coshell = sp->coshell;
 #endif /* SHOPT_COSHELL */
 	if(shp->subshell)
-		SH_SUBSHELLNOD->nvalue.s = --shp->subshell;
-	subshell = shp->subshell;
+	{
+		shp->subshell--;		/* decrease level of virtual subshells */
+		SH_SUBSHELLNOD->nvalue.s--;	/* decrease ${.sh.subshell} */
+	}
 	subshell_data = sp->prev;
 	if(!argsav  ||  argsav->dolrefcnt==argcnt)
 		sh_argfree(shp,argsav,0);

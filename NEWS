@@ -16,6 +16,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   macOS, by eliminating an invalid/undefined use of memccpy() on overlapping
   buffers in the commonly used sfputr() function.
 
+- Fix the ${.sh.subshell} level counter; it is no longer reset to zero when a
+  non-forked subshell happens to fork into a separate process for some reason
+  (an internal implementation detail that should be unnoticeable to scripts).
+
 2020-06-04:
 
 - Fix BUG_KBGPID: the $! special parameter was not set if a background job
