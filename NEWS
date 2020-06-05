@@ -12,6 +12,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
     (unset PATH; PATH=/dev/null; ls); : wrongly ran 'ls'
     (unset LC_ALL; LC_ALL=badlocale); : failed to print a diagnostic
 
+- Fix crashes on some systems, including at least a crash in 'print -v' on
+  macOS, by eliminating an invalid/undefined use of memccpy() on overlapping
+  buffers in the commonly used sfputr() function.
+
 2020-06-04:
 
 - Fix BUG_KBGPID: the $! special parameter was not set if a background job
