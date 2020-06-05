@@ -30,9 +30,13 @@
 #include <ast.h>
 #include <ast_mmap.h>
 
+#if _mmap_worthy > 1
+
 #include <ls.h>
 
 #define MAPSIZE		(1024*256)
+
+#endif
 
 #undef	BUFSIZ
 #define BUFSIZ		4096

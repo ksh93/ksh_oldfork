@@ -209,6 +209,9 @@
 
 /* see if we can use memory mapping for io */
 #if _LARGEFILE64_SOURCE && !_lib_mmap64
+#undef _mmap_worthy
+#endif
+#if !_mmap_worthy
 #undef _hdr_mman
 #undef _sys_mman
 #endif

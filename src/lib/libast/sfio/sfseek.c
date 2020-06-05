@@ -204,9 +204,18 @@ int	type;	/* 0: from org, 1: from here, 2: from end */
 #ifdef MAP_TYPE
 	if(f->bits&SF_MMAP)
 	{	/* if mmap is not great, stop mmaping if moving around too much */
-		newpos(f,p);
-		if(!hardseek)
-			goto done;
+#if _mmap_worthy < 2
+		if((f->next - f->data) < ((f->endb - f->data)/4) )
+		{	SFSETBUF(f,(Void_t*)f->tiny,(size_t)SF_UNBOUND);
+			hardseek = 1; /* this forces a hard seek below */
+		}
+		else
+#endif
+		{	/* for mmap, f->here can be virtual except for hardseek */
+			newpos(f,p);
+			if(!hardseek)
+				goto done;
+		}
 	}
 #endif
 
