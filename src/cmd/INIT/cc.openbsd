@@ -1,6 +1,6 @@
-: FreeBSD cc wrapper
+: OpenBSD cc wrapper
 
-HOSTTYPE=freebsd.generic
+HOSTTYPE=openbsd.generic
 
 case " $* " in
 *" -dumpmachine "*) echo $HOSTTYPE; exit ;;
