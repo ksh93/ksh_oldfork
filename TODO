@@ -1,6 +1,21 @@
 TODO for AT&T ksh93, 93u+m bugfix branch
 
 ______
+Fix regression test failures:
+
+- On OpenBSD, there are 15 locale-related test failures in variables.sh.
+
+______
+Fix build failures:
+
+- ksh does not currently build on AIX, HP-UX, Solaris, or QNX.
+
+______
+Remove hack for 'test -t' with no args == 'test -t 1':
+- from sh/parse.c, qscan()
+- from bltins/test.c
+
+______
 Fix or remove broken default aliases:
 
 - Remove alias times='{ { time;} 2>&1;}' which does not produce POSIX-
@@ -38,6 +53,7 @@ https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
   or
 	set -- command ls; "$@"
   don't work.
+  See also: https://github.com/att/ast/issues/963
 
 - BUG_CMDSPASGN: preceding a "special builtin"[*] with 'command' does not
   stop preceding invocation-local variable assignments from becoming global.
