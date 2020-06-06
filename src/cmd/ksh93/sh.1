@@ -7928,8 +7928,8 @@ file descriptor 2.
 If the
 .B \-i
 option is present or
-if the shell input and output are attached to a terminal (as told by
-.IR tcgetattr (2)),
+if the shell's standard input and standard error are attached to a terminal (as told by
+.IR tcgetattr (3)),
 then this shell is
 .IR interactive .
 In this case \s-1TERM\s+1 is ignored (so that \f3kill 0\fP
