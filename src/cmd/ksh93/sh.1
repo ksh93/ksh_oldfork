@@ -4228,7 +4228,9 @@ search for the command name.
 Alternative directory names are separated by
 a colon
 .RB ( : ).
-The default path is
+The default path is equal to the output of
+.BI builtin\ getconf;\ getconf\ PATH
+or, if the OS doesn't provide that value,
 .B /bin:/usr/bin:
 (specifying
 .BR /bin ,
