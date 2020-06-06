@@ -36,6 +36,9 @@
  *
  */
 
+#include	<math.h>
+#include	<times.h>
+
 #include	"defs.h"
 #include	"variables.h"
 #include	"shnodes.h"
@@ -460,6 +463,61 @@ int    b_jobs(register int n,char *argv[],Shbltin_t *context)
 	return(shp->exitval);
 }
 #endif
+
+/*
+ * times command
+ */
+int	b_times(int argc, char *argv[], Shbltin_t *context)
+{
+	Shell_t *shp = context->shp;
+	const char *cmd = argv[0];
+	struct tms cpu_times;
+	clock_t rv;
+	double utime, stime, utime_min, utime_sec, stime_min, stime_sec;
+
+	while (argc = optget(argv, sh_opttimes)) switch (argc)
+	{
+	    case ':':
+		errormsg(SH_DICT, 2, "%s", opt_info.arg);
+		break;
+	    case '?':
+		errormsg(SH_DICT, ERROR_usage(0), "%s", opt_info.arg);
+		return(2);
+	    default:
+		break;
+	}
+	if (error_info.errors)
+		errormsg(SH_DICT, ERROR_usage(2), "%s", optusage((char*)0));
+
+	argv += opt_info.index;
+	if (*argv)
+		errormsg(SH_DICT, ERROR_exit(3), e_badsyntax);
+
+	rv = times(&cpu_times);
+	if (rv == (clock_t)-1)
+		errormsg(SH_DICT, ERROR_exit(2), "times(3) failed: errno %d: %s",
+			 errno, strerror(errno));
+
+	/* First line: user and system times used by the shell */
+	utime = (double)cpu_times.tms_utime / shp->gd->lim.clk_tck;
+	utime_min = floor(utime / 60);
+	utime_sec = utime - utime_min;
+	stime = (double)cpu_times.tms_stime / shp->gd->lim.clk_tck;
+	stime_min = floor(stime / 60);
+	stime_sec = stime - stime_min;
+	sfprintf(sfstdout, "%dm%.2fs %dm%.2fs\n", (int)utime_min, utime_sec, (int)stime_min, stime_sec);
+
+	/* Second line: same for the shell's child processes */
+	utime = (double)cpu_times.tms_cutime / shp->gd->lim.clk_tck;
+	utime_min = floor(utime / 60);
+	utime_sec = utime - utime_min;
+	stime = (double)cpu_times.tms_cstime / shp->gd->lim.clk_tck;
+	stime_min = floor(stime / 60);
+	stime_sec = stime - stime_min;
+	sfprintf(sfstdout, "%dm%.2fs %dm%.2fs\n", (int)utime_min, utime_sec, (int)stime_min, stime_sec);
+
+	return(0);
+}
 
 #ifdef _cmd_universe
 /*

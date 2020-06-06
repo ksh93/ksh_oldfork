@@ -5,6 +5,14 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-06-06:
+
+- The 'times' command is now a builtin command that conforms to POSIX
+  instead of an alias for the 'time' command. It displays the accumulated
+  user and system CPU times, one line with the times used by the shell and
+  another with those used by all of the shell's child processes.
+  https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_27
+
 2020-06-05:
 
 - Fix a bug that caused special variables such as PATH, LANG, LC_ALL,

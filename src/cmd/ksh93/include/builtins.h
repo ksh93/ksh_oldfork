@@ -105,6 +105,7 @@ extern int b_printf(int, char*[],Shbltin_t*);
 extern int b_pwd(int, char*[],Shbltin_t*);
 extern int b_sleep(int, char*[],Shbltin_t*);
 extern int b_test(int, char*[],Shbltin_t*);
+extern int b_times(int, char*[],Shbltin_t*);
 #if !SHOPT_ECHOPRINT
     extern int B_echo(int, char*[],Shbltin_t*);
 #endif /* SHOPT_ECHOPRINT */
@@ -197,6 +198,7 @@ extern const char sh_optunset[];
 #endif /* SHOPT_FS_3D */
 extern const char sh_optwhence[];
 #endif /* SYSDECLARE */
+extern const char sh_opttimes[];
 
 extern const char e_dict[];
 

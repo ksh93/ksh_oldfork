@@ -115,6 +115,7 @@ const struct shtable3 shtab_builtins[] =
 	"read",		NV_BLTIN|BLT_ENV,		bltin(read),
 	"sleep",	NV_BLTIN,			bltin(sleep),
 	"alarm",	NV_BLTIN,			bltin(alarm),
+	"times",	NV_BLTIN|BLT_SPC,		bltin(times),
 	"ulimit",	NV_BLTIN|BLT_ENV,		bltin(ulimit),
 	"umask",	NV_BLTIN|BLT_ENV,		bltin(umask),
 #ifdef _cmd_universe
@@ -1759,6 +1760,15 @@ USAGE_LICENSE
 "}"
 
 "[+SEE ALSO?\bulimit\b(2), \bgetrlimit\b(2)]"
+;
+
+const char sh_opttimes[] =
+"[-1c?@(#)$Id: times (ksh community) 2020-06-06 $\n]"
+"[+NAME?times - display CPU usage by the shell and child processes]"
+"[+DESCRIPTION?\btimes\b displays the accumulated user and system CPU times, "
+"one line with the times used by the shell and another with those used by "
+"all of the shell's child processes. No options are supported.]"
+"[+SEE ALSO?\btime\b(1)]"
 ;
 
 const char sh_optumask[] =

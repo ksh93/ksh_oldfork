@@ -820,8 +820,6 @@ but can be unset or redefined:
 .TP
 .B "suspend=\(fmkill \-s \s-1STOP\s+1 $$\(fm"
 .TP
-.B "times=\(fm{ { time;} 2>&1;}\(fm"
-.TP
 .B "type=\(fmwhence \-v\(fm"
 .PD
 .RE
@@ -7111,6 +7109,11 @@ number less than or equal to
 Suspends execution for the number of decimal seconds or fractions of a
 second given by
 .IR seconds .
+.TP
+\f3times\fP
+Displays the accumulated user and system CPU times, one line with the times
+used by the shell and another with those used by all of the shell's child
+processes. No options are supporetd.
 .TP
 \(dg \f3trap\fP \*(OK \f3\-p\fP \*(CK \*(OK \f2action\^\fP \*(CK \*(OK \f2sig\^\fP \*(CK .\|.\|.
 The

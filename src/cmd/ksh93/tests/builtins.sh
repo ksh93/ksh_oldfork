@@ -665,8 +665,19 @@ actual=$(
 expect=$': print: I/O error\n1'
 if [[ $actual != *"$expect" ]]
 then
-    err_exit "I/O error not detected (expected '$expect', got '$actual')"
+    err_exit "I/O error not detected: expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 fi
+
+# ======
+# 'times' builtin
+
+expect=$'0m0.0[0-9]s 0m0.0[0-9]s\n0m0.00s 0m0.00s'
+actual=$("$SHELL" -c times)
+[[ $actual == $expect ]] || err_exit "times output: expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+
+expect=$'*: times: incorrect syntax'
+actual=$(set +x; eval 'times Extra Args' 2>&1)
+[[ $actual == $expect ]] || err_exit "times with args: expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
 # ======
 exit $((Errors<125?Errors:125))
