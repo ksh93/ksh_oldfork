@@ -518,7 +518,8 @@ z=$($SHELL 2>&1 -uc 'print ${X23456789012345}')
 
 # pipe hang bug fixed 2011-03-15
 float start=SECONDS toolong=3
-( $SHELL <<-EOF
+( export toolong
+  $SHELL <<-EOF
 	set -o pipefail
 	(sleep $toolong;kill \$\$> /dev/null) &
 	cat $SHELL | for ((i=0; i < 5; i++))
