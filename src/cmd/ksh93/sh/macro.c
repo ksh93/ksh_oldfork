@@ -2790,6 +2790,19 @@ static char *special(Shell_t *shp,register int c)
 		else
 			return(shp->st.cmdname);
 	}
+	/* Handle 'set -u'/'set -o nounset' for special parameters */
+	if(sh_isoption(SH_NOUNSET))
+	{
+		int d=fcget();
+		fcseek(-1);
+		if(!(d && strchr(":+-?=",d)))
+		{
+			char c_str[2];
+			c_str[0]=(char)c;
+			c_str[1]='\0';
+			errormsg(SH_DICT,ERROR_exit(1),e_notset,c_str);
+		}
+	}
 	return(NIL(char*));
 }
 

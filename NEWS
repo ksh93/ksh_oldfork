@@ -11,6 +11,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   nonexistent positional parameter such as $1, $2, ... is accessed, as other
   shells do and POSIX requires. (This does *not* apply to "$@" and "$*".)
 
+- If 'set -u'/'set -o nounset' is active, then the shell now errors out if $!
+  is accessed before the shell has launched any background process.
+
 2020-06-06:
 
 - The 'times' command is now a builtin command that conforms to POSIX

@@ -511,10 +511,19 @@ $SHELL -uc 'var=foo;unset var;: ${var%foo}' >/dev/null 2>&1 && err_exit '${var%f
 $SHELL -uc 'var=foo;unset var;: ${!var}' >/dev/null 2>&1 && err_exit '${!var} should fail with set -u'
 $SHELL -uc 'var=foo;unset var;: ${#var}' >/dev/null 2>&1 && err_exit '${#var} should fail with set -u'
 $SHELL -uc 'var=foo;unset var;: ${var-OK}' >/dev/null 2>&1 || err_exit '${var-OK} should not fail with set -u'
-$SHELL -uc 'var=foo;nset var;: ${var:-OK}' >/dev/null 2>&1 || err_exit '${var:-OK} should not fail with set -u'
+$SHELL -uc 'var=foo;unset var;: ${var:-OK}' >/dev/null 2>&1 || err_exit '${var:-OK} should not fail with set -u'
 (set -u -- one two; : $2) 2>/dev/null || err_exit "an unset PP failed with set -u"
 (set -u -- one two; : $3) 2>/dev/null && err_exit "a set PP failed to fail with set -u"
+(set -u -- one two; : ${3%foo}) 2>/dev/null && err_exit '${3%foo} failed to fail with set -u'
+(set -u -- one two; : ${3-OK}) 2>/dev/null || err_exit '${3-OK} wrongly failed with set -u'
+(set -u -- one two; : ${3:-OK}) 2>/dev/null || err_exit '${3:-OK} wrongly failed with set -u'
+(set -u -- one two; : ${#3}) 2>/dev/null && err_exit '${#3} failed to fail with set -u'
 (set -u --; : $@ $*) 2>/dev/null || err_exit '$@ and/or $* fail to be exempt from set -u'
+$SHELL -uc ': $!' 2>/dev/null && err_exit '$! failed to fail with set -u'
+$SHELL -uc ': ${!%foo}' >/dev/null 2>&1 && err_exit '${!%foo} should fail with set -u'
+$SHELL -uc ': ${#!}' >/dev/null 2>&1 && err_exit '${#!} should fail with set -u'
+$SHELL -uc ': ${!-OK}' >/dev/null 2>&1 || err_exit '${!-OK} should not fail with set -u'
+$SHELL -uc ': ${!:-OK}' >/dev/null 2>&1 || err_exit '${!:-OK} should not fail with set -u'
 
 z=$($SHELL 2>&1 -uc 'print ${X23456789012345}')
 [[ $z == *X23456789012345:* ]] || err_exit "error message garbled with set -u got $z"
