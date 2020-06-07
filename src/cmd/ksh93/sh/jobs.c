@@ -1578,6 +1578,7 @@ int	job_wait(register pid_t pid)
 					if( pw->p_exit!=SIGTTIN && pw->p_exit!=SIGTTOU)
 						break;
 
+					tcsetpgrp(JOBTTY,pw->p_pgrp);
 					killpg(pw->p_pgrp,SIGCONT);
 				}
 				else /* ignore stop when non-interactive */
