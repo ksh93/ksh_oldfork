@@ -11,27 +11,7 @@ Fix build failures:
 - ksh does not currently build on AIX, HP-UX, Solaris, or QNX.
 
 ______
-Remove hack for 'test -t' with no args == 'test -t 1':
-- from sh/parse.c, qscan()
-- from bltins/test.c
-
-______
 Fix or remove broken default aliases:
-
-- Remove alias times='{ { time;} 2>&1;}' which does not produce POSIX-
-  compliant output; reimplement as a proper POSIX-compliant builtin.
-  In any case, implementing a standard utility as an alias is unacceptable
-  as 'unalias -a' (remove all aliases) should not remove standard utilities!
-  Backport the builtin from the abandoned Vashisht/Rader branch:
-  https://github.com/att/ast/pull/1332
-
-- Remove alias command='command '. Continuing alias substitution after
-  'command' (due to the final space in the alias) is inherently broken, as
-  aliases may contain arbitrary shell grammar. For instance, when combining
-  this default alias with the default 'times' alias ('command times'), which
-  is perfectly valid per POSIX, you get a syntax error!
-
-- Remove alias nohup='nohup '. Same reason as for 'command ' above.
 
 - Remove pointless default aliases 'fc' and 'type'; these are already
   implemented as normal shell builtins. Add man page entries for these.

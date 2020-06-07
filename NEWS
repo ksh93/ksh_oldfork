@@ -13,6 +13,12 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   another with those used by all of the shell's child processes.
   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_27
 
+- The default aliases command='command ' and nohup='nohup ' have been
+  removed because they caused breakage in an attempt to circumvent other
+  breakage which is being fixed. In the unlikely even that anyone still
+  needs alias substitution to continue on the command argument following
+  'command' or 'nohup', it's easy to set these aliases yourself.
+
 2020-06-05:
 
 - Fix a bug that caused special variables such as PATH, LANG, LC_ALL,

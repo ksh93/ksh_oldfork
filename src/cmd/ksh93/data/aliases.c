@@ -33,7 +33,6 @@ const struct shtable2 shtab_aliases[] =
 	"2d",		NV_NOFREE,		"set -f;_2d",
 #endif /* SHOPT_FS_3D */
 	"autoload",	NV_NOFREE,		"typeset -fu",
-	"command",	NV_NOFREE,		"command ",
 	"compound",	NV_NOFREE|BLT_DCL,	"typeset -C",
 	"fc",		NV_NOFREE,		"hist",
 	"float",	NV_NOFREE|BLT_DCL,	"typeset -lE",
@@ -42,7 +41,6 @@ const struct shtable2 shtab_aliases[] =
 	"history",	NV_NOFREE,		"hist -l",
 	"integer",	NV_NOFREE|BLT_DCL,	"typeset -li",
 	"nameref",	NV_NOFREE|BLT_DCL,	"typeset -n",
-	"nohup",	NV_NOFREE,		"nohup ",
 	"r",		NV_NOFREE,		"hist -s",
 	"redirect",	NV_NOFREE,		"command exec",
 	"source",	NV_NOFREE,		"command .",

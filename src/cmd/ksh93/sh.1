@@ -790,8 +790,6 @@ but can be unset or redefined:
 .TP
 .B "autoload=\(fmtypeset \-fu\(fm"
 .TP
-.B "command=\(fmcommand  \(fm"
-.TP
 .B "compound=\(fmtypeset \-C\(fm"
 .TP
 .B "fc=hist"
@@ -807,8 +805,6 @@ but can be unset or redefined:
 .B "integer=\(fmtypeset \-li\(fm"
 .TP
 .B "nameref=\(fmtypeset \-n\(fm"
-.TP
-.B "nohup=\(fmnohup  \(fm"
 .TP
 .B "r=\(fmhist \-s\(fm"
 .TP
@@ -5811,7 +5807,7 @@ the operating system's standard utilities path
 rather than the one defined by the value of
 .SM
 .BR PATH .
-Functions will not be searched for when finding
+Functions and aliases will not be searched for when finding
 .IR name .
 In addition, if
 .I name\^
