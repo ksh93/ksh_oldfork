@@ -1,6 +1,6 @@
-: unix wrapper for mac osx cc : 2012-01-20 :
+: unix wrapper for Mac OS X 10.3-10.6 (Darwin 7-10) cc : 2012-01-20 :
 
-HOSTTYPE=darwin.generic
+HOSTTYPE=darwin07.generic
 
 case " $* " in
 *" -dumpmachine "*) echo $HOSTTYPE; exit ;;
