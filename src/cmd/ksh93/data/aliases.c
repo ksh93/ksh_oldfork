@@ -34,7 +34,6 @@ const struct shtable2 shtab_aliases[] =
 #endif /* SHOPT_FS_3D */
 	"autoload",	NV_NOFREE,		"typeset -fu",
 	"compound",	NV_NOFREE|BLT_DCL,	"typeset -C",
-	"fc",		NV_NOFREE,		"hist",
 	"float",	NV_NOFREE|BLT_DCL,	"typeset -lE",
 	"functions",	NV_NOFREE,		"typeset -f",
 	"hash",		NV_NOFREE,		"alias -t --",
@@ -48,7 +47,6 @@ const struct shtable2 shtab_aliases[] =
 	"stop",		NV_NOFREE,		"kill -s STOP",
 	"suspend", 	NV_NOFREE,		"kill -s STOP $$",
 #endif /*SIGTSTP */
-	"type",		NV_NOFREE,		"whence -v",
 	"",		0,			(char*)0
 };
 

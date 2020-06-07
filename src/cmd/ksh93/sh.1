@@ -792,8 +792,6 @@ but can be unset or redefined:
 .TP
 .B "compound=\(fmtypeset \-C\(fm"
 .TP
-.B "fc=hist"
-.TP
 .B "float=\(fmtypeset \-lE\(fm"
 .TP
 .B "functions=\(fmtypeset \-f\(fm"
@@ -815,8 +813,6 @@ but can be unset or redefined:
 .B "stop=\(fmkill \-s \s-1STOP\s+1\(fm"
 .TP
 .B "suspend=\(fmkill \-s \s-1STOP\s+1 $$\(fm"
-.TP
-.B "type=\(fmwhence \-v\(fm"
 .PD
 .RE
 .SS Tilde Substitution.
@@ -5990,6 +5986,14 @@ Does nothing, and exits 1. Used with
 .B until
 for infinite loops.
 .TP
+.PD 0
+\f3fc\fP \*(OK \f3\-e\fP \f2ename\^\fP \ \*(CK \*(OK \f3\-nlr\^\fP \*(CK \*(OK \f2first\^\fP \*(OK \f2last\^\fP \*(CK \*(CK
+.TP
+\f3fc \-s \fP \*(OK \f2old\fP\f3\=\fP\f2new\^\fP \*(CK \*(OK \f2command\^\fP \*(CK
+.PD
+The same as
+.BR hist .
+.TP
 \f3fg\fP \*(OK \f2job\^\fP.\|.\|. \*(CK
 This command is only on systems that support job control.
 Each
@@ -7239,6 +7243,10 @@ preserve the exit status of the command that invoked the trap.
 Does nothing, and exits 0. Used with
 .B while
 for infinite loops.
+.TP
+\f3type\fP \*(OK \f3\-afp\fP \*(CK \f2name\^\fP .\|.\|.
+The same as
+.BR whence\ -v .
 .TP
 \(dg\(dg \f3typeset\fP \*(OK \f3\(+-ACHSfblmnprtux\^\fP \*(CK \*(OK \f3\(+-EFLRXZi\*(OK\f2n\^\fP\*(CK \*(CK   \*(OK \f3\+-M  \*(OK \f2mapname\fP \*(CK \*(CK \*(OK \f3\-T  \*(OK \f2tname\fP=(\f2assign_list\fP) \*(CK \*(CK \*(OK \f3\-h \f2str\fP \*(CK \*(OK \f3\-a\fP \*(OK\f2type\fP\*(CK \*(CK \*(OK \f2vname\^\fP\*(OK\f3=\fP\f2value\^\fP \*(CK \^ \*(CK .\|.\|.
 Sets attributes and values for shell variables and functions.
