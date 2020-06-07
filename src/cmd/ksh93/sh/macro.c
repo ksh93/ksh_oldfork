@@ -1195,6 +1195,14 @@ retry1:
 		}
 		else
 			v = 0;
+		/* Handle 'set -u'/'set -o nounset' for positional parameters */
+		if(!v && sh_isoption(SH_NOUNSET))
+		{
+			d=fcget();
+			fcseek(-1);
+			if(!(d && strchr(":+-?=",d)))
+				errormsg(SH_DICT,ERROR_exit(1),e_notset,ltos(c));
+		}
 		break;
 	    case S_ALP:
 		if(c=='.' && type==0)

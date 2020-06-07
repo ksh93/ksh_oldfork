@@ -5,6 +5,12 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-06-08:
+
+- If 'set -u'/'set -o nounset' is active, then the shell now errors out if a
+  nonexistent positional parameter such as $1, $2, ... is accessed, as other
+  shells do and POSIX requires. (This does *not* apply to "$@" and "$*".)
+
 2020-06-06:
 
 - The 'times' command is now a builtin command that conforms to POSIX
