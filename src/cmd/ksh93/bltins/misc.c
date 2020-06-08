@@ -36,9 +36,6 @@
  *
  */
 
-#include	<math.h>
-#include	<times.h>
-
 #include	"defs.h"
 #include	"variables.h"
 #include	"shnodes.h"
@@ -48,6 +45,9 @@
 #include	"history.h"
 #include	"builtins.h"
 #include	"jobs.h"
+
+#include	<math.h>
+#include	<times.h>
 
 #define DOTMAX	MAXDEPTH	/* maximum level of . nesting */
 
