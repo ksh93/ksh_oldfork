@@ -437,4 +437,26 @@ a
 [[ $endb ]] &&  err_exit 'TERM signal did not kill function b'
 [[ $enda == 1 ]] || err_exit 'TERM signal killed function a'
 
+# ======
+# Exit status checks
+
+# Verify that 'exit x' for x > 256 does not make the shell send a signal to itself
+"$SHELL" -c 'exit $((256+9))'
+let "$? == 256+9" && err_exit 'exit with status > 256 makes shell kill itself'
+
+# Verify that the shell does not kill itself after detecting that a child process is killed by a signal,
+# and that a signal still causes the exit status to be set to a value > 128
+cat >"$tmp/sigtest.sh" <<\EOF
+echo begin
+sh -c 'kill -9 "$$"'
+EOF
+expect=$'^begin\n/.*/sigtest.sh: line 2: [1-9][0-9]*: Killed\n[1-9][0-9]{1,2}$'
+actual=$("$SHELL" -c 'ksh "$1"; echo "$?"' x "$tmp/sigtest.sh" 2>&1)
+if	! [[ $actual =~ $expect ]]
+then	[[ $actual == *Killed*Killed* ]] && msg='ksh killed itself' || msg='unexpected output'
+	err_exit "$msg after child process signal (expected match to $(printf %q "$expect"); got $(printf %q "$actual"))"
+fi
+let "${actual##*$'\n'} > 128" || err_exit "child process signal did not cause exit status > 128"
+
+# ======
 exit $((Errors<125?Errors:125))

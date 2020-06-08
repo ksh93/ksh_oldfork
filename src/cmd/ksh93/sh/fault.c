@@ -643,7 +643,7 @@ void sh_done(void *ptr, register int sig)
 	sfsync((Sfio_t*)sfstdin);
 	sfsync((Sfio_t*)shp->outpool);
 	sfsync((Sfio_t*)sfstdout);
-	if(savxit&SH_EXITSIG)
+	if(savxit&SH_EXITSIG && (savxit&SH_EXITMASK) == shp->lastsig)
 		sig = savxit&SH_EXITMASK;
 	if(sig)
 	{
@@ -668,6 +668,11 @@ void sh_done(void *ptr, register int sig)
 	if(sh_isoption(SH_NOEXEC))
 		kiaclose((Lex_t*)shp->lex_context);
 #endif /* SHOPT_KIA */
+
+	/* Exit with portable 8-bit status (128 + signum) if last child process exits due to signal */
+	if (savxit & SH_EXITSIG)
+		savxit -= SH_EXITSIG + 128;
+
 	exit(savxit&SH_EXITMASK);
 }
 

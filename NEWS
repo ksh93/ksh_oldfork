@@ -21,6 +21,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   - undocumented builtins 'vmap' and 'vpath' that only printed error messages
   - a non-functional -V unary operator for the test and [[ commands
 
+- If the last program run by a ksh script exits with a signal (e.g. crashed),
+  ksh itself now exits normally instead of repeating that same signal.
+  In addition, using 'exit x' for x > 256 no longer makes ksh issue a signal.
+
 2020-06-06:
 
 - The 'times' command is now a builtin command that conforms to POSIX
