@@ -70,7 +70,7 @@ done
 	[[ $(<out2) == $'PIPED\nPIPED' ]] || err_exit 'SIGPIPE output on standard error is not correct'
 ) &
 cop=$!
-{ sleep 4; kill $cop; } 2>/dev/null &
+{ sleep .4; kill $cop; } 2>/dev/null &
 spy=$!
 if	wait $cop 2>/dev/null
 then	kill $spy 2>/dev/null
@@ -80,9 +80,9 @@ wait
 rm -f out2
 
 [[ $( trap 'print -n got_child' SIGCHLD
-	sleep 2 &
+	sleep .2 &
 	for	((i=0; i < 4; i++))
-	do 	sleep .75
+	do 	sleep .075
 		print -n $i
 	done) == 01got_child23 ]] || err_exit 'SIGCHLD not working'
 
@@ -176,7 +176,7 @@ case $1 in
 *v*)	echo 1-main ;;
 esac
 {
-	sleep 2
+	sleep .2
 	case $1 in
 	*v*)	echo "SIGINT" ;;
 	esac
@@ -197,7 +197,7 @@ case $1 in
 *)	$2 -c "tst-2 $1 $2"; status=$? ;;
 esac
 printf '1-%04d\n' $status
-sleep 2
+sleep .2
 !
 cat > tst-2 <<'!'
 case $1 in
@@ -230,13 +230,13 @@ printf '2-%04d\n' $status
 cat > tst-3 <<'!'
 case $1 in
 *[xz]*)	trap '
-		sleep 2
+		sleep .2
 		echo 3-intr
 		exit 0
 	' INT
 	;;
 *)	trap '
-		sleep 2
+		sleep .2
 		echo 3-intr
 		trap - INT
 		kill -s INT $$
@@ -246,7 +246,7 @@ esac
 case $1 in
 *v*)	echo 3-main ;;
 esac
-sleep 5
+sleep .5
 printf '3-%04d\n' $?
 !
 chmod +x tst tst-?
@@ -276,11 +276,11 @@ done < tst.got
 
 if	[[ ${SIG[USR1]} ]]
 then	float s=$SECONDS
-	[[ $(LC_ALL=C $SHELL -c 'trap "print SIGUSR1 ; exit 0" USR1; (trap "" USR1 ; exec kill -USR1 $$ & sleep 5); print done') == SIGUSR1 ]] || err_exit 'subshell ignoring signal does not send signal to parent'
-	(( (SECONDS-s) < 4 )) && err_exit 'parent does not wait for child to complete before handling signal'
+	[[ $(LC_ALL=C $SHELL -c 'trap "print SIGUSR1 ; exit 0" USR1; (trap "" USR1 ; exec kill -USR1 $$ & sleep .5); print done') == SIGUSR1 ]] || err_exit 'subshell ignoring signal does not send signal to parent'
+	(( (SECONDS-s) < .4 )) && err_exit 'parent does not wait for child to complete before handling signal'
 	((s = SECONDS))
-	[[ $(LC_ALL=C $SHELL -c 'trap "print SIGUSR1 ; exit 0" USR1; (trap "exit" USR1 ; exec kill -USR1 $$ & sleep 5); print done') == SIGUSR1 ]] || err_exit 'subshell catching signal does not send signal to parent'
-	(( SECONDS-s < 4 )) && err_exit 'parent completes early'
+	[[ $(LC_ALL=C $SHELL -c 'trap "print SIGUSR1 ; exit 0" USR1; (trap "exit" USR1 ; exec kill -USR1 $$ & sleep .5); print done') == SIGUSR1 ]] || err_exit 'subshell catching signal does not send signal to parent'
+	(( SECONDS-s < .4 )) && err_exit 'parent completes early'
 fi
 
 yes() for ((;;)); do print y; done
@@ -291,10 +291,10 @@ yes() for ((;;)); do print y; done
 				bindate=$(whence -p date) "$SHELL" <<- EOF
 				foo() { return 0; }
 				trap foo EXIT
-				{ sleep 2; kill -$exp \$\$; sleep 3; kill -0 \$\$ && kill -KILL \$\$; } &
+				{ sleep .2; kill -$exp \$\$; sleep .3; kill -0 \$\$ && kill -KILL \$\$; } &
 				yes |
 				while read yes
-				do	("\$bindate"; sleep .1)
+				do	("\$bindate"; sleep .01)
 				done > /dev/null
 				EOF
     			} 2>> /dev/null
@@ -304,50 +304,50 @@ yes() for ((;;)); do print y; done
 	done
 
 SECONDS=0
-$SHELL 2> /dev/null -c 'sleep 2 && kill $$ & trap "print done; exit 3" EXIT; (sleep 5); print finished' > $tmp/sig
+$SHELL 2> /dev/null -c 'sleep .2 && kill $$ & trap "print done; exit 3" EXIT; (sleep .5); print finished' > $tmp/sig
 e=$?
 [[ $e == 3 ]] || err_exit "exit status failed -- expected 3, got $e"
 x=$(<$tmp/sig)
 [[ $x == done ]] || err_exit "output failed -- expected 'done', got '$x'"
-(( SECONDS > 3.5 )) && err_exit "took $SECONDS seconds, expected around 2"
+(( SECONDS > .35 )) && err_exit "took $SECONDS seconds, expected around .2"
 
 SECONDS=0
-$SHELL 2> /dev/null -c 'sleep 2 && kill $$ & trap "print done; exit 3" EXIT; sleep 5; print finished' > $tmp/sig
+$SHELL 2> /dev/null -c 'sleep .2 && kill $$ & trap "print done; exit 3" EXIT; sleep .5; print finished' > $tmp/sig
 e=$?
 [[ $e == 3 ]] || err_exit "exit status failed -- expected 3, got $e"
 x=$(<$tmp/sig)
 [[ $x == done ]] || err_exit "output failed -- expected 'done', got '$x'"
-(( SECONDS > 3.5 )) && err_exit "took $SECONDS seconds, expected around 2"
+(( SECONDS > .35 )) && err_exit "took $SECONDS seconds, expected around .2"
 
 SECONDS=0
-{ $SHELL 2> /dev/null -c 'sleep 2 && kill $$ & trap "print done; exit 3" EXIT; (sleep 5); print finished' > $tmp/sig ;} 2> /dev/null
+{ $SHELL 2> /dev/null -c 'sleep .2 && kill $$ & trap "print done; exit 3" EXIT; (sleep .5); print finished' > $tmp/sig ;} 2> /dev/null
 e=$?
 [[ $e == 3 ]] || err_exit "exit status failed -- expected 3, got $e"
 x=$(<$tmp/sig)
 [[ $x == done ]] || err_exit "output failed -- expected 'done', got '$x'"
-(( SECONDS > 3.5 )) && err_exit "took $SECONDS seconds, expected around 2"
+(( SECONDS > .35 )) && err_exit "took $SECONDS seconds, expected around .2"
 
 SECONDS=0
-{ $SHELL 2> /dev/null -c 'sleep 2 && kill $$ & trap "print done; exit 3" EXIT; sleep 5; print finished' > $tmp/sig ;} 2> /dev/null
+{ $SHELL 2> /dev/null -c 'sleep .2 && kill $$ & trap "print done; exit 3" EXIT; sleep .5; print finished' > $tmp/sig ;} 2> /dev/null
 e=$?
 [[ $e == 3 ]] || err_exit "exit status failed -- expected 3, got $e"
 x=$(<$tmp/sig)
 [[ $x == done ]] || err_exit "output failed -- expected 'done', got '$x'"
-(( SECONDS > 3.5 )) && err_exit "took $SECONDS seconds, expected around 2"
+(( SECONDS > .35 )) && err_exit "took $SECONDS seconds, expected around .2"
 
 SECONDS=0
-x=$($SHELL 2> /dev/null -c 'sleep 2 && kill $$ & trap "print done; exit 3" EXIT; (sleep 5); print finished')
+x=$($SHELL 2> /dev/null -c 'sleep .2 && kill $$ & trap "print done; exit 3" EXIT; (sleep .5); print finished')
 e=$?
 [[ $e == 3 ]] || err_exit "exit status failed -- expected 3, got $e"
 [[ $x == done ]] || err_exit "output failed -- expected 'done', got '$x'"
-(( SECONDS > 3.5 )) && err_exit "took $SECONDS seconds, expected around 2"
+(( SECONDS > .35 )) && err_exit "took $SECONDS seconds, expected around .2"
 
 SECONDS=0
-x=$($SHELL 2> /dev/null -c 'sleep 2 && kill $$ & trap "print done; exit 3" EXIT; sleep 5; print finished')
+x=$($SHELL 2> /dev/null -c 'sleep .2 && kill $$ & trap "print done; exit 3" EXIT; sleep .5; print finished')
 e=$?
 [[ $e == 3 ]] || err_exit "exit status failed -- expected 3, got $e"
 [[ $x == done ]] || err_exit "output failed -- expected 'done', got '$x'"
-(( SECONDS > 3.5 )) && err_exit "took $SECONDS seconds, expected around 2"
+(( SECONDS > .35 )) && err_exit "took $SECONDS seconds, expected around .2"
 
 trap '' SIGBUS
 [[ $($SHELL -c 'trap date SIGBUS; trap -p SIGBUS') ]] && err_exit 'SIGBUS should not have a trap'
@@ -360,9 +360,9 @@ trap -- - SIGBUS
 	{
 		trap 'trap - TERM; return' TERM
 		( sleep $1; kill -TERM $$ ) >/dev/null 2>&1 &
-		sleep 3
+		sleep .3
 	}
-	timeout 1
+	timeout .1
 	print ok
 ++EOF
     )
@@ -388,7 +388,7 @@ x=$(
     $SHELL <<- \EOF
 	trap "print GNAW" URG
 	print 1
-	( sleep 1 ; kill -URG $$ ; sleep 1 ; print S1 ; )
+	( sleep .1 ; kill -URG $$ ; sleep .1 ; print S1 ; )
 	print 2
 EOF
 )
@@ -399,7 +399,7 @@ then	{
 	$SHELL <<- \EOF
 		trap : RTMIN
 		for ((i=0 ; i < 3 ; i++))
-		do	sleep 1
+		do	sleep .1
 			kill -RTMIN $$ 2> /dev/null
 		done &
 		wait
@@ -409,7 +409,7 @@ then	{
 	{
 	$SHELL <<- \EOF
 		for ((i=0 ; i < 3 ; i++))
-		do	sleep 1
+		do	sleep .1
 			kill -RTMIN $$ 2> /dev/null
 		done &
 		wait
@@ -420,7 +420,7 @@ fi
 
 function b
 {
-	sleep 3
+	sleep .3
 	endb=1
 }
 
@@ -431,7 +431,7 @@ function a
 	enda=1
 }
 
-{ /bin/sleep 1;kill -s TERM $$;}&
+{ sleep .1;kill -s TERM $$;}&
 unset enda endb
 a
 [[ $endb ]] &&  err_exit 'TERM signal did not kill function b'
