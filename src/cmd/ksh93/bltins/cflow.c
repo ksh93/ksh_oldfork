@@ -70,7 +70,8 @@ done:
 	/* return outside of function, dotscript and profile is exit */
 	if(shp->fn_depth==0 && shp->dot_depth==0 && !sh_isstate(SH_PROFILE))
 		pp->mode = SH_JMPEXIT;
-	sh_exit((shp->savexit = n) & SH_EXITMASK);
+	shp->savexit = n;
+	sh_exit((pp->mode == SH_JMPEXIT) ? (n & SH_EXITMASK) : n);
 	return(1);
 }
 
