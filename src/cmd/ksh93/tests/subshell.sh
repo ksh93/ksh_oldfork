@@ -613,8 +613,7 @@ printf=$(whence -p printf)
 $SHELL 2> /dev/null -c '( PATH=/bin; set -o restricted) ; exit 0'  || err_exit 'restoring PATH when a subshell enables restricted exits not working'
 
 $SHELL <<- \EOF
-	wc=$(whence wc) head=$(whence head)
-	print > /dev/null  $( ( $head -c 1 /dev/zero | ( $wc -c) 3>&1 ) 3>&1) &
+	print > /dev/null  $( ( dd if=/dev/zero bs=1 count=1 2>/dev/null | ( wc -c) 3>&1 ) 3>&1) &
 	pid=$!
 	sleep .2
 	kill -9 $! 2> /dev/null && err_exit '/dev/zero in command substitution hangs'

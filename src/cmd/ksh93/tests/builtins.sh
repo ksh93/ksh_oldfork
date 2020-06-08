@@ -680,4 +680,11 @@ actual=$(set +x; eval 'times Extra Args' 2>&1)
 [[ $actual == $expect ]] || err_exit "times with args: expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
 # ======
+# 'whence' builtin
+PATH=$tmp:$PATH $SHELL <<-\EOF || err_exit "'whence' gets wrong path on init"
+	wc=$(whence wc)
+	[[ -x $wc ]]
+EOF
+
+# ======
 exit $((Errors<125?Errors:125))

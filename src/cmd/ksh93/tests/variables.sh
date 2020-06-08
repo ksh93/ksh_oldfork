@@ -440,7 +440,7 @@ function foo
 
 }
 x=$(foo)
-(( x >.001 && x < .01 ))
+(( x >.001 && x < 1 ))
 '
 } 2> /dev/null   || err_exit 'SECONDS not working in function'
 cat > $tmp/script <<-\!
