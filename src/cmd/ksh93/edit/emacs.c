@@ -1073,7 +1073,7 @@ static int escape(register Emacs_t* ep,register genchar *out,int count)
 				if(cur>0 && eol==cur && (cur<(SEARCHSIZE-2) || ep->prevdirection == -2))
 #endif /* SHOPT_EDPREDICT */
 				{
-					if(ep->lastdraw==APPEND && ep->prevdirection != -2)
+					if(ep->lastdraw==APPEND)
 					{
 						out[cur] = 0;
 						gencpy((genchar*)lstring+1,out);
