@@ -8,7 +8,8 @@ The sources in this repository were extracted from the
 Github [AST repository](https://github.com/att/ast)
 which is no longer under active development.
 
-To see what's fixed, see [NEWS](./NEWS).
+To see what's fixed, see [NEWS](https://github.com/modernish/ksh/blame/93u%2Bm/NEWS)
+and click on commit messages for full details.
 
 To see what's left to fix, see [TODO](./TODO).
 
