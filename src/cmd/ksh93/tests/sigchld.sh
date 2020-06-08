@@ -26,7 +26,7 @@ function err_exit
 
 alias err_exit='err_exit $LINENO'
 
-float DELAY=${1:-0.2}
+float DELAY=${1:-0.02}
 integer FOREGROUND=10 BACKGROUND=2 Errors=0
 
 tmp=$(
@@ -82,7 +82,7 @@ then
 		integer running=0 maxrunning=0
 		trap "((running--))" CHLD
 		for ((i=0; i<JOBCOUNT; i++))
-		do	sleep 1 &
+		do	sleep .1 &
 			if	((++running > maxrunning))
 			then	((maxrunning=running))
 			fi
@@ -101,13 +101,13 @@ then
 			unset proc[\$!]
 		" CHLD
 
-		{ sleep 3; print a; exit 1; } &
+		{ sleep .3; print a; exit 1; } &
 		proc[$!]=( name=a status=1 )
 
-		{ sleep 2; print b; exit 2; } &
+		{ sleep .2; print b; exit 2; } &
 		proc[$!]=( name=b status=2 )
 
-		{ sleep 1; print c; exit 3; } &
+		{ sleep .1; print c; exit 3; } &
 		proc[$!]=( name=c status=3 )
 
 		while	(( ${#proc[@]} ))
@@ -120,8 +120,8 @@ then
 fi
 
 {
-got=$( ( sleep 1;print $'\n') | $SHELL -c 'function handler { : ;}
-	trap handler CHLD; sleep .3 & IFS= read; print good')
+got=$( ( sleep .1;print $'\n') | $SHELL -c 'function handler { : ;}
+	trap handler CHLD; sleep .03 & IFS= read; print good')
 } 2> /dev/null
 [[ $got == good ]] || err_exit 'SIGCLD handler effects read behavior'
 
@@ -129,9 +129,9 @@ set -- $(
 	(
 	$SHELL -xc $'
 		trap \'wait $!; print $! $?\' CHLD
-		{ sleep 0.1; exit 9; } &
+		{ sleep 0.01; exit 9; } &
 		print $!
-		sleep 0.5
+		sleep 0.05
 	'
 	) 2>/dev/null; print $?
 )
@@ -155,11 +155,11 @@ done
 (( d==2000 )) ||  err_exit "trap '' CHLD  causes side effects d=$d"
 trap - CHLD
 
-x=$($SHELL 2> /dev/null -ic '/dev/null/notfound; sleep .5 & sleep 1;jobs')
+x=$($SHELL 2> /dev/null -ic '/dev/null/notfound; sleep .05 & sleep .1;jobs')
 [[ $x == *Done* ]] || err_exit 'SIGCHLD blocked after notfound'
-x=$($SHELL 2> /dev/null  -ic 'kill -0 12345678901234567876; sleep .5 & sleep 1;jobs')
+x=$($SHELL 2> /dev/null  -ic 'kill -0 12345678901234567876; sleep .05 & sleep .1;jobs')
 [[ $x == *Done* ]] || err_exit 'SIGCHLD blocked after error message'
-print 'set -o monitor;sleep .5 & sleep 1;jobs' > $tmp/foobar
+print 'set -o monitor;sleep .05 & sleep .1;jobs' > $tmp/foobar
 chmod +x $tmp/foobar
 x=$($SHELL  -c "echo | $tmp/foobar")
 [[ $x == *Done* ]] || err_exit 'SIGCHLD blocked for script at end of pipeline'

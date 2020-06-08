@@ -47,9 +47,10 @@ if	(( RANDOM==RANDOM || $RANDOM==$RANDOM ))
 then	err_exit RANDOM variable not working
 fi
 # SECONDS
-sleep 3
-if	(( SECONDS < 2 ))
-then	err_exit SECONDS variable not working
+let SECONDS=0.0
+sleep .001
+if	(( SECONDS < .001 ))
+then	err_exit "either 'sleep' or \$SECONDS not working"
 fi
 # _
 set abc def
@@ -217,6 +218,7 @@ x error"
 	then	err_exit "\${#$i} not correct"
 	fi
 done
+kill -s 0 $! || err_exit '$! does not point to latest asynchronous process'
 kill $!
 unset x
 CDPATH=/
@@ -433,12 +435,12 @@ fi
 function foo
 {
 	typeset SECONDS=0
-	sleep 1.5
+	sleep .002
 	print $SECONDS
 
 }
 x=$(foo)
-(( x >1 && x < 2 ))
+(( x >.001 && x < .01 ))
 '
 } 2> /dev/null   || err_exit 'SECONDS not working in function'
 cat > $tmp/script <<-\!

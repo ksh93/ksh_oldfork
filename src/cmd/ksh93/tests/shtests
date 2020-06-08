@@ -207,7 +207,7 @@ done
 shift $OPTIND-1
 
 if	(( debug )) || [[ $trace ]]
-then	export PS4=':$LINENO: '
+then	export PS4='+ [${SECONDS:+${SECONDS%????}s|}${.sh.subshell:+S${.sh.subshell},}${.sh.file:+${.sh.file#${.sh.file%/*/*}/},}${.sh.fun:+${.sh.fun},}${LINENO:+L$LINENO,}e$?] '
 	if	(( debug ))
 	then	set -x
 	fi

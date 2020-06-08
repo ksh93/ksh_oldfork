@@ -342,7 +342,7 @@ function foo
 
 # whence -q bug fix
 $SHELL -c 'whence -q cat' & pid=$!
-sleep 3
+sleep .1
 kill $! 2> /dev/null && err_exit 'whence -q appears to be hung'
 
 FPATH=$PWD

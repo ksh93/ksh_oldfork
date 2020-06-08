@@ -56,7 +56,8 @@ do	if	! n=$(kill -l $s 2>/dev/null)
 done
 
 (
-	set --pipefail
+	: disabling xtrace for this test
+	set +x --pipefail
 	{
 		$SHELL 2> out2 <<- \EOF
 			g=false
@@ -67,6 +68,7 @@ done
 		EOF
 	} | head > /dev/null
 	(( $? == 0)) ||   err_exit "SIGPIPE with wrong error code $?"
+	# The below is kind of bogus as the err_exit from a bg job is never counterd. But see extra check below.
 	[[ $(<out2) == $'PIPED\nPIPED' ]] || err_exit 'SIGPIPE output on standard error is not correct'
 ) &
 cop=$!
@@ -74,7 +76,7 @@ cop=$!
 spy=$!
 if	wait $cop 2>/dev/null
 then	kill $spy 2>/dev/null
-else	err_exit "pipe with --pipefail PIPE trap hangs"
+else	err_exit "pipe with --pipefail PIPE trap hangs or produced an error"
 fi
 wait
 rm -f out2

@@ -200,11 +200,11 @@ got="$(<out)"
 # multibyte identifiers
 
 exp=OK
-got=$(LC_ALL=C.UTF-8 $SHELL -c $'\u[5929]=OK; print ${\u[5929]}' 2>&1)
+got=$(set +x; LC_ALL=C.UTF-8 $SHELL -c $'\u[5929]=OK; print ${\u[5929]}' 2>&1)
 [[ $got == "$exp" ]] || err_exit "multibyte variable definition/expansion failed -- expected '$exp', got '$got'"
-got=$(LC_ALL=C.UTF-8 $SHELL -c $'function \u[5929]\n{\nprint OK;\n}; \u[5929]' 2>&1)
+got=$(set +x; LC_ALL=C.UTF-8 $SHELL -c $'function \u[5929]\n{\nprint OK;\n}; \u[5929]' 2>&1)
 [[ $got == "$exp" ]] || err_exit "multibyte ksh function definition/execution failed -- expected '$exp', got '$got'"
-got=$(LC_ALL=C.UTF-8 $SHELL -c $'\u[5929]()\n{\nprint OK;\n}; \u[5929]' 2>&1)
+got=$(set +x; LC_ALL=C.UTF-8 $SHELL -c $'\u[5929]()\n{\nprint OK;\n}; \u[5929]' 2>&1)
 [[ $got == "$exp" ]] || err_exit "multibyte posix function definition/execution failed -- expected '$exp', got '$got'"
 
 # this locale is supported by ast on all platforms

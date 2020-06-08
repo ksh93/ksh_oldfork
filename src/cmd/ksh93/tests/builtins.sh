@@ -385,7 +385,7 @@ do	arg=$1 val=$2 code=$3
 	shift 3
 	for fmt in '%d' '%g'
 	do	out=$(printf "$fmt" "$arg" 2>/dev/null)
-		err=$(printf "$fmt" "$arg" 2>&1 >/dev/null)
+		err=$(set +x; printf "$fmt" "$arg" 2>&1 >/dev/null)
 		printf "$fmt" "$arg" >/dev/null 2>&1
 		ret=$?
 		[[ $out == $val ]] || err_exit "printf $fmt $arg failed -- expected '$val', got '$out'"

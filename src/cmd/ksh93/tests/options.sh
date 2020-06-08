@@ -73,7 +73,7 @@ then
 		got=$(printf %q "$got")
 		err_exit "\$ENV file &>/dev/null does not redirect stdout -- expected '', got $got"
 	fi
-	got=$($SHELL -E -c : 2>&1 >/dev/null)
+	got=$(set +x; $SHELL -E -c : 2>&1 >/dev/null)
 	if	[[ $got != *nonstandard* || $got == *$'\n'* ]]
 	then
 		got=$(printf %q "$got")
@@ -151,11 +151,11 @@ then
 else
 	[[ $(print env_hit | HOME=$tmp $SHELL 2>&1) == "OK" ]] &&
 		err_exit 'nointeractive shell reads $HOME/.kshrc file'
-	[[ $(print env_hit | HOME=$tmp $SHELL -E 2>&1) == "OK" ]] ||
+	[[ $(set +x; print env_hit | HOME=$tmp $SHELL -E 2>&1) == "OK" ]] ||
 		err_exit '-E ignores $HOME/.kshrc file'
 	[[ $(print env_hit | HOME=$tmp $SHELL +E 2>&1) == "OK" ]] &&
 		err_exit '+E reads $HOME/.kshrc file'
-	[[ $(print env_hit | HOME=$tmp $SHELL --rc 2>&1) == "OK" ]] ||
+	[[ $(set +x; print env_hit | HOME=$tmp $SHELL --rc 2>&1) == "OK" ]] ||
 		err_exit '--rc ignores $HOME/.kshrc file'
 	[[ $(print env_hit | HOME=$tmp $SHELL --norc 2>&1) == "OK" ]] &&
 		err_exit '--norc reads $HOME/.kshrc file'
@@ -368,7 +368,7 @@ pipeline=(
 	( nopipefail=1 pipefail=1 command='true|true|false' )
 	( nopipefail=1 pipefail=1 command='false|false|false' )
 	( nopipefail=0 pipefail=0 command='true|true|true' )
-	( nopipefail=0 pipefail=0 command='print hi|(sleep 1;"$bincat")>/dev/null' )
+	( nopipefail=0 pipefail=0 command='print hi|(sleep .1;"$bincat")>/dev/null' )
 )
 set --nopipefail
 for ((i = 0; i < ${#pipeline[@]}; i++ ))
@@ -443,10 +443,10 @@ export ENV= PS1="(:$$:)"
 histfile=$tmp/history
 exp=$(HISTFILE=$histfile $SHELL -c $'function foo\n{\ncat\n}\ntype foo')
 for var in HISTSIZE HISTFILE
-do	got=$( ( HISTFILE=$histfile $SHELL +E -ic $'unset '$var$'\nfunction foo\n{\ncat\n}\ntype foo\nexit' ) 2>&1 )
+do	got=$( set +x; ( HISTFILE=$histfile $SHELL +E -ic $'unset '$var$'\nfunction foo\n{\ncat\n}\ntype foo\nexit' ) 2>&1 )
 	got=${got##*"$PS1"} 
 	[[ $got == "$exp" ]] || err_exit "function definition inside (...) with $var unset fails -- got '$got', expected '$exp'"
-	got=$( { HISTFILE=$histfile $SHELL +E -ic $'unset '$var$'\nfunction foo\n{\ncat\n}\ntype foo\nexit' ;} 2>&1 )
+	got=$( set +x; { HISTFILE=$histfile $SHELL +E -ic $'unset '$var$'\nfunction foo\n{\ncat\n}\ntype foo\nexit' ;} 2>&1 )
 	got=${got##*"$PS1"} 
 	[[ $got == "$exp" ]] || err_exit "function definition inside {...;} with $var unset fails -- got '$got', expected '$exp'"
 done

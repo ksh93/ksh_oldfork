@@ -130,7 +130,7 @@ fi
 if	[[ ! -w /dev/fd/2 ]]
 then	err_exit "/dev/fd/2 not open for writing"
 fi
-sleep 1
+sleep .01
 > $newer_file
 if	[[ ! $file -ot $newer_file ]]
 then	err_exit "$file should be older than $newer_file"
@@ -235,10 +235,10 @@ done
 rm -rf $file
 {
 [[ -N $file ]] && err_exit 'test -N $tmp/*: st_mtime>st_atime after creat'
-sleep 2
+sleep .02
 print 'hello world'
 [[ -N $file ]] || err_exit 'test -N $tmp/*: st_mtime<=st_atime after write'
-sleep 2
+sleep .02
 read
 [[ -N $file ]] && err_exit 'test -N $tmp/*: st_mtime>st_atime after read'
 } > $file < $file

@@ -99,6 +99,7 @@ fi
 
 # 2004-11-25 ancient /dev/fd/N redirection bug fix
 got=$(
+	set +x
 	{
 		print -n 1
 		print -n 2 > ${FDFS[fdfs].dir}/2
@@ -338,16 +339,16 @@ read -n3 a <<!
 abcdefg
 !
 [[ $a == abc ]] || err_exit 'read -n3 here-document not working'
-(print -n a; sleep 1; print -n bcde) | { read -N3 a; read -N1 b;}
+(print -n a; sleep .1; print -n bcde) | { read -N3 a; read -N1 b;}
 [[ $a == abc ]] || err_exit 'read -N3 from pipe not working'
 [[ $b == d ]] || err_exit 'read -N1 from pipe not working'
-(print -n a; sleep 1; print -n bcde) 2>/dev/null |read -n3 a
+(print -n a; sleep .1; print -n bcde) 2>/dev/null |read -n3 a
 [[ $a == a ]] || err_exit 'read -n3 from pipe not working'
 if	mkfifo $tmp/fifo 2> /dev/null
-then	(print -n a; sleep 2; print -n bcde) > $tmp/fifo &
+then	(print -n a; sleep .2; print -n bcde) > $tmp/fifo &
 	{
-	read -u5 -n3 -t3 a || err_exit 'read -n3 from fifo timed out'
-	read -u5 -n1 -t3 b || err_exit 'read -n1 from fifo timed out'
+	read -u5 -n3 -t1 a || err_exit 'read -n3 from fifo timed out'
+	read -u5 -n1 -t1 b || err_exit 'read -n1 from fifo timed out'
 	} 5< $tmp/fifo
 	exp=a
 	got=$a
@@ -358,10 +359,10 @@ then	(print -n a; sleep 2; print -n bcde) > $tmp/fifo &
 	rm -f $tmp/fifo
 	wait
 	mkfifo $tmp/fifo 2> /dev/null
-	(print -n a; sleep 2; print -n bcde) > $tmp/fifo &
+	(print -n a; sleep .2; print -n bcde) > $tmp/fifo &
 	{
-	read -u5 -N3 -t3 a || err_exit 'read -N3 from fifo timed out'
-	read -u5 -N1 -t3 b || err_exit 'read -N1 from fifo timed out'
+	read -u5 -N3 -t1 a || err_exit 'read -N3 from fifo timed out'
+	read -u5 -N1 -t1 b || err_exit 'read -N1 from fifo timed out'
 	} 5< $tmp/fifo
 	exp=abc
 	got=$a
@@ -373,16 +374,16 @@ then	(print -n a; sleep 2; print -n bcde) > $tmp/fifo &
 fi
 (
 	print -n 'prompt1: '
-	sleep .1
+	sleep .01
 	print line2
-	sleep .1
+	sleep .01
 	print -n 'prompt2: '
-	sleep .1
+	sleep .01
 ) | {
-	read -t2 -n 1000 line1
-	read -t2 -n 1000 line2
-	read -t2 -n 1000 line3
-	read -t2 -n 1000 line4
+	read -t1 -n 1000 line1
+	read -t1 -n 1000 line2
+	read -t1 -n 1000 line3
+	read -t1 -n 1000 line4
 }
 [[ $? == 0 ]]		 	&& err_exit 'should have timed out'
 [[ $line1 == 'prompt1: ' ]] 	|| err_exit "line1 should be 'prompt1: '"
@@ -410,7 +411,7 @@ do	a=$1
 	shift 4
 	for ((i = 0; i < 2; i++))
 	do	for lc_all in C $lc_utf8
-		do	g=$(LC_ALL=$lc_all $SHELL -c "{ print -n '$a'; sleep 0.2; print -n '$b'; sleep 0.2; } | { read ${o[i]} a; print -n \$a; read a; print -n \ \$a; }")
+		do	g=$(LC_ALL=$lc_all $SHELL -c "{ print -n '$a'; sleep .02; print -n '$b'; sleep .02; } | { read ${o[i]} a; print -n \$a; read a; print -n \ \$a; }")
 			[[ $g == "${e[i]}" ]] || err_exit "LC_ALL=$lc_all read ${o[i]} from pipe '$a $b' failed -- expected '${e[i]}', got '$g'"
 		done
 	done
@@ -437,12 +438,14 @@ then	export LC_ALL=$lc_utf8
 	fi
 fi
 
-exec 3<&2
 file=$tmp/file
+(
+: disabling xtrace so we can redirect stderr for this test
+set +x
 redirect 5>$file 2>&5
 print -u5 -f 'This is a test\n'
 print -u2 OK
-exec 2<&3
+)
 exp=$'This is a test\nOK'
 got=$(< $file)
 [[ $got == $exp ]] || err_exit "output garbled when stderr is duped -- expected $(printf %q "$exp"), got $(printf %q "$got")"

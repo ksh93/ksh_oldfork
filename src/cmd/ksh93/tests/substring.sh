@@ -26,7 +26,10 @@ function err_exit
 alias err_exit='err_exit $LINENO'
 
 Command=${0##*/}
-integer Errors=0 j=4
+integer Errors=0
+tmpPS4='+ [temp_PS4|L$LINENO|e$?] '  # used to avoid interference to ${.sh.match} from $PS4 set by shtests
+
+integer j=4
 base=/home/dgk/foo//bar
 string1=$base/abcabcabc
 if	[[ ${string1:0} != "$string1" ]]
@@ -261,6 +264,9 @@ foo='foo+bar+'
 [[ $(print -r -- ${foo//+/"|"}) != 'foo|bar|' ]] && err_exit '${foobar//+/"|"}'
 [[ $(print -r -- "${foo//+/'|'}") != 'foo|bar|' ]] && err_exit '"${foobar//+/'"'|'"'}"'
 [[ $(print -r -- "${foo//+/"|"}") != 'foo|bar|' ]] && err_exit '"${foobar//+/"|"}"'
+
+(
+PS4=$tmpPS4
 unset x
 x=abcedfg
 : ${x%@(d)f@(g)}
@@ -270,6 +276,10 @@ x=abcedfg
 x=abcedddfg
 : ${x%%+(d)f@(g)}
 [[ ${.sh.match[1]} == ddd ]] || err_exit '.sh.match[1] not ddd'
+exit $Errors
+)
+Errors=$?
+
 unset a b
 a='\[abc @(*) def\]'
 b='[abc 123 def]'
@@ -296,10 +306,16 @@ integer i
 for((i=0; i < ${#string}; i++))
 do	pattern+='@(?)'
 done
+
+(
+PS4=$tmpPS4
 [[ $(string=$string $SHELL -c  ": \${string/$pattern/}; print \${.sh.match[26]}") == Z ]] || err_exit -u2 'sh.match[26] not Z'
 : ${string/$pattern/}
 (( ${#.sh.match[@]} == 53 )) || err_exit '.sh.match has wrong number of elements'
 [[ ${.sh.match[@]:2:4} == 'B C D E'  ]] || err_exit '${.sh.match[@]:2:4} incorrect'
+exit $Errors
+)
+Errors=$?
 
 D=$';' E=$'\\\\' Q=$'"' S=$'\'' M='nested pattern substitution failed'
 
@@ -497,7 +513,7 @@ pattern=00
 var=100
 [[ $( print $(( ${var%%00} )) ) == 1 ]] || err_exit "arithmetic with embedded patterns fails"
 [[ $( print $(( ${var%%$pattern} )) ) == 1 ]] || err_exit "arithmetic with embedded pattern variables fails"
-if	[[ ax == @(a)* ]] && [[ ${.sh.match[1]:0:${#.sh.match[1]}}  != a ]]
+if	(PS4=$tmpPS4; [[ ax == @(a)* ]] && [[ ${.sh.match[1]:0:${#.sh.match[1]}}  != a ]])
 then	err_exit '${.sh.match[1]:1:${#.sh.match[1]}} not expanding correctly'
 fi
 
@@ -586,6 +602,9 @@ got=$($SHELL -c 'A=""; B="B"; for I in ${A[@]} ${B[@]}; do echo "\"$I\""; done')
 A='|'
 [[ $A == $A ]] || err_exit 'With A="|",  [[ $A == $A ]] does not match'
 
+(
+PS4=$tmpPS4
+
 x="111 222 333 444 555 666"
 [[ $x == ~(E)(...).(...).(...) ]]
 [[ -v .sh.match[0] ]] ||   err_exit '[[ -v .sh.match[0] ]] should be true'
@@ -596,6 +615,10 @@ x="111 222 333 444 555 666"
 x="foo bar"
 dummy=${x/~(E)(*)/}
 [[ ${ print -v .sh.match;} ]] && err_exit 'print -v should show .sh.match empty when there are no matches'
+
+exit $Errors
+)
+Errors=$?
 
 if	$SHELL -c 'set 1 2 3 4 5 6 7 8 9 10 11 12; : ${##[0-9]}' 2>/dev/null
 then	set 1 2 3 4 5 6 7 8 9 10 11 12
@@ -614,16 +637,21 @@ fi
 
 function foo
 {
-	typeset x="123 456 789 abc"
+	typeset PS4=$tmpPS4 x="123 456 789 abc"
 	typeset dummy="${x/~(E-g)([[:digit:]][[:digit:]])((X)|([[:digit:]]))([[:blank:]])/_}"
 	exp=$'(\n\t[0]=\'123 \'\n\t[1]=12\n\t[2]=3\n\t[4]=3\n\t[5]=\' \'\n)'
 	[[ $(print -v .sh.match) == "$exp" ]] || err_exit '.sh.match not correct with alternations'
 }
 foo
 
+(
+PS4=$tmpPS4
 x="a 1 b"
 d=${x/~(E)(([[:digit:]])[[:space:]]*|([[:alpha:]]))/X}
 [[ $(print -v .sh.match) == $'(\n\t[0]=a\n\t[1]=a\n\t[3]=a\n)' ]] || err_exit '.sh.match not sparse'
+exit $Errors
+)
+Errors=$?
 
 unset v
 typeset -a arr=( 0 1 2 3 4 )
@@ -654,11 +682,16 @@ do	err_exit "\${@:0:-1} should not generate ${v:-empty_string}"
 	break
 done
 
+(
+PS4=$tmpPS4
 unset v d
 v=abbbc
 d="${v/~(E)b{2,4}/dummy}"
 [[ ${.sh.match} == bbb ]] || err_exit '.sh.match wrong after ${s/~(E)b{2,4}/dummy}'
 [[ $d == adummyc ]] || err_exit '${s/~(E)b{2,4}/dummy} not working'
+exit $Errors
+)
+Errors=$?
 
-
+# ======
 exit $((Errors<125?Errors:125))

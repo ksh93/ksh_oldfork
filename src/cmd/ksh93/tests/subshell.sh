@@ -19,14 +19,15 @@
 ########################################################################
 function err_exit
 {
-	print -u$Error_fd -n "\t"
-	print -u$Error_fd -r ${Command}[$1]: "${@:2}"
+	print -u2 -n "\t"
+	print -u2 -r ${Command}[$1]: "${@:2}"
 	(( Errors+=1 ))
 }
 alias err_exit='err_exit $LINENO'
 
 Command=${0##*/}
-integer Errors=0 Error_fd=2
+integer Errors=0
+typeset -F SECONDS  # for fractional seconds in PS4
 
 tmp=$(
 	d=${TMPDIR:-/tmp}/ksh93.subshell.$$.${RANDOM:-0}
@@ -40,6 +41,13 @@ trap 'cd / && rm -rf "$tmp"' EXIT
 builtin getconf
 bincat=$(PATH=$(getconf PATH) whence -p cat)
 binecho=$(PATH=$(getconf PATH) whence -p echo)
+# make an external 'sleep' command that supports fractional seconds
+binsleep=$tmp/.sleep.sh  # hide to exclude from simple wildcard expansion
+cat >"$binsleep" <<EOF
+#!$SHELL
+sleep "\$@"
+EOF
+chmod +x "$binsleep"
 
 z=()
 z.foo=( [one]=hello [two]=(x=3 y=4) [three]=hi)
@@ -101,9 +109,6 @@ unset l
 	l=( a=1 b="BE" )
 )
 [[ ${l+foo} != foo ]] || err_exit 'l should be unset'
-
-Error_fd=9
-eval "exec $Error_fd>&2 2>/dev/null"
 
 TEST_notfound=notfound
 while	whence $TEST_notfound >/dev/null 2>&1
@@ -220,7 +225,7 @@ do	for TEST_exec in '' 'exec'
 			sleep 2
 			kill -KILL $$
 		} &
-		'"$TEST_test"'
+		{ '"$TEST_test"'; } 2>/dev/null
 		kill $!
 		print ok
 		')
@@ -394,7 +399,7 @@ do	cat $tmp/buf $tmp/buf > $tmp/tmp
 		wait $m
 		h=$?
 		kill -9 $k
-		wait $k
+		{ wait $k; } 2>/dev/null  # suppress 'wait: $pid: Killed'
 		got=$(<$tmp/out)
 		if	[[ ! $got ]] && (( h ))
 		then	got=HUNG
@@ -427,7 +432,7 @@ done
 # specifics -- there's more?
 
 {
-	cmd='{ exec 5>/dev/null; print "$(eval ls -d . 2>&1 1>&5)"; } >$tmp/out &'
+	cmd='{ exec 5>/dev/null; print "$(set +x; eval ls -d . 2>&1 1>&5)"; } >$tmp/out &'
 	eval $cmd
 	m=$!
 	{ sleep 4; kill -9 $m; } &
@@ -447,13 +452,11 @@ then	err_exit "eval '$cmd' failed -- expected '$exp', got '$got'"
 fi
 
 float t1=$SECONDS
-sleep=$(whence -p sleep)
-if	[[ $sleep ]]
-then
-	$SHELL -c "( $sleep 5 </dev/null >/dev/null 2>&1 & );exit 0" | cat 
-	(( (SECONDS-t1) > 4 )) && err_exit '/bin/sleep& in subshell hanging'
-	((t1=SECONDS))
-fi
+
+$SHELL -c '( "$1" 5 </dev/null >/dev/null 2>&1 & );exit 0' x "$binsleep" | cat 
+(( (SECONDS-t1) > 4 )) && err_exit '/bin/sleep& in subshell hanging'
+((t1=SECONDS))
+
 $SHELL -c '( sleep 5 </dev/null >/dev/null 2>&1 & );exit 0' | cat 
 (( (SECONDS-t1) > 4 )) && err_exit 'sleep& in subshell hanging'
 
@@ -483,7 +486,7 @@ $SHELL -c 'sleep 20 & pid=$!; { x=$( ( seq 60000 ) );kill -9 $pid;}&;wait $pid'
 
 (.sh.foo=foobar)
 [[ ${.sh.foo} == foobar ]] && err_exit '.sh subvariables in subshells remain set'
-[[ $($SHELL -c 'print 1 | : "$("$bincat" <("$bincat"))"') ]] && err_exit 'process substitution not working correctly in subshells'
+[[ $(export bincat; $SHELL -c 'print 1 | : "$("$bincat" <("$bincat"))"') ]] && err_exit 'process substitution not working correctly in subshells'
 
 # config hang bug
 integer i
@@ -542,7 +545,7 @@ $SHELL <<- \EOF
 	(( ${#out} == 96011 )) || err_exit "\${#out} is ${#out} should be 96011"
 EOF
 } & pid=$!
-$SHELL -c "{ sleep 4 && kill $pid ;}" 2> /dev/null
+$SHELL -c "{ sleep .4 && kill $pid ;}" 2> /dev/null
 (( $? == 0 )) &&  err_exit 'process has hung'
 
 {
@@ -613,7 +616,7 @@ $SHELL <<- \EOF
 	wc=$(whence wc) head=$(whence head)
 	print > /dev/null  $( ( $head -c 1 /dev/zero | ( $wc -c) 3>&1 ) 3>&1) &
 	pid=$!
-	sleep 2
+	sleep .2
 	kill -9 $! 2> /dev/null && err_exit '/dev/zero in command substitution hangs'
 	wait $!
 EOF
@@ -685,13 +688,13 @@ expect=$'sub3\nok_nonexistent\nsub2\nsub1\nmainfunction'
 
 alias al="echo 'mainalias'"
 
-(unalias al; alias al >/dev/null) && err_exit 'alias fails to be unset in subshell'
+(unalias al; alias al 2>/dev/null) && err_exit 'alias fails to be unset in subshell'
 
-v=$(unalias al; alias al >/dev/null) && err_exit 'alias fails to be unset in comsub'
+v=$(unalias al; alias al 2>/dev/null) && err_exit 'alias fails to be unset in comsub'
 
 [[ $(eval 'al') == 'mainalias' ]] || err_exit 'main alias fails to survive unset in subshell(s)'
 
-v=${ eval 'al'; unalias al 2>&1; } && [[ $v == 'mainalias' ]] && ! alias al >/dev/null \
+v=${ eval 'al'; unalias al 2>&1; } && [[ $v == 'mainalias' ]] && ! alias al 2>/dev/null \
 || err_exit 'main shell alias wrongly survives unset within ${ ...; }'
 
 # ...alias can be redefined in subshell

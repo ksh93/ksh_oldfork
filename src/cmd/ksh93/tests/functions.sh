@@ -981,10 +981,17 @@ function _Dbg_debug_trap_handler
 	done
 }
 
+(
+: 'Disabling xtrace while running _Dbg_* functions'
+set +x	# TODO: the _Dbg_* functions are incompatible with xtrace. To expose the regression
+	# test failures, run 'bin/shtests -x -p functions'. Is this a bug in ksh?
 ((baseline=LINENO+2))
 trap '_Dbg_debug_trap_handler' DEBUG
 .  $tmp/debug foo bar
 trap '' DEBUG
+exit $Errors
+)
+Errors=$?
 
 caller() {
   integer .level=.sh.level .max=.sh.level-1

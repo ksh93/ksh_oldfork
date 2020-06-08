@@ -109,7 +109,7 @@ do
 	$cat |&
 	!
 	chmod +x $file
-	sleep 10 |&
+	sleep 1 |&
 	$file 2> /dev/null || err_exit "parent $cat coprocess prevents script coprocess"
 	exec 5<&p 6>&p
 	exec 5<&- 6>&-
@@ -119,15 +119,15 @@ do
 	cop=$!
 	exp=Done
 	print -p $'print hello | '$cat$'\nprint '$exp
-	read -t 5 -p
-	read -t 5 -p
+	read -t 1 -p
+	read -t 1 -p
 	got=$REPLY
 	if	[[ $got != $exp ]]
 	then	err_exit "${SHELL-ksh} $cat coprocess io failed -- got '$got', expected '$exp'"
 	fi
 	exec 5<&p 6>&p
 	exec 5<&- 6>&-
-	{ sleep 4; kill $cop; } 2>/dev/null &
+	{ sleep .4; kill $cop; } 2>/dev/null &
 	spy=$!
 	if	wait $cop 2>/dev/null
 	then	kill $spy 2>/dev/null
@@ -140,15 +140,15 @@ do
 	echo line2 | grep 'line1'
 	} |&
 	SECONDS=0 count=0
-	while	read -p -t 10 line
+	while	read -p -t 1 line
 	do	((count++))
 	done
-	if	(( SECONDS > 8 ))
+	if	(( SECONDS > .8 ))
 	then	err_exit "$cat coprocess read -p hanging (SECONDS=$SECONDS count=$count)"
 	fi
 	wait $!
 	
-	( sleep 3 |& sleep 1 && kill $!; sleep 1; sleep 3 |& sleep 1 && kill $! ) ||
+	( sleep .3 |& sleep .1 && kill $!; sleep .1; sleep .3 |& sleep .1 && kill $! ) ||
 		err_exit "$cat coprocess cleanup not working correctly"
 	{ : |& } 2>/dev/null ||
 		err_exit "subshell $cat coprocess lingers in parent"
@@ -166,7 +166,7 @@ do
 			wait $!
 		done
 		print
-	) 2>/dev/null | read -t 10 r
+	) 2>/dev/null | read -t 1 r
 	[[ $r == $e ]] || err_exit "$cat coprocess timing bug -- expected $e, got '$r'"
 	
 	r=
@@ -174,21 +174,21 @@ do
 		integer i
 		for ((i = 1; i <= N; i++))
 		do	print $i |&
-			sleep 0.01
+			sleep 0.001
 			r=$r$($cat <&p)
 			wait $!
 		done
 		print $r
-	) 2>/dev/null | read -t 10 r
+	) 2>/dev/null | read -t 1 r
 	[[ $r == $e ]] || err_exit "$cat coprocess command substitution bug -- expected $e, got '$r'"
 	
 	(
 		$cat |&
-		sleep 0.01
+		sleep 0.001
 		exec 6>&p
 		print -u6 ok
 		exec 6>&-
-		sleep 2
+		sleep .2
 		kill $! 2> /dev/null
 	) && err_exit "$cat coprocess with subshell would hang"
 	for sig in IOT ABRT
@@ -198,12 +198,12 @@ do
 					pid=\$!
 					trap "print TRAP" \$sig
 					(
-						sleep 2
+						sleep .2
 						kill -\$sig \$\$
-						sleep 2
+						sleep .2
 						kill -\$sig \$\$
 						kill \$pid
-						sleep 2
+						sleep .2
 						kill \$\$
 					) &
 					while	read -p || ((\$? > 256))
@@ -218,7 +218,7 @@ do
 	done
 	
 	trap 'sleep_pid=; kill $pid; err_exit "$cat coprocess 1 hung"' TERM
-	{ sleep 5; kill $$; } &
+	{ sleep .5; kill $$; } &
 	sleep_pid=$!
 	$cat |&
 	pid=$!
@@ -232,7 +232,7 @@ do
 	[[ $sleep_pid ]] && kill $sleep_pid
 	
 	trap 'sleep_pid=; kill $pid; err_exit "$cat coprocess 2 hung"' TERM
-	{ sleep 5; kill $$; } &
+	{ sleep .5; kill $$; } &
 	sleep_pid=$!
 	$cat |&
 	pid=$!
@@ -244,7 +244,7 @@ do
 	[[ $sleep_pid ]] && kill $sleep_pid
 	
 	trap 'sleep_pid=; kill $pid; err_exit "$cat coprocess 3 hung"' TERM
-	{ sleep 5; kill $$; } &
+	{ sleep .5; kill $$; } &
 	sleep_pid=$!
 	$cat |&
 	pid=$!

@@ -38,6 +38,13 @@ tmp=$(
 trap 'cd / && rm -rf "$tmp"' EXIT
 bincat=$(whence -p cat)
 binecho=$(whence -p echo)
+# make an external 'sleep' command that supports fractional seconds
+binsleep=$tmp/.sleep.sh  # hide to exclude from simple wildcard expansion
+cat >"$binsleep" <<EOF
+#!$SHELL
+sleep "\$@"
+EOF
+chmod +x "$binsleep"
 
 # test basic file operations like redirection, pipes, file expansion
 set -- \
@@ -146,7 +153,7 @@ cd ../../tmp || err_exit "cd ../../tmp failed"
 if	[[ $PWD != /tmp ]]
 then	err_exit 'cd ../../tmp is not /tmp'
 fi
-( sleep 2; cat <<!
+( sleep .2; cat <<!
 foobar
 !
 ) | cat > $tmp/foobar &
@@ -294,7 +301,7 @@ if	[[ $(for i in foo bar
 then	err_exit 'for loop subshell optimizer bug'
 fi
 unset a1
-optbug()
+function optbug
 {
 	set -A a1  foo bar bam
 	integer i
@@ -307,15 +314,15 @@ optbug()
 	done
 	return 1
 }
-optbug ||  err_exit 'array size optimzation bug'
+optbug ||  err_exit 'array size optimization bug'
 wait # not running --pipefail which would interfere with subsequent tests
 : $(jobs -p) # required to clear jobs for next jobs -p (interactive side effect)
-sleep 20 &
+sleep 2 &
 pids=$!
 if	[[ $(jobs -p) != $! ]]
 then	err_exit 'jobs -p not reporting a background job'
 fi
-sleep 20 &
+sleep 2 &
 pids="$pids $!"
 foo()
 {
@@ -325,8 +332,8 @@ foo()
 foo
 kill $pids
 
-[[ $( (trap 'print alarm' ALRM; sleep 4) & sleep 2; kill -ALRM $!; sleep 2; wait) == alarm ]] || err_exit 'ALRM signal not working'
-[[ $($SHELL -c 'trap "" HUP; $SHELL -c "(sleep 2;kill -HUP $$)& sleep 4;print done"') != done ]] && err_exit 'ignored traps not being ignored'
+[[ $( (trap 'print alarm' ALRM; sleep .4) & sleep .2; kill -ALRM $!; sleep .2; wait) == alarm ]] || err_exit 'ALRM signal not working'
+[[ $($SHELL -c 'trap "" HUP; $SHELL -c "(sleep .2;kill -HUP $$)& sleep .4;print done"') != done ]] && err_exit 'ignored traps not being ignored'
 [[ $($SHELL -c 'o=foobar; for x in foo bar; do (o=save);print $o;done' 2> /dev/null ) == $'foobar\nfoobar' ]] || err_exit 'for loop optimization subshell bug'
 command exec 3<> /dev/null
 if	cat /dev/fd/3 >/dev/null 2>&1  || whence mkfifo > /dev/null
@@ -372,9 +379,9 @@ chmod +x $tmp/scriptx
 cat > $tmp/scriptx <<- \EOF
 	myfilter() { x=$(print ok | cat); print  -r -- $SECONDS;}
 	set -o pipefail
-	sleep 3 | myfilter
+	sleep .3 | myfilter
 EOF
-(( $($SHELL $tmp/scriptx) > 2.0 )) && err_exit 'command substitution causes pipefail option to hang'
+(( $($SHELL $tmp/scriptx) > .2 )) && err_exit 'command substitution causes pipefail option to hang'
 exec 3<&-
 ( typeset -r foo=bar) 2> /dev/null || err_exit 'readonly variables set in a subshell cannot unset'
 $SHELL -c 'x=${ print hello;}; [[ $x == hello ]]' 2> /dev/null || err_exit '${ command;} not supported'
@@ -418,7 +425,7 @@ unset foo
 unset foo
 foo=$(false) > /dev/null && err_exit 'failed command substitution with redirection not returning false'
 expected=foreback
-got=$(print -n fore; (sleep 2;print back)&)
+got=$(print -n fore; (sleep .2;print back)&)
 [[ $got == $expected ]] || err_exit "command substitution background process output error -- got '$got', expected '$expected'"
 
 binfalse=$(whence -p false)
@@ -430,19 +437,20 @@ done
 if	env x-a=y >/dev/null 2>&1
 then	[[ $(env 'x-a=y'  $SHELL -c 'env | grep x-a') == *x-a=y* ]] || err_exit 'invalid environment variables not preserved'
 fi
+
 float s=SECONDS
-sleep=$(whence -p sleep)
-for i in 1 2
+for i in .1 .2
 do      print $i
-done | while read sec; do ( $sleep $sec; $sleep $sec) done
-(( (SECONDS-s)  < 4)) && err_exit '"command | while read...done" finishing too fast'
+done | while read sec; do ( "$binsleep" "$sec"; "$binsleep" "$sec") done
+((  (SECONDS-s) < .4)) && err_exit '"command | while read...done" finishing too fast'
 s=SECONDS
 set -o pipefail
 for ((i=0; i < 30; i++))
 do	print hello 2>/dev/null
-	sleep .1
-done |  $sleep 1
-(( (SECONDS-s) < 2 )) || err_exit 'early termination not causing broken pipe'
+	sleep .01
+done |  "$binsleep" .1
+(( (SECONDS-s) < .2 )) || err_exit 'early termination not causing broken pipe'
+
 [[ $({ trap 'print trap' 0; print -n | $(whence -p cat); } & wait $!) == trap ]] || err_exit 'trap on exit not getting triggered'
 var=$({ trap 'print trap' ERR; print -n | $binfalse; } & wait $!)
 [[ $var == trap ]] || err_exit 'trap on ERR not getting triggered'
@@ -479,28 +487,28 @@ set -o pipefail
 float start=$SECONDS end 
 for ((i=0; i < 2; i++))
 do	print foo 2>/dev/null
-	sleep 1.5
+	sleep .15
 done | { read; $bintrue; end=$SECONDS ;}
-(( (SECONDS-start) < 1 )) && err_exit "pipefail not waiting for pipe to finish"
+(( (SECONDS-start) < .1 )) && err_exit "pipefail not waiting for pipe to finish"
 set +o pipefail
-(( (SECONDS-end) > 2 )) &&  err_exit "pipefail causing $bintrue to wait for other end of pipe"
+(( (SECONDS-end) > .2 )) &&  err_exit "pipefail causing $bintrue to wait for other end of pipe"
 
 
 { env A__z=C+SHLVL $SHELL -c : ;} 2> /dev/null || err_exit "SHLVL with wrong attribute fails"
 
 if [[ $bintrue ]]
 then	float t0=SECONDS
-	{ time sleep 1.5 | $bintrue ;} 2> /dev/null
-	(( (SECONDS-t0) < 1 )) && err_exit 'time not waiting for pipeline to complete' 
+	{ time sleep .15 | $bintrue ;} 2> /dev/null
+	(( (SECONDS-t0) < .1 )) && err_exit 'time not waiting for pipeline to complete'
 fi
 
 cat > $tmp/foo.sh <<- \EOF
 	eval "cat > /dev/null  < /dev/null"
-	sleep 1
+	sleep .1
 EOF
 float sec=SECONDS
 . $tmp/foo.sh  | cat > /dev/null
-(( (SECONDS-sec) < .7 ))  && err_exit '. script does not restore output redirection with eval'
+(( (SECONDS-sec) < .07 ))  && err_exit '. script does not restore output redirection with eval'
 
 file=$tmp/foobar
 builtin cat
