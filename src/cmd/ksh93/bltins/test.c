@@ -363,23 +363,6 @@ int test_unop(Shell_t *shp,register int op,register const char *arg)
 		return(permission(arg, W_OK));
 	    case 'x':
 		return(permission(arg, X_OK));
-	    case 'V':
-#if SHOPT_FS_3D
-	    {
-		register int offset = staktell();
-		if(stat(arg,&statb)<0 || !S_ISREG(statb.st_mode))
-			return(0);
-		/* add trailing / */
-		stakputs(arg);
-		stakputc('/');
-		stakputc(0);
-		arg = (const char*)stakptr(offset);
-		stakseek(offset);
-		/* FALL THRU */
-	    }
-#else
-		return(0);
-#endif /* SHOPT_FS_3D */
 	    case 'd':
 		return(test_stat(arg,&statb)>=0 && S_ISDIR(statb.st_mode));
 	    case 'c':

@@ -1181,15 +1181,6 @@ pid_t path_spawn(Shell_t *shp,const char *opath,register char **argv, char **env
 retry:
 	switch(shp->path_err = errno)
 	{
-#ifdef apollo
-	    /* 
-  	     * On apollo's execve will fail with eacces when
-	     * file has execute but not read permissions. So,
-	     * for now we will pretend that EACCES and ENOEXEC
- 	     * mean the same thing.
- 	     */
-	    case EACCES:
-#endif /* apollo */
 	    case ENOEXEC:
 #if SHOPT_SUID_EXEC
 	    case EPERM:
@@ -1213,7 +1204,6 @@ retry:
 #endif
 		}
 		exscript(shp,path,argv,envp);
-#ifndef apollo
 	    case EACCES:
 	    {
 		struct stat statb;
@@ -1228,7 +1218,6 @@ retry:
 		}
 	    }
 		/* FALL THROUGH */
-#endif /* !apollo */
 #ifdef ENAMETOOLONG
 	    case ENAMETOOLONG:
 #endif /* ENAMETOOLONG */

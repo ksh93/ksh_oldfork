@@ -91,21 +91,5 @@
 #define SH_MATHNOD	(shgd->bltin_nodes+61)
 #define SH_JOBPOOL	(shgd->bltin_nodes+62)
 #define SHLVL		(shgd->bltin_nodes+63)
-#if SHOPT_FS_3D
-#   define VPATHNOD	(shgd->bltin_nodes+64)
-#   define NFS_3D	1
-#else
-#   define NFS_3D	0
-#endif /* SHOPT_FS_3D */
-#if SHOPT_VPIX
-#   define DOSPATHNOD	(shgd->bltin_nodes+64+NFS_3D)
-#   define VPIXNOD	(shgd->bltin_nodes+65+NFS_3D)
-#   define NVPIX	(NFS_3D+2)
-#else
-#   define NVPIX	NFS_3D
-#endif /* SHOPT_VPIX */
-#ifdef apollo
-#   define SYSTYPENOD	(shgd->bltin_nodes+63+NVPIX)
-#endif /* apollo */
 
 #endif /* SH_VALNOD */

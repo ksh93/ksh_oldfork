@@ -29,9 +29,6 @@
 
 const struct shtable2 shtab_aliases[] =
 {
-#if SHOPT_FS_3D
-	"2d",		NV_NOFREE,		"set -f;_2d",
-#endif /* SHOPT_FS_3D */
 	"autoload",	NV_NOFREE,		"typeset -fu",
 	"compound",	NV_NOFREE|BLT_DCL,	"typeset -C",
 	"float",	NV_NOFREE|BLT_DCL,	"typeset -lE",

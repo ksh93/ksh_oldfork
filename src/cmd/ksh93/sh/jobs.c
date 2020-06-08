@@ -1905,16 +1905,6 @@ static void job_free(register int n)
 static char *job_sigmsg(int sig)
 {
 	static char signo[40];
-#ifdef apollo
-	/*
-	 * This code handles the formatting for the apollo specific signal
-	 * SIGAPOLLO. 
-	 */
-	extern char *apollo_error(void);
-	
-	if ( sig == SIGAPOLLO )
-		return( apollo_error() );
-#endif /* apollo */
 	if(sig<=shgd->sigmax && shgd->sigmsg[sig])
 		return(shgd->sigmsg[sig]);
 #if defined(SIGRTMIN) && defined(SIGRTMAX)

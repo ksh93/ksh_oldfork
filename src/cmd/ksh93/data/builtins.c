@@ -121,10 +121,6 @@ const struct shtable3 shtab_builtins[] =
 #ifdef _cmd_universe
 	"universe",	NV_BLTIN|BLT_ENV,		bltin(universe),
 #endif /* _cmd_universe */
-#if SHOPT_FS_3D
-	"vpath",	NV_BLTIN|BLT_ENV,		bltin(vpath),
-	"vmap",		NV_BLTIN|BLT_ENV,		bltin(vpath),
-#endif /* SHOPT_FS_3D */
 	"wait",		NV_BLTIN|BLT_ENV|BLT_EXIT,	bltin(wait),
 	"type",		NV_BLTIN|BLT_ENV,		bltin(whence),
 	"whence",	NV_BLTIN|BLT_ENV,		bltin(whence),

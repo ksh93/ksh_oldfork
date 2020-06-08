@@ -220,25 +220,6 @@ int	b_hist(int argc,char *argv[], Shbltin_t *context)
 		if(*arg!='/')
 			errormsg(SH_DICT,ERROR_exit(1),"ed not found set FCEDIT");
 	}
-#ifdef apollo
-	/*
-	 * Code to support the FC using the pad editor.
-	 * Exampled of how to use: HISTEDIT=pad
-	 */
-	if (strcmp (arg, "pad") == 0)
-	{
-		extern int pad_create(char*);
-		sh_close(fdo);
-		fdo = pad_create(fname);
-		pad_wait(fdo);
-		unlink(fname);
-		strcat(fname, ".bak");
-		unlink(fname);
-		lseek(fdo,(off_t)0,SEEK_SET);
-	}
-	else
-	{
-#endif /* apollo */
 	if(*arg != '-')
 	{
 		char *com[3];
@@ -250,9 +231,6 @@ int	b_hist(int argc,char *argv[], Shbltin_t *context)
 	fdo = sh_chkopen(fname);
 	unlink(fname);
 	free((void*)fname);
-#ifdef apollo
-	}
-#endif /* apollo */
 	/* don't history fc itself unless forked */
 	error_info.flags |= ERROR_SILENT;
 	if(!sh_isstate(SH_FORKED))

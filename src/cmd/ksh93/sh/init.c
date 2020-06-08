@@ -181,9 +181,6 @@ struct match
 typedef struct _init_
 {
 	Shell_t		*sh;
-#if SHOPT_FS_3D
-	Namfun_t	VPATH_init;
-#endif /* SHOPT_FS_3D */
 	struct ifs	IFS_init;
 	Namfun_t	PATH_init;
 	Namfun_t	FPATH_init;
@@ -923,41 +920,6 @@ static Sfdouble_t nget_version(register Namval_t* np, Namfun_t *fp)
 
 static const Namdisc_t SH_VERSION_disc	= {  0, 0, get_version, nget_version };
 
-#if SHOPT_FS_3D
-    /*
-     * set or unset the mappings given a colon separated list of directories
-     */
-    static void vpath_set(char *str, int mode)
-    {
-	register char *lastp, *oldp=str, *newp=strchr(oldp,':');
-	if(!shgd->lim.fs3d)
-		return;
-	while(newp)
-	{
-		*newp++ = 0;
-		if(lastp=strchr(newp,':'))
-			*lastp = 0;
-		mount((mode?newp:""),oldp,FS3D_VIEW,0);
-		newp[-1] = ':';
-		oldp = newp;
-		newp=lastp;
-	}
-    }
-
-    /* catch vpath assignments */
-    static void put_vpath(register Namval_t* np,const char *val,int flags,Namfun_t *fp)
-    {
-	register char *cp;
-	if(cp = nv_getval(np))
-		vpath_set(cp,0);
-	if(val)
-		vpath_set((char*)val,1);
-	nv_putv(np,val,flags,fp);
-    }
-    static const Namdisc_t VPATH_disc	= { 0, put_vpath  };
-    static Namfun_t VPATH_init	= { &VPATH_disc, 1  };
-#endif /* SHOPT_FS_3D */
-
 
 static const Namdisc_t IFS_disc		= {  sizeof(struct ifs), put_ifs, get_ifs };
 const Namdisc_t RESTRICTED_disc	= {  sizeof(Namfun_t), put_restricted };
@@ -1296,10 +1258,6 @@ Shell_t *sh_init(register int argc,register char *argv[], Shinit_f userinit)
 			shgd->lim.child_max = CHILD_MAX;
 		if(shgd->lim.clk_tck <=0)
 			shgd->lim.clk_tck = CLK_TCK;
-#if SHOPT_FS_3D
-		if(fs3d(FS3D_TEST))
-			shgd->lim.fs3d = 1;
-#endif /* SHOPT_FS_3D */
 		shgd->ed_context = (void*)ed_open(shp);
 		error_info.exit = sh_exit;
 		error_info.id = path_basename(argv[0]);
@@ -1423,9 +1381,6 @@ Shell_t *sh_init(register int argc,register char *argv[], Shinit_f userinit)
 	}
 #endif
 	nv_putval(IFSNOD,(char*)e_sptbnl,NV_RDONLY);
-#if SHOPT_FS_3D
-	nv_stack(VPATHNOD, &VPATH_init);
-#endif /* SHOPT_FS_3D */
 	astconfdisc(newconf);
 #if SHOPT_TIMEOUT
 	shp->st.tmout = SHOPT_TIMEOUT;

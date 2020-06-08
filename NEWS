@@ -14,6 +14,13 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - If 'set -u'/'set -o nounset' is active, then the shell now errors out if $!
   is accessed before the shell has launched any background process.
 
+- Removed support for an obscure early 1990s Bell Labs file system research
+  project called 3DFS, which has not existed for decades. This removes:
+  - an obnoxious default alias 2d='set -f;_2d' that turned off your file name
+    wildcard expansion and then tried to run a nonexistent '_2d' command
+  - undocumented builtins 'vmap' and 'vpath' that only printed error messages
+  - a non-functional -V unary operator for the test and [[ commands
+
 2020-06-06:
 
 - The 'times' command is now a builtin command that conforms to POSIX

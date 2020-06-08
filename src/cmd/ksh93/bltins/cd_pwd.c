@@ -167,17 +167,9 @@ int	b_cd(int argc, char *argv[],Shbltin_t *context)
 		{
 			register char *cp;
 			stakseek(PATH_MAX+PATH_OFFSET);
-#if SHOPT_FS_3D
-			if(!(cp = pathcanon(stakptr(PATH_OFFSET),PATH_DOTDOT)))
-				continue;
-			/* eliminate trailing '/' */
-			while(*--cp == '/' && cp>stakptr(PATH_OFFSET))
-				*cp = 0;
-#else
 			if(*(cp=stakptr(PATH_OFFSET))=='/')
 				if(!pathcanon(cp,PATH_DOTDOT))
 					continue;
-#endif /* SHOPT_FS_3D */
 		}
 		if((rval=chdir(path_relative(shp,stakptr(PATH_OFFSET)))) >= 0)
 			goto success;
@@ -255,15 +247,7 @@ int	b_pwd(int argc, char *argv[],Shbltin_t *context)
 		errormsg(SH_DICT,ERROR_system(1), e_pwd);
 	if(flag)
 	{
-#if SHOPT_FS_3D
-		if(shp->gd->lim.fs3d && (flag = mount(e_dot,NIL(char*),FS3D_GET|FS3D_VIEW,0))>=0)
-		{
-			cp = (char*)stakseek(++flag+PATH_MAX);
-			mount(e_dot,cp,FS3D_GET|FS3D_VIEW|FS3D_SIZE(flag),0);
-		}
-		else
-#endif /* SHOPT_FS_3D */
-			cp = strcpy(stakseek(strlen(cp)+PATH_MAX),cp);
+		cp = strcpy(stakseek(strlen(cp)+PATH_MAX),cp);
 		pathcanon(cp,PATH_PHYSICAL);
 	}
 	sfputr(sfstdout,cp,'\n');
