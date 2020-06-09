@@ -446,7 +446,7 @@ done | while read sec; do ( "$binsleep" "$sec"; "$binsleep" "$sec") done
 s=SECONDS
 set -o pipefail
 for ((i=0; i < 30; i++))
-do	print hello 2>/dev/null
+do	print hello
 	sleep .01
 done |  "$binsleep" .1
 (( (SECONDS-s) < .2 )) || err_exit 'early termination not causing broken pipe'
@@ -486,7 +486,7 @@ bintrue=$(whence -p true)
 set -o pipefail
 float start=$SECONDS end 
 for ((i=0; i < 2; i++))
-do	print foo 2>/dev/null
+do	print foo
 	sleep .15
 done | { read; $bintrue; end=$SECONDS ;}
 (( (SECONDS-start) < .1 )) && err_exit "pipefail not waiting for pipe to finish"

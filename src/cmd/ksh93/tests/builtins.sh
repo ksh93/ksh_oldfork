@@ -662,8 +662,8 @@ actual=$(
         ) | true
     } 2>&1
 )
-expect=$': print: I/O error\n1'
-if [[ $actual != *"$expect" ]]
+expect='1'
+if [[ $actual != "$expect" ]]
 then
     err_exit "I/O error not detected: expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 fi

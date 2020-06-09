@@ -373,8 +373,6 @@ skip2:
 		if (sfsync(outfile) < 0)
 			exitval = 1;
 	}
-	if (exitval)
-		errormsg(SH_DICT, 2, e_io);
 	return(exitval);
 }
 
