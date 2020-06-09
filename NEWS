@@ -5,6 +5,11 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-06-09:
+
+- The 'unalias' builtin will now return a non-zero status if it tries
+  to remove a previously set alias that is not currently set.
+
 2020-06-08:
 
  - Fix an issue with the up arrow key in Emacs editing mode.

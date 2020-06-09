@@ -1161,11 +1161,13 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 	register const char *name;
 	volatile int r;
 	Dt_t	*dp;
-	int nflag=0,all=0,isfun,jmpval;
+	int nflag=0,all=0,isalias=0,isfun,jmpval;
 	struct checkpt buff;
 	NOT_USED(argc);
-	if(troot==shp->alias_tree)
+	if(troot==shp->alias_tree) {
+		isalias = 1;
 		name = sh_optunalias;
+	}
 	else
 		name = sh_optunset;
 	while(r = optget(argv,name)) switch(r)
@@ -1281,6 +1283,7 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 				if(shp->subshell)
 					np=sh_assignok(np,0);
 			}
+
 			if(!nv_isnull(np) || nv_size(np) || nv_isattr(np,~(NV_MINIMAL|NV_NOFREE)))
 				_nv_unset(np,0);
 			if(troot==shp->var_tree && shp->st.real_fun && (dp=shp->var_tree->walk) && dp==shp->st.real_fun->sdict)
@@ -1297,6 +1300,13 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 				Dt_t *troottmp = troot;
 				while((troottmp = troottmp->view) && (np = nv_search(name,troottmp,0)) && is_afunction(np))
 					nv_delete(np,troottmp,0);
+			}
+			/* The alias has been unset by call to _nv_unset, remove it from the tree */
+			else if(isalias) {
+				if(nv_isattr(np, NV_NOFREE))
+					nv_delete(np,troot,NV_NOFREE); /* The alias is in read-only memory (shtab_aliases) */
+				else
+					nv_delete(np,troot,0);
 			}
 #if 0
 			/* causes unsetting local variable to expose global */
