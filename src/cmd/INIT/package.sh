@@ -3983,13 +3983,18 @@ capture() # file command ...
 		0)	if	executable ! $TEE
 			then	TEE=tee
 			fi
+			rm -f $o.fifo
+			mkfifo -m 600 $o.fifo || exit
+			$TEE -a $o < $o.fifo &
 			{
 				case $s in
 				?*)	echo "$s"  ;;
 				esac
 				showenv $action
 				"$@"
-			} < /dev/null 2>&1 | $TEE -a $o
+			} > $o.fifo 2>&1 &
+			rm $o.fifo 	# unlink early
+			wait "$!"	# get build's exit status
 			;;
 		*)	{
 				case $s in
@@ -4004,6 +4009,10 @@ capture() # file command ...
 	*)	$make "$@"
 		;;
 	esac
+	exit_status=$?
+	if	test "$exit_status" -gt "$error_status"
+	then	error_status=$exit_status
+	fi
 }
 
 package_install() # dest sum
@@ -4374,6 +4383,8 @@ isascii()
 	esac
 	return $__isascii__
 }
+
+error_status=0
 
 case $action in
 
@@ -7381,3 +7392,5 @@ TEST)	set '' $target $package
 	;;
 
 esac
+
+exit "$error_status"
