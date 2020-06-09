@@ -1161,13 +1161,11 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 	register const char *name;
 	volatile int r;
 	Dt_t	*dp;
-	int nflag=0,all=0,isalias=0,isfun,jmpval;
+	int nflag=0,all=0,isfun,jmpval;
 	struct checkpt buff;
 	NOT_USED(argc);
-	if(troot==shp->alias_tree) {
-		isalias = 1;
+	if(troot==shp->alias_tree)
 		name = sh_optunalias;
-	}
 	else
 		name = sh_optunset;
 	while(r = optget(argv,name)) switch(r)
@@ -1302,7 +1300,8 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 					nv_delete(np,troottmp,0);
 			}
 			/* The alias has been unset by call to _nv_unset, remove it from the tree */
-			else if(isalias) {
+			else if(troot==shp->alias_tree)
+			{
 				if(nv_isattr(np, NV_NOFREE))
 					nv_delete(np,troot,NV_NOFREE); /* The alias is in read-only memory (shtab_aliases) */
 				else
