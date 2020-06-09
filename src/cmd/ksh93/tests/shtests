@@ -307,6 +307,7 @@ then	if	[[ -x $SHELL-g ]]
 	valgrind+=" --xml-file=$valxml"
 fi
 typeset -A tests
+typeset -i total_e=0
 for i in ${*-*.sh}
 do	[[ $i == *.sh ]] || i+='.sh'
 	if	[[ ! -r $i ]]
@@ -345,11 +346,12 @@ do	[[ $i == *.sh ]] || i+='.sh'
 			then	valxml $valxml
 				(( e += $? ))
 			fi
-			if	(( e > 256 ))
+			if	(( e > 256 && ++total_e ))
 			then	E="(killed by SIG$(kill -l "$e"))"
-			elif	(( e == 1 ))
+			elif	(( e == 1 && ++total_e ))
 			then	E="1 error"
 			else	E="$e errors"
+				(( total_e += e ))
 			fi
 			if	(( e == 0 ))
 			then	echo test $o passed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} "[ $t $T $E ]"
@@ -365,15 +367,17 @@ do	[[ $i == *.sh ]] || i+='.sh'
 		then	if	$valgrind $SHELL $trace $c
 			then	echo test $o passed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} "[ $t $T 0 errors ]"
 			else	e=$?
-				if	(( e > 256 ))
+				if	(( e > 256 && ++total_e ))
 				then	E="(killed by SIG$(kill -l "$e"))"
-				elif	(( e == 1 ))
+				elif	(( e == 1 && ++total_e ))
 				then	E="1 error"
 				else	E="$e errors"
+					(( total_e += e ))
 				fi
 				echo test $o failed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} with exit code $e "[ $t $T $E ]"
 			fi
 		else	e=$?
+			(( ++total_e ))
 			echo test $o failed to compile ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} with exit code $e "[ 1 test 1 error ]"
 		fi
 		if	[[ $i == $timesensitive ]]
@@ -381,3 +385,5 @@ do	[[ $i == *.sh ]] || i+='.sh'
 		fi
 	fi
 done
+print "Total errors: $total_e"
+exit $((total_e > 125 ? 125 : total_e))
