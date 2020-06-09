@@ -3,18 +3,48 @@ TODO for AT&T ksh93, 93u+m bugfix branch
 ______
 Fix regression test failures:
 
+- On FreeBSD, there is a test failure in [[ -N file ]] in bracket.sh.
 - On OpenBSD, there are 15 locale-related test failures in variables.sh.
 
 ______
 Fix build failures:
 
-- ksh does not currently build on AIX, HP-UX, Solaris, or QNX.
+- ksh does not currently build on NetBSD, AIX, HP-UX, Solaris, or QNX.
 
 ______
-Fix or remove broken default aliases:
+Fix or remove broken or misguided default aliases:
 
-- Remove pointless default aliases 'fc' and 'type'; these are already
-  implemented as normal shell builtins. Add man page entries for these.
+- Make a proper POSIX 'hash' builtin command and remove the builtin alias
+  hash='alias -t --', which, when removed, exposes a b0rken 'hash' builtin.
+  To work with this alias, the 'alias' builtin parses the '-r' for 'hash'
+  *after* '--' ('alias -t -- -r'), which is utterly bogus and violates POSIX.
+
+- Make a proper builtin out of the redirect='command exec' alias. It should
+  really only parse redirections. Currently, if an unwitting user notices this
+  alias and tries out something like 'redirect ls >file', it does 'exec ls
+  >file', so 'ls' replaces their shell and they get logged out. That is so
+  misdesigned I'm calling it a bug.
+     Alternatively, maybe just get rid? Who uses this anyway? 'redirect >&2'
+  takes four more keystrokes to type than 'exec >&2'.
+
+- Make proper builtins out of the following scripting-related aliases, so
+  that 'unalias -a' does not eliminate them. If done correctly, this causes
+  no other change in behaviour. It would be good practice to 'unalias -a' in
+  a script to start with a clean slate, except ksh has always made that
+  impossible without losing these. Default aliases should be to facilitate
+  interactive use.
+	- autoload='typeset -fu'
+	- compound='typeset -C'
+	- float='typeset -lE'
+	- functions='typeset -f'
+	- integer='typeset -li'
+	- nameref='typeset -n'
+	- source='command .'
+  Keep these default aliases for the benefit of interactive shells:
+	+ history='hist -l'
+	+ r='hist -s'
+	+ stop='kill -s STOP'
+	+ suspend='kill -s STOP $$'
 
 ______
 Fix currently known bugs affecting shell scripting. These are identified by
