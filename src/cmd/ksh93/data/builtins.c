@@ -79,7 +79,7 @@ const struct shtable3 shtab_builtins[] =
 	"newgrp",	NV_BLTIN|BLT_ENV|BLT_SPC,	Bltin(login),
 #endif	/* _bin_newgrp || _usr_bin_newgrp */
 	"alias",	NV_BLTIN|BLT_SPC,		bltin(alias),
-	"hash",		NV_BLTIN|BLT_SPC,		bltin(alias),
+	"hash",		NV_BLTIN,			bltin(hash),
 	"enum",		NV_BLTIN|BLT_ENV|BLT_SPC|BLT_DCL,bltin(enum),
 	"eval",		NV_BLTIN|BLT_ENV|BLT_SPC|BLT_EXIT,bltin(eval),
 	"exit",		NV_BLTIN|BLT_ENV|BLT_SPC,	bltin(return),
@@ -377,7 +377,7 @@ USAGE_LICENSE
 		"definition, or an error occurred.]"
 "}"
 
-"[+SEE ALSO?\bsh\b(1), \bunalias\b(1)]"
+"[+SEE ALSO?\bsh\b(1), \bhash(1), \bunalias\b(1)]"
 ;
 
 const char sh_optbuiltin[] =
@@ -927,6 +927,27 @@ _JOB_
 "}"
 
 "[+SEE ALSO?\bwait\b(1), \bps\b(1), \bfg\b(1), \bbg\b(1)]"
+;
+
+const char sh_opthash[] =
+"[-1c?\n@(#)$Id: hash (ksh community) 2020-06-10 $\n]"
+"[+NAME?hash - display the locations of recently used programs]"
+"[+DESCRIPTION?The \bhash\b utility is used to display or modify "
+	"the hash table, which contains the locations of "
+	"recently used programs.  When \bhash\b is given no arguments, "
+	"it will list all commands in the hash table. If \autility\a is "
+     "supplied, \bhash\b will add that utility to the hash table.]"
+"[r?This option will empty the hash table.  The effect of "
+	"this flag can also be achieved by resetting the value of \bPATH\b.]"
+"\n"
+"\n[utility...]\n"
+"\n"
+"[+EXIT STATUS?]{"
+	"[+0?Successful completion.]"
+	"[+>0?An error occured.]"
+"}"
+
+"[+SEE ALSO?\bsh\b(1), \balias\b(1)]"
 ;
 
 const char sh_opthist[]	= 

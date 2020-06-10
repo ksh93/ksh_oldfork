@@ -24,6 +24,7 @@
  * typeset [options]  [arg...]
  * alias [-ptx] [arg...]
  * unalias [arg...]
+ * hash [-r] [utility...]
  * builtin [-sd] [-f file] [name...]
  * set [options] [name...]
  * unset [-fnv] [name...]
@@ -132,6 +133,49 @@ int    b_readonly(int argc,char *argv[],Shbltin_t *context)
 	return(setall(argv,flag,tdata.sh->var_tree, &tdata));
 }
 
+int    b_hash(int argc,char *argv[],Shbltin_t *context)
+{
+	register unsigned flag = NV_NOARRAY | NV_NOSCOPE | NV_ASSIGN | NV_TAGGED;
+	register Dt_t *troot;
+	register int rflag=0, n;
+	struct tdata tdata;
+	NOT_USED(argc);
+	memset((void *)&tdata, 0, sizeof(tdata));
+	tdata.sh = context->shp;
+	troot = tdata.sh->alias_tree;
+
+	/* The hash utility should not be recognized as the alias builtin */
+	tdata.aflag = '-';
+
+	while((n = optget(argv,sh_opthash))) switch(n)
+	{
+		case 'r':
+			rflag = 1;
+			break;
+		case ':':
+			error(2,"%s",opt_info.arg);
+			break;
+		case '?':
+			error(ERROR_usage(0),"%s",opt_info.arg);
+			return 2;
+	}
+	if (error_info.errors)
+		errormsg(SH_DICT,ERROR_usage(2),"%s",optusage(NULL));
+	argv += (opt_info.index-1);
+
+	/* Handle -r */
+	if (rflag)
+	{
+		Namval_t *np = nv_search((char *)PATHNOD, tdata.sh->var_tree, HASH_BUCKET);
+		nv_putval(np, nv_getval(np), NV_RDONLY);
+	}
+
+	troot = tdata.sh->track_tree;
+	/* We must fork in subshells to avoid polluting the parent shell's hash table. */
+	if(tdata.sh->subshell && !tdata.sh->subshare)
+		sh_subfork();
+	return setall(argv, flag, troot, &tdata);
+}
 
 int    b_alias(int argc,register char *argv[],Shbltin_t *context)
 {
@@ -174,28 +218,7 @@ int    b_alias(int argc,register char *argv[],Shbltin_t *context)
 			errormsg(SH_DICT,ERROR_usage(2),"%s",optusage(NIL(char*)));
 		argv += (opt_info.index-1);
 		if(flag&NV_TAGGED)
-		{
-			/* hacks to handle hash -r | -- */
-			if(argv[1] && argv[1][0]=='-')
-			{
-				if(argv[1][1]=='r' && argv[1][2]==0)
-				{
-					Namval_t *np = nv_search((char*)PATHNOD,tdata.sh->var_tree,HASH_BUCKET);
-					nv_putval(np,nv_getval(np),NV_RDONLY);
-					argv++;
-					if(!argv[1])
-						return(0);
-				}
-				if(argv[1][0]=='-')
-				{
-					if(argv[1][1]=='-' && argv[1][2]==0)
-						argv++;
-					else
-						errormsg(SH_DICT, ERROR_exit(1), e_option, argv[1]);
-		}
-			}
 			troot = tdata.sh->track_tree;
-		}
 	}
 	if(context->shp->subshell && !context->shp->subshare)
 		sh_subfork();

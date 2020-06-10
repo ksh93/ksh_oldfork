@@ -1605,12 +1605,22 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 #endif /* SHOPT_FIXEDARRAY */
 	if(!(flags&NV_RDONLY) && nv_isattr (np, NV_RDONLY))
 		errormsg(SH_DICT,ERROR_exit(1),e_readonly, nv_name(np));
-	/* The following could cause the shell to fork if assignment
+
+	/*
+	 * Resetting the PATH in a non-forking subshell will reset the parent shell's
+	 * hash table, so work around the problem by forking before sh_assignok
+	 */
+	if(shp->subshell && !shp->subshare && np == PATHNOD)
+		sh_subfork();
+
+	/*
+	 * The following could cause the shell to fork if assignment
 	 * would cause a side effect
 	 */
 	shp->argaddr = 0;
 	if(shp->subshell && !nv_local && !(flags&NV_RDONLY))
 		np = sh_assignok(np,1);
+
 	if(np->nvfun && np->nvfun->disc && !(flags&NV_NODISC) && !nv_isref(np))
 	{
 		/* This function contains disc */

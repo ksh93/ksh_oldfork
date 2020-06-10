@@ -796,8 +796,6 @@ but can be unset or redefined:
 .TP
 .B "functions=\(fmtypeset \-f\(fm"
 .TP
-.B "hash=\(fmalias \-t \-\^\-\(fm"
-.TP
 .B "history=\(fmhist \-l\(fm"
 .TP
 .B "integer=\(fmtypeset \-li\(fm"
@@ -6125,6 +6123,21 @@ and
 The option
 .B #
 can only be specified as the first option.
+.TP
+\f3hash\fP \*(OK \f3\-r\fP \f2\^\fP\*(CK \*(OK \f3utility\^\fP \*(CK
+The
+.BR hash
+command can be used to display or modify the hash table.
+The hash table is a list of the most recently used programs
+and their locations.
+If
+.I utility\^
+is supplied,
+.BR hash
+will add that utility to the hash table.
+If
+.B \-r
+is selected, the hash table is reset.
 .TP
 .PD 0
 \f3hist\fP \*(OK \f3\-e\fP \f2ename\^\fP \ \*(CK \*(OK \f3\-nlr\^\fP \*(CK \*(OK \f2first\^\fP \*(OK \f2last\^\fP \*(CK \*(CK

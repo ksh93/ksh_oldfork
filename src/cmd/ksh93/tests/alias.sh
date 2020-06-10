@@ -106,6 +106,11 @@ fi
 unalias no_such_alias && err_exit 'unalias should return non-zero for unknown alias'
 
 # ======
+# Adding a utility after resetting the hash table should work
+hash -r chmod
+[[ $(hash) == "chmod=$(whence -p chmod)" ]] || err_exit $'resetting the hash table with `hash -r \'utility\'` doesn\'t work correctly'
+
+# ======
 # Attempting to unalias a previously set alias twice should be an error
 alias foo=bar
 unalias foo

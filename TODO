@@ -20,11 +20,6 @@ Fix build system:
 ______
 Fix or remove broken or misguided default aliases:
 
-- Make a proper POSIX 'hash' builtin command and remove the builtin alias
-  hash='alias -t --', which, when removed, exposes a b0rken 'hash' builtin.
-  To work with this alias, the 'alias' builtin parses the '-r' for 'hash'
-  *after* '--' ('alias -t -- -r'), which is utterly bogus and violates POSIX.
-
 - Make a proper builtin out of the redirect='command exec' alias. It should
   really only parse redirections. Currently, if an unwitting user notices this
   alias and tries out something like 'redirect ls >file', it does 'exec ls

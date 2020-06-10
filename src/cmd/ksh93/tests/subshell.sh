@@ -709,5 +709,16 @@ v=$(alias al='echo sub'; eval 'al') && [[ $v == sub ]] || err_exit 'alias fails 
 v=${ eval 'al'; alias al='echo subshare'; } && [[ $v == 'mainalias' && $(eval 'al') == subshare ]] \
 || err_exit 'alias redefinition fails to survive ${ ...; }'
 
+# Resetting a subshell's hash table should not affect the parent shell
+(hash -r)
+[[ $(hash) ]] || err_exit $'resetting the hash table in a subshell affects the parent shell\'s hash table'
+(PATH="$PATH")
+[[ $(hash) ]] || err_exit $'resetting the PATH in a subshell affects the parent shell\'s hash table'
+
+# Adding a utility to a subshell's hash table should not affect the parent shell
+hash -r chmod
+(hash cat)
+[[ $(hash) == "chmod=$(whence -p chmod)" ]] || err_exit $'changes to a subshell\'s hash table affect the parent shell'
+
 # ======
 exit $((Errors<125?Errors:125))

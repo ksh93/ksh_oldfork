@@ -5,6 +5,16 @@ For full details, see the git log at: https://github.com/modernish/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-06-10:
+
+- The 'hash' utility is now a regular builtin instead of an alias to
+  'alias -t --'. The functionality of the old command has been removed
+  from the alias builtin.
+
+- Changing the hash table in a subshell will no longer affect the parent
+  shell's hash table. This fix applies to the hash utility and when the
+  PATH is reset manually.
+
 2020-06-09:
 
 - The 'unalias' builtin will now return a non-zero status if it tries
