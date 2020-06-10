@@ -80,7 +80,7 @@
 10-11-22 ditto.sh: fix timing problem between |& and exec &p
 10-11-10 package.sh: fix cc cross compile check to use checkcc absolute path
 10-10-10 package.sh: list main env vars at start of make action
-10-10-10 ratz.c: tweak widnows delays
+10-10-10 ratz.c: tweak windows delays
 10-09-10 ratz.c: add _SEAR_ARGS for _SEAR_EXEC
 10-09-01 package.sh: fix ratz from source logic
 10-08-25 package.mk: consolidate license file search in .package.licenses.
@@ -450,7 +450,7 @@
 03-09-11 iffe.sh: add unnamed { ... } blocks
 	 regress.sh: add COPY from to, like MOVE but comprison still done
 	 regress.sh: rm -rfu to handle test dirs w/o u+rwx
-03-08-14 Makfile: add hello.c to the manifest
+03-08-14 Makefile: add hello.c to the manifest
 03-08-11 package.sh: fix `html binary' generation
 03-06-21 package.sh: fix INITROOT initialization bug
 	 package.sh: make sure admin logs exists before tail'ing
@@ -785,7 +785,7 @@
 00-09-21 mamake: add libxxx and xxx to makefile ordered prereqs
 00-09-19 C+probe: add probe_longlong
 00-09-11 package: drop manmake and $PACKAGEROOT/bin/nmake
-00-09-08 iffe: verfiy that $cc is a C compiler
+00-09-08 iffe: verify that $cc is a C compiler
 00-06-14 mamprobe: fix win32.* probe
 	 mamake: fix bug that used lower view path for generation
 	 package: don't clobber $PACKAGEROOT/bin/nmake

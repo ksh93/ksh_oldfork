@@ -292,7 +292,7 @@ $SHELL -c "$SHELL -c ': 3>&1' 1>&- 2>/dev/null" && err_exit 'closed standard out
 [[ $(cat  <<- \EOF | $SHELL
 	do_it_all()
 	{
-	 	dd 2>/dev/null  # not a ksh93 buildin
+	 	dd 2>/dev/null  # not a ksh93 builtin
 	 	return $?
 	}
 	do_it_all ; exit $?

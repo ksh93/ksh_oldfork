@@ -58,12 +58,12 @@ ln -s $SHELL rksh
 PATH=$PWD:$PATH
 rksh -c  '[[ -o restricted ]]' || err_exit 'restricted option not set'
 [[ $(rksh -c 'print hello') == hello ]] || err_exit 'unable to run print'
-check_restricted "$binecho" || err_exit "$binecho not resticted"
-check_restricted ./echo || err_exit './echo not resticted'
-check_restricted 'SHELL=ksh' || err_exit 'SHELL assignment not resticted'
-check_restricted 'PATH=/bin' || err_exit 'PATH assignment not resticted'
-check_restricted 'FPATH=/bin' || err_exit 'FPATH assignment not resticted'
-check_restricted 'ENV=/bin' || err_exit 'ENV assignment not resticted'
+check_restricted "$binecho" || err_exit "$binecho not restricted"
+check_restricted ./echo || err_exit './echo not restricted'
+check_restricted 'SHELL=ksh' || err_exit 'SHELL assignment not restricted'
+check_restricted 'PATH=/bin' || err_exit 'PATH assignment not restricted'
+check_restricted 'FPATH=/bin' || err_exit 'FPATH assignment not restricted'
+check_restricted 'ENV=/bin' || err_exit 'ENV assignment not restricted'
 check_restricted 'print > file' || err_exit '> file not restricted'
 > empty
 check_restricted 'print <> empty' || err_exit '<> file not restricted'

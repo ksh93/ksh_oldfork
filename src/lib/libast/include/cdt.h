@@ -142,7 +142,7 @@ struct _dtdisc_s
 /* the dictionary structure itself */
 struct _dt_s
 {	Dtsearch_f	searchf;/* search function		*/
-	Dtdisc_t*	disc;	/* object type definitition	*/
+	Dtdisc_t*	disc;	/* object type definition	*/
 	Dtdata_t*	data;	/* shareable data		*/
 	Dtmemory_f	memoryf;/* for memory allocation	*/
 	Dtmethod_t*	meth;	/* storage method		*/

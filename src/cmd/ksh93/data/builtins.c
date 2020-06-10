@@ -1378,7 +1378,7 @@ USAGE_LICENSE
 "[+?If the neither \b-s\b nor \b-c\b is specified, then the first \barg\b "
 	"will be the pathname of the file containing commands and \b$0\b "
 	"will be set to this value.  If there is no file with this pathname, "
-	"and this pathame does not contain a \b/\b, then the \bPATH\b "
+	"and this pathname does not contain a \b/\b, then the \bPATH\b "
 	"will be searched for an executable with this name.  Any remaining "
 	"\aarg\as will be used to initialize the positional parameters.]"
 "[+?Any option can use a \b+\b instead of a \b-\b to disable the corresponding "

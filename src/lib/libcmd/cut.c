@@ -59,7 +59,7 @@ USAGE_LICENSE
 	"option.]"
 "[s:suppress|only-delimited?Suppress lines with no delimiter characters, "
 	"when used with the \b-f\b option.  By default, lines with no "
-	"delimiters will be passsed in untouched.]"
+	"delimiters will be passed in untouched.]"
 "[D:line-delimeter|output-delimiter]:[ldelim?The line delimiter character for "
 	"the \b-f\b option is set to \aldelim\a.  The default is the "
 	"\bnewline\b character.]"

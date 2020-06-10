@@ -53,7 +53,7 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 [d:delete?Delete \adestination\a files that are not in the \asource\a.]
 [e:expr?\btw\b(1) select expression.]:[tw-expression]
 [m!:mode?Preserve file mode.]
-[n:show?Show the operations but do not exectute.]
+[n:show?Show the operations but do not execute.]
 [o:owner?Preserve file user and group ownership.]
 [p:physical?Generate source and destination hierarchies by \btw\b(1) with
 	the \b--physical\b option.]

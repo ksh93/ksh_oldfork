@@ -1211,7 +1211,7 @@
 01-02-08 sfgetm,sfputm,_sfputm: fix max clash with k&r max() macro
 	 setlocale: undef valid for sun4 k&r valid() macro
 01-02-07 catopen.c: don't do native catopen for the debug locale
-01-02-06 sfraise.c: add SF_FINAL check to avoid (posibly) freed disciplines
+01-02-06 sfraise.c: add SF_FINAL check to avoid (possibly) freed disciplines
 01-01-01 features/common: fix uwin __DEFINE__
 	 sftable: initialize decimal and thousand
 	 magic.tab: add corel wordperfect document

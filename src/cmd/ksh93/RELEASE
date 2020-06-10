@@ -995,7 +995,7 @@
 	  no longer causes an error.  It now is used for the "showme" option.
 09-09-09  A bug in which a subshell containing a background process could
 	  block until the background process completed has been fixed.
-09-09-04  A bug in handing ${var[sub]}, where var is a nameref has been fixed.
+09-09-04  A bug in handling ${var[sub]}, where var is a nameref has been fixed.
 09-09-03  A bug which caused an index array to have the wrong number of elements
 	  when it was converted from a compound variable by adding an another
 	  element has been fixed.
@@ -2374,7 +2374,7 @@
 	  evaluation.  It has higher precedence than * and is left
 	  associative.
 01-09-25  The code was modified to use the ast multibyte macros
-	  and functions for handing multibyte locales.
+	  and functions for handling multibyte locales.
 01-09-25 +The expansion ${parameter:offset:length} now handles negative
 	  offsets which cause offsets to be measured from the end.
 01-09-25  Some spelling errors in the documentation were corrected.

@@ -50,7 +50,7 @@
  * a default base of 1 will determine the base from the input using bb#*
  * a base prefix in the string overrides *b
  * *b will not be set if the string has no base prefix
- * if m>1 and no multipler was specified then the result is multiplied by m
+ * if m>1 and no multiplier was specified then the result is multiplied by m
  * if m<0 then multipliers are not consumed
  * if a base arg or prefix is specified then multiplier is not consumed
  *

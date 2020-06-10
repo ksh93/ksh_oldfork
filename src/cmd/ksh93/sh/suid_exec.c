@@ -348,7 +348,7 @@ static void setids(int mode,int owner,int group)
 
 	/* set effective uid even if S_ISUID is not set.  This is because
 	 * we are *really* executing EUID root at this point.  Even if S_ISUID
-	 * is not set, the value for owner that is passsed should be correct.
+	 * is not set, the value for owner that is passed should be correct.
 	 */
 	setreuid(ruserid,owner);
 }

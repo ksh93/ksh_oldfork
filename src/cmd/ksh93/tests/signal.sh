@@ -68,7 +68,7 @@ done
 		EOF
 	} | head > /dev/null
 	(( $? == 0)) ||   err_exit "SIGPIPE with wrong error code $?"
-	# The below is kind of bogus as the err_exit from a bg job is never counterd. But see extra check below.
+	# The below is kind of bogus as the err_exit from a bg job is never counted. But see extra check below.
 	[[ $(<out2) == $'PIPED\nPIPED' ]] || err_exit 'SIGPIPE output on standard error is not correct'
 ) &
 cop=$!

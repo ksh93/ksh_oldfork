@@ -303,7 +303,7 @@ closes the current method (releasing its resources),
 temporarily instantiates the default method
 (either \f5ASO_INTRINSIC\fP if available or \f5AS_SIGNAL\fP otherwise),
 and initializes \f5meth\fP and instantiates it as the new method.
-If \f5disc\fP is \f50\fP the the global discpline is not modified.
+If \f5disc\fP is \f50\fP the the global discipline is not modified.
 If \f5meth\fP is \f50\fP then \f51\fP is returned if \f5asoinit()\fP has
 already been called to initialize a method, otherwise \f50\fP is returned.
 If \f5meth->lockf\fP is \f50\fP and \f5(meth->type & ASO_INTRINSIC) != 0\fP
@@ -332,7 +332,7 @@ if (data || !(asometh(0, 0)->type & (ASO_INTRINSIC|ASO_THREAD))) {
     else if (asoinit(meth, 0, 0, ASO_VERSION))
         /* error -- method initialization error */;
 }
-/* ready for \fIASO\fP operaions */
+/* ready for \fIASO\fP operations */
 .Ce
 A multi-process application would check for \f5(ASO_INTRINSIC|ASO_PROCESS)\fP
 instead of \f5(ASO_INTRINSIC|ASO_THREAD)\fP.
@@ -340,7 +340,7 @@ instead of \f5(ASO_INTRINSIC|ASO_THREAD)\fP.
 .PP
 .SH IMPLEMENTATION NOTES
 Unlike other \fIAST\fP library discipline/method functions which can instantiate
-multiple discpline/method handles within a single process, the \fIASO\fP
+multiple discipline/method handles within a single process, the \fIASO\fP
 library allows only one discipline and method to be set at a time, with the additional
 restriction that it may only be set by the main and only thread of the calling process.
 For this reason there is no open/close interface with an instantiation handle;

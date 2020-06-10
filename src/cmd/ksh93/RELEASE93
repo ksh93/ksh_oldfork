@@ -200,7 +200,7 @@ of ksh.
 	    positioned for the last command of a script has been fixed.
 	y.  A bug in the edit modes which allowed walking back in
 	    the history file for more than HISTSIZE commands has
-	    beed fixed.
+	    been fixed.
 	z.  A bug which could cause a core dump if variable TMPDIR was
 	    changed between two command substitutions has been fixed.
 	aa. A bug which prevented a trap on EXIT from being cleared
