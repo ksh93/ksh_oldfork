@@ -386,4 +386,18 @@ do	[[ $i == *.sh ]] || i+='.sh'
 	fi
 done
 print "Total errors: $total_e"
+
+# TODO: output process substitution is fatally broken.
+# Until that is fixed, skip the pretty-printing.
+# See https://github.com/modernish/ksh/issues/7
+#print $'CPU time used:\n\\t user:\t system:'
+#times > >(
+#	t[0]='main'
+#	read t[1] t[2]
+#	t[3]='*.sh'
+#	read t[4] t[5]
+#	printf '%s:\t%s\t%s\n' "${t[@]}"
+#)
+times
+
 exit $((total_e > 125 ? 125 : total_e))
