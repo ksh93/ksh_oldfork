@@ -302,6 +302,8 @@ int sh_argopts(int argc,register char *argv[], void *context)
 		}
 		else
 		{
+			if ((o == SH_RESTRICTED) && sh_isoption(SH_RESTRICTED))
+				errormsg(SH_DICT,ERROR_exit(1),e_restricted,"r"); /* set -r cannot be unset */
 			if(o==SH_XTRACE)
 				trace = 0;
 			off_option(&newflags,o);

@@ -87,4 +87,10 @@ for i in PATH ENV FPATH
 do	check_restricted  "function foo { typeset $i=foobar;};foo" || err_exit "$i can be changed in function by using typeset"
 done
 
+# ======
+# `set +r` and `set +o restricted` should not unset the restricted option
+check_restricted 'set +r' 2> /dev/null || err_exit '`set +r` unsets the restricted option'
+check_restricted 'set +o restricted' 2> /dev/null || err_exit '`set +o restricted` unsets the restricted option'
+
+# ======
 exit $((Errors<125?Errors:125))
