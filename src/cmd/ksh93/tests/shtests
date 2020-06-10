@@ -346,7 +346,7 @@ do	[[ $i == *.sh ]] || i+='.sh'
 			then	valxml $valxml
 				(( e += $? ))
 			fi
-			if	(( e > 256 && ++total_e ))
+			if	(( e > 128 && ++total_e ))
 			then	E="(killed by SIG$(kill -l "$e"))"
 			elif	(( e == 1 && ++total_e ))
 			then	E="1 error"
@@ -357,6 +357,9 @@ do	[[ $i == *.sh ]] || i+='.sh'
 			then	echo test $o passed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} "[ $t $T $E ]"
 			else	echo test $o failed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} with exit code $e "[ $t $T $E ]"
 			fi
+			case	$E in
+			*INT\))	kill -s INT $$ ;;  # if test was ^C'd, don't keep going but pass down SIGINT
+			esac
 		done
 	fi
 	if	(( compile ))
@@ -367,7 +370,7 @@ do	[[ $i == *.sh ]] || i+='.sh'
 		then	if	$valgrind $SHELL $trace $c
 			then	echo test $o passed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} "[ $t $T 0 errors ]"
 			else	e=$?
-				if	(( e > 256 && ++total_e ))
+				if	(( e > 128 && ++total_e ))
 				then	E="(killed by SIG$(kill -l "$e"))"
 				elif	(( e == 1 && ++total_e ))
 				then	E="1 error"
@@ -375,6 +378,9 @@ do	[[ $i == *.sh ]] || i+='.sh'
 					(( total_e += e ))
 				fi
 				echo test $o failed ${time:+"at $(date +%Y-%m-%d+%H:%M:%S)"} with exit code $e "[ $t $T $E ]"
+				case	$E in
+				*INT\))	kill -s INT $$ ;;  # if test was ^C'd, don't keep going but pass down SIGINT
+				esac
 			fi
 		else	e=$?
 			(( ++total_e ))
