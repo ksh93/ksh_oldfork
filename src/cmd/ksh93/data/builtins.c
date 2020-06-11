@@ -375,8 +375,7 @@ USAGE_LICENSE
         "[+>0?One or more \aname\a operands did not have an alias "
 		"definition, or an error occurred.]"
 "}"
-
-"[+SEE ALSO?\bsh\b(1), \bhash(1), \bunalias\b(1)]"
+"[+SEE ALSO?\bsh\b(1), \bhash\b(1), \bunalias\b(1)]"
 ;
 
 const char sh_optbuiltin[] =
