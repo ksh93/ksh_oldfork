@@ -1,3 +1,5 @@
+**HEADS-UP** [2020-06-11]: This fork is about to reboot at https://github.com/modernish/ast, as a fork based off the official AT&T AST repo. There is nothing wrong at all with how ksh-community bootstrapped the fork this one is based on, but there are too many associated interpersonal conflicts between them and the former ksh2020 camp; rebasing off the archived AT&T repo allows for neutrality, which allows concentrating on actually fixing ksh. It will also restore `nmake` and `pty` which allow the regression tests for the interactive shell to work. All changes made here will be reapplied at the new fork; nothing will be lost. In the meantime, this fork is archived. I apologise for the temporary upheaval. Please bear with me while I execute the transition.
+
 # KornShell 93u+m
 
 This repository is used to maintain bugfixes
