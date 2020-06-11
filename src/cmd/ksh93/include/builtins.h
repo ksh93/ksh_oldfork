@@ -85,7 +85,6 @@ extern int b_builtin(int, char*[],Shbltin_t*);
 extern int b_cd(int, char*[],Shbltin_t*);
 extern int b_command(int, char*[],Shbltin_t*);
 extern int b_getopts(int, char*[],Shbltin_t*);
-extern int b_hash(int, char*[],Shbltin_t*);
 extern int b_hist(int, char*[],Shbltin_t*);
 extern int b_let(int, char*[],Shbltin_t*);
 extern int b_read(int, char*[],Shbltin_t*);

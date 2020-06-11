@@ -230,15 +230,6 @@ static int		rand_shift;
 
 
 /*
- * Invalidate all path name bindings
- */
-static void rehash(register Namval_t *np,void *data)
-{
-	NOT_USED(data);
-	nv_onattr(np,NV_NOALIAS);
-}
-
-/*
  * out of memory routine for stak routines
  */
 static char *nospace(int unused)
@@ -337,7 +328,8 @@ static void put_restricted(register Namval_t* np,const char *val,int flags,Namfu
 		errormsg(SH_DICT,ERROR_exit(1),e_restricted,nv_name(np));
 	if(np==PATHNOD	|| (path_scoped=(strcmp(name,PATHNOD->nvname)==0)))		
 	{
-		nv_scan(shp->track_tree,rehash,(void*)0,NV_TAGGED,NV_TAGGED);
+		/* Clear the hash table */
+		nv_scan(shp->track_tree,nv_rehash,(void*)0,NV_TAGGED,NV_TAGGED);
 		if(path_scoped && !val)
 			val = PATHNOD->nvalue.cp;
 	}

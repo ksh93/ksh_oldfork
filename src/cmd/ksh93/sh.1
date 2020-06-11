@@ -5555,7 +5555,7 @@ command and the original positional parameters are restored upon completion.
 Otherwise the positional parameters are unchanged.
 The exit status is the exit status of the last command executed.
 .TP
-\(dg\(dg \f3alias\fP \*(OK \f3\-ptx\fP \*(CK  \*(OK \f2name\fP\*(OK \f3=\fP\f2value\^\fP  \*(CK \*(CK .\|.\|.
+\f3alias\fP \*(OK \f3\-ptx\fP \*(CK  \*(OK \f2name\fP\*(OK \f3=\fP\f2value\^\fP  \*(CK \*(CK .\|.\|.
 .B alias\^
 with no arguments prints the list of aliases
 in the form
@@ -5580,16 +5580,13 @@ A trailing space in
 .I value\^
 causes the next word to be checked for
 alias substitution.
-The obsolete
+With the
 .B \-t
-option is used to set and list tracked aliases.
-The value of a tracked alias is the full pathname
-corresponding to the given
-.IR name .
-The value becomes undefined when the value of
-.SM
-.B PATH
-is reset but the alias remains tracked.
+option, each name is looked up as a command in
+.B $PATH
+and its path is added to the hash table as a 'tracked alias'.
+If no name is given, this prints the hash table. See
+.BR hash.
 Without the
 .B \-t
 option,
@@ -6125,19 +6122,20 @@ The option
 can only be specified as the first option.
 .TP
 \f3hash\fP \*(OK \f3\-r\fP \f2\^\fP\*(CK \*(OK \f3utility\^\fP \*(CK
-The
-.BR hash
-command can be used to display or modify the hash table.
-The hash table is a list of the most recently used programs
-and their locations.
-If
+.B hash
+displays or modifies the hash table with the locations of recently used
+programs. If given no arguments, it lists all command/path associations
+(a.k.a. 'tracked aliases') in the hash table. Otherwise,
+.B hash
+performs a
+.B PATH
+search for each
 .I utility\^
-is supplied,
-.BR hash
-will add that utility to the hash table.
-If
+supplied and adds the result to the hash table.
+The
 .B \-r
-is selected, the hash table is reset.
+option empties the hash table. This can also be achieved by resetting
+.BR PATH.
 .TP
 .PD 0
 \f3hist\fP \*(OK \f3\-e\fP \f2ename\^\fP \ \*(CK \*(OK \f3\-nlr\^\fP \*(CK \*(OK \f2first\^\fP \*(OK \f2last\^\fP \*(CK \*(CK

@@ -2318,6 +2318,15 @@ static int scanfilter(Dt_t *dict, void *arg, void *data)
 }
 
 /*
+ * Handler function to invalidate a path name binding in the hash table
+ */
+void nv_rehash(register Namval_t *np,void *data)
+{
+	NOT_USED(data);
+	nv_onattr(np,NV_NOALIAS);
+}
+
+/*
  * Walk through the name-value pairs
  * if <mask> is non-zero, then only nodes with (nvflags&mask)==flags
  *	are visited

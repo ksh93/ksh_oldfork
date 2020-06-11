@@ -78,8 +78,8 @@ const struct shtable3 shtab_builtins[] =
 #if _bin_newgrp || _usr_bin_newgrp
 	"newgrp",	NV_BLTIN|BLT_ENV|BLT_SPC,	Bltin(login),
 #endif	/* _bin_newgrp || _usr_bin_newgrp */
-	"alias",	NV_BLTIN|BLT_SPC,		bltin(alias),
-	"hash",		NV_BLTIN,			bltin(hash),
+	"alias",	NV_BLTIN,			bltin(alias),
+	"hash",		NV_BLTIN,			bltin(alias),
 	"enum",		NV_BLTIN|BLT_ENV|BLT_SPC|BLT_DCL,bltin(enum),
 	"eval",		NV_BLTIN|BLT_ENV|BLT_SPC|BLT_EXIT,bltin(eval),
 	"exit",		NV_BLTIN|BLT_ENV|BLT_SPC,	bltin(return),
@@ -339,7 +339,7 @@ USAGE_LICENSE
 
 const char sh_optalarm[]	= "r [varname seconds]";
 const char sh_optalias[] =
-"[-1c?\n@(#)$Id: alias (AT&T Research) 1999-07-07 $\n]"
+"[-1c?\n@(#)$Id: alias (AT&T Research/ksh community) 2020-06-10 $\n]"
 USAGE_LICENSE
 "[+NAME?alias - define or display aliases]"
 "[+DESCRIPTION?\balias\b creates or redefines alias definitions "
@@ -363,10 +363,9 @@ USAGE_LICENSE
 	"environment.  It does not effect scripts run by this shell.]"
 "[p?Causes the output to be in the form of alias commands that can be used "
 	"as input to the shell to recreate the current aliases.]"
-"[t?Used for tracked aliases.  These are aliases that connect a "
-	"command name to the pathname of the command and are reset "
-	"when the \bPATH\b variable is unset.  The tracked aliases feature is "
-	"now obsolete.]"
+"[t?Each \aname\a is looked up as a command in \b$PATH\b and its path is "
+	"added to the hash table as a 'tracked alias'. If no \aname\a is "
+	"given, this prints the hash table. See \bhash(1)\b.]"
 "[x?Ignored, this option is obsolete.]"
 "\n"
 "\n[name[=value]...]\n"
@@ -932,13 +931,12 @@ _JOB_
 const char sh_opthash[] =
 "[-1c?\n@(#)$Id: hash (ksh community) 2020-06-10 $\n]"
 "[+NAME?hash - display the locations of recently used programs]"
-"[+DESCRIPTION?The \bhash\b utility is used to display or modify "
-	"the hash table, which contains the locations of "
-	"recently used programs.  When \bhash\b is given no arguments, "
-	"it will list all commands in the hash table. If \autility\a is "
-     "supplied, \bhash\b will add that utility to the hash table.]"
-"[r?This option will empty the hash table.  The effect of "
-	"this flag can also be achieved by resetting the value of \bPATH\b.]"
+"[+DESCRIPTION?\bhash\b displays or modifies the hash table with the "
+	"locations of recently used programs. If given no arguments, it lists "
+	"all command/path associations (a.k.a. 'tracked aliases') in the hash "
+	"table. Otherwise, \bhash\b performs a \bPATH\b search for each "
+	"\autility\a supplied and adds the result to the hash table.]"
+"[r?Empty the hash table. This can also be achieved by resetting \bPATH\b.]"
 "\n"
 "\n[utility...]\n"
 "\n"
@@ -946,7 +944,6 @@ const char sh_opthash[] =
 	"[+0?Successful completion.]"
 	"[+>0?An error occured.]"
 "}"
-
 "[+SEE ALSO?\bsh\b(1), \balias\b(1)]"
 ;
 

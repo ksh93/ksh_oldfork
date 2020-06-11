@@ -133,56 +133,20 @@ int    b_readonly(int argc,char *argv[],Shbltin_t *context)
 	return(setall(argv,flag,tdata.sh->var_tree, &tdata));
 }
 
-int    b_hash(int argc,char *argv[],Shbltin_t *context)
-{
-	register unsigned flag = NV_NOARRAY | NV_NOSCOPE | NV_ASSIGN | NV_TAGGED;
-	register Dt_t *troot;
-	register int rflag=0, n;
-	struct tdata tdata;
-	NOT_USED(argc);
-	memset((void *)&tdata, 0, sizeof(tdata));
-	tdata.sh = context->shp;
-	troot = tdata.sh->alias_tree;
-
-	/* The hash utility should not be recognized as the alias builtin */
-	tdata.aflag = '-';
-
-	while((n = optget(argv,sh_opthash))) switch(n)
-	{
-		case 'r':
-			rflag = 1;
-			break;
-		case ':':
-			error(2,"%s",opt_info.arg);
-			break;
-		case '?':
-			error(ERROR_usage(0),"%s",opt_info.arg);
-			return 2;
-	}
-	if (error_info.errors)
-		errormsg(SH_DICT,ERROR_usage(2),"%s",optusage(NULL));
-	argv += (opt_info.index-1);
-
-	/* Handle -r */
-	if (rflag)
-	{
-		Namval_t *np = nv_search((char *)PATHNOD, tdata.sh->var_tree, HASH_BUCKET);
-		nv_putval(np, nv_getval(np), NV_RDONLY);
-	}
-
-	troot = tdata.sh->track_tree;
-	/* We must fork in subshells to avoid polluting the parent shell's hash table. */
-	if(tdata.sh->subshell && !tdata.sh->subshare)
-		sh_subfork();
-	return setall(argv, flag, troot, &tdata);
-}
-
+/*
+ * 'alias' and 'hash' builtins
+ */
+#if 0
+    /* for the dictionary generator */
+    int    b_hash(int argc,register char *argv[],Shbltin_t *context){}
+#endif
 int    b_alias(int argc,register char *argv[],Shbltin_t *context)
 {
 	register unsigned flag = NV_NOARRAY|NV_NOSCOPE|NV_ASSIGN;
 	register Dt_t *troot;
-	register int n;
+	register int rflag=0, n;
 	struct tdata tdata;
+	Namval_t *np;
 	NOT_USED(argc);
 	memset((void*)&tdata,0,sizeof(tdata));
 	tdata.sh = context->shp;
@@ -196,7 +160,7 @@ int    b_alias(int argc,register char *argv[],Shbltin_t *context)
 		*opt_info.option = 0;
 		tdata.argnum = 0;
 		tdata.aflag = *argv[1];
-		while((n = optget(argv,sh_optalias))) switch(n)
+		while((n = optget(argv, *argv[0]=='h' ? sh_opthash : sh_optalias))) switch(n)
 		{
 		    case 'p':
 			tdata.prefix = argv[0];
@@ -205,7 +169,10 @@ int    b_alias(int argc,register char *argv[],Shbltin_t *context)
 			flag |= NV_TAGGED;
 			break;
 		    case 'x':
-			flag |= NV_EXPORT;
+			/* obsolete, ignored */
+			break;
+		    case 'r':
+			rflag=1;
 			break;
 		    case ':':
 			errormsg(SH_DICT,2, "%s", opt_info.arg);
@@ -217,11 +184,18 @@ int    b_alias(int argc,register char *argv[],Shbltin_t *context)
 		if(error_info.errors)
 			errormsg(SH_DICT,ERROR_usage(2),"%s",optusage(NIL(char*)));
 		argv += (opt_info.index-1);
-		if(flag&NV_TAGGED)
-			troot = tdata.sh->track_tree;
 	}
-	if(context->shp->subshell && !context->shp->subshare)
+	/* fork a virtual subshell to avoid affecting parent shell's hash/alias table */
+	if((argv[1] || rflag) && tdata.sh->subshell && !tdata.sh->subshare)
 		sh_subfork();
+	/* 'alias -t', 'hash' */
+	if(flag&NV_TAGGED)
+	{
+		troot = tdata.sh->track_tree;	/* use hash table */
+		tdata.aflag = '-';		/* make setall() treat 'hash' like 'alias -t' */
+		if(rflag)			/* hash -r: clear hash table */
+			nv_scan(troot,nv_rehash,(void*)0,NV_TAGGED,NV_TAGGED);
+	}
 	return(setall(argv,flag,troot,&tdata));
 }
 

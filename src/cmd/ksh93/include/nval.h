@@ -281,6 +281,7 @@ extern Namval_t		*nv_open(const char*,Dt_t*,int);
 extern void 		nv_putval(Namval_t*,const char*,int);
 extern void 		nv_putv(Namval_t*,const char*,int,Namfun_t*);
 extern int		nv_rename(Namval_t*,int);
+extern void		nv_rehash(Namval_t*,void*);
 extern int		nv_scan(Dt_t*,void(*)(Namval_t*,void*),void*,int,int);
 extern char 		*nv_setdisc(Namval_t*,const char*,Namval_t*,Namfun_t*);
 extern void		nv_setref(Namval_t*, Dt_t*,int);
